@@ -1,16 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ase
+  name: ase-deployment
+  labels:
+    app: ase
 spec:
   selector:
     matchLabels:
-      run: ase
+      app: ase
   replicas: 1
   template:
     metadata:
       labels:
-        run: ase
+        app: ase
     spec:
       containers:
       - name: ase
