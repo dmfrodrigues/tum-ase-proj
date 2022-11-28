@@ -9,6 +9,7 @@ variables:
 
 .login-env-deployment:
   before_script:
+    - eval "$(ssh-agent -s)"
     - ssh-add $SSH_PRIVATE_KEY_DEPLOY
 
 build-job:
