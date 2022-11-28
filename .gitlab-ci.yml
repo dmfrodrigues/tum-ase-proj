@@ -22,4 +22,5 @@ deploy-job:
   stage: deploy
   extends: .login-env-deployment
   script:
-    - scp docker-compose.prod.yml $DEPLOY_USER@$DEPLOY_HOST:/deployments/prod/docker-compose.yml
+    - scp docker-compose.prod.yml $DEPLOY_USER@$DEPLOY_HOST:~/docker-compose.yml
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "sudo mv -f ~/docker-compose.yml /deployments/prod/docker-compose.yml"
