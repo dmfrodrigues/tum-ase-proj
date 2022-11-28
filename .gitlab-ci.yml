@@ -1,6 +1,7 @@
 variables:
   PROD_USER: ase
   PROD_HOST: tum-ase.westeurope.cloudapp.azure.com
+  PROD_DEPLOYMENT_PATH: /deployments/prod
   CI_REPO: $CI_REGISTRY/ase-22-23/team15/tum-ase-proj
 
 ## Login to Container Registry
@@ -24,17 +25,15 @@ build-job:
     - docker build -t $CI_REPO/frontend:$CI_COMMIT_SHA frontend
     - docker push $CI_REPO/frontend:$CI_COMMIT_SHA
 
-## Deploy to production
-deploy-prod:
+## Deploy
+.deploy:
   stage: deploy
-  rules:
-    - if: $CI_COMMIT_BRANCH == "master"
   extends: .login-prod
   script:
-    - scp docker-compose.prod.yml $PROD_USER@$PROD_HOST:/deployments/prod/docker-compose.yml
+    - scp docker-compose.prod.yml $USER@$HOST:$DEPLOYMENT_PATH/docker-compose.yml
     - |
-      ssh $PROD_USER@$PROD_HOST "
-        cd /deployments/prod;
+      ssh $USER@$HOST "
+        cd $DEPLOYMENT_PATH;
         rm .env
         echo "TAG=$CI_COMMIT_SHA" >> .env
         cat .env.prod >> .env
@@ -43,3 +42,14 @@ deploy-prod:
         docker-compose up -d;
         echo \"Last updated: $(date --utc +'%Y-%m-%d %T') UTC<br>Commit SHA: $CI_COMMIT_SHA\" | sudo tee /var/www/html/info.html;
       "
+
+## Deploy to production
+deploy-prod:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+  extends: .login-prod
+  variables:
+    USER: $PROD_USER
+    HOST: $PROD_HOST
+    DEPLOYMENT_PATH: $PROD_DEPLOYMENT_PATH
