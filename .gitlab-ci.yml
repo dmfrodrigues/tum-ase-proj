@@ -9,9 +9,7 @@ variables:
 
 .login-env-deployment:
   before_script:
-    - ssh-add "$SSH_PRIVATE_KEY_DEPLOY"
-    # - mkdir -p ~/.ssh
-    # - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh-add $SSH_PRIVATE_KEY_DEPLOY
 
 build-job:
   stage: build
@@ -25,7 +23,3 @@ deploy-job:
   extends: .login-env-deployment
   script:
     - scp docker-compose.prod.yml $DEPLOY_USER@$DEPLOY_HOST:/deployments/prod/docker-compose.yml
-    # - |
-    #   ssh "$DEPLOY_USER@$DEPLOY_HOST" "
-    #     cd 
-    #   "
