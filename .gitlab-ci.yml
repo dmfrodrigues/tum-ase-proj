@@ -32,5 +32,5 @@ deploy-job:
         docker-compose pull;
         docker-compose down --remove-orphans;
         docker-compose up -d;
-        echo \"<!DOCTYPE html><html><head></head><body>Last updated: $(date --utc +'%Y-%m-%d %T') UTC</body></html>\" > /var/www/html/info.html;
+        sudo echo \"<!DOCTYPE html><html><head></head><body>Last updated: $(date --utc +'%Y-%m-%d %T') UTC</body></html>\" > /var/www/html/info.html;
       "
