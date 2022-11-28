@@ -26,3 +26,11 @@ deploy-job:
   extends: .login-prod
   script:
     - scp docker-compose.prod.yml $PROD_USER@$PROD_HOST:/deployments/prod/docker-compose.yml
+    - |
+      ssh $PROD_USER@$PROD_HOST "
+        cd /deployments/prod;
+        docker-compose pull;
+        docker-compose down --remove-orphans;
+        docker-compose up -d;
+        echo \"<!DOCTYPE html><html><head></head><body>Last updated: $(date --utc +'%Y-%m-%d %T') UTC</body></html>\" > /var/www/html/info.html;
+      "
