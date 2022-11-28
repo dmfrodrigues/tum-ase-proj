@@ -7,9 +7,9 @@ variables:
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
 
-# .login-env-deployment:
-#   before_script:
-#     - ssh-add $SSH_PRIVATE_KEY_DEPLOY
+.login-env-deployment:
+  before_script:
+    - ssh-add $SSH_PRIVATE_KEY_DEPLOY
 
 build-job:
   stage: build
@@ -18,8 +18,8 @@ build-job:
     - docker build -t $CI_REPO/frontend:latest frontend
     - docker push $CI_REPO/frontend:latest
 
-# deploy-job:
-#   stage: deploy
-#   extends: .login-env-deployment
-#   script:
-#     - scp docker-compose.prod.yml $DEPLOY_USER@$DEPLOY_HOST:/deployments/prod/docker-compose.yml
+deploy-job:
+  stage: deploy
+  extends: .login-env-deployment
+  script:
+    - scp docker-compose.prod.yml $DEPLOY_USER@$DEPLOY_HOST:/deployments/prod/docker-compose.yml
