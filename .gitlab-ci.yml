@@ -53,3 +53,5 @@ deploy-prod:
     USER: $PROD_USER
     HOST: $PROD_HOST
     DEPLOYMENT_PATH: $PROD_DEPLOYMENT_PATH
+  script:
+    - !reference [.deploy]
