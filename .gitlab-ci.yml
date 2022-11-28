@@ -41,5 +41,5 @@ deploy-prod:
         docker-compose pull;
         docker-compose down --remove-orphans;
         docker-compose up -d;
-        echo \"<\!DOCTYPE html><html><head></head><body>Last updated: $(date --utc +'%Y-%m-%d %T') UTC<br>Commit SHA: $CI_COMMIT_SHA</body></html>\" | sudo tee /var/www/html/info.html;
+        echo \"Last updated: $(date --utc +'%Y-%m-%d %T') UTC<br>Commit SHA: $CI_COMMIT_SHA\" | sudo tee /var/www/html/info.html;
       "
