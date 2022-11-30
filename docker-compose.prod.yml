@@ -1,7 +1,10 @@
 version: "3.9"
 
 services:
+  router:
+    image: gitlab.lrz.de:5005/ase-22-23/team15/tum-ase-proj/router:${TAG}
+    ports:
+      - ${ROUTER_PORT}:80
+
   frontend:
     image: gitlab.lrz.de:5005/ase-22-23/team15/tum-ase-proj/frontend:${TAG}
-    ports:
-      - 8000:80

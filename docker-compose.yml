@@ -1,7 +1,10 @@
 version: "3.9"
 
 services:
-  frontend:
-    build: frontend
+  router:
+    build: router
     ports:
       - "8000:80"
+
+  frontend:
+    build: frontend
