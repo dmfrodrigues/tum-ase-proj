@@ -14,8 +14,15 @@ variables:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-## Build image and push it to CR
-build-job:
+## Build images and push to CR
+build-router:
+  stage: build
+  extends: .login-cr
+  script:
+    - docker build -t $CI_REPO/router:$CI_COMMIT_SHA router
+    - docker push $CI_REPO/router:$CI_COMMIT_SHA
+
+build-frontend:
   stage: build
   extends: .login-cr
   script:
