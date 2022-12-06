@@ -10,7 +10,7 @@ variables:
 .login-deploy:
   before_script:
     - eval "$(ssh-agent -s)"
-    - cat $SSH_PRIVATE_KEY | tr -d '\r' | ssh-add -
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
