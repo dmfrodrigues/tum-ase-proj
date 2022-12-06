@@ -8,6 +8,8 @@ services:
 
   frontend:
     build: frontend
+    ports:
+      - 8001:80
   
   backend:
     build: backend
