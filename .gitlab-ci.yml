@@ -33,6 +33,8 @@ build-backend:
   stage: build
   extends: .login-cr
   script:
+    - cd backend
+    - ./gradlew build
     - docker build -t $CI_REPO/backend:$CI_COMMIT_SHA backend
     - docker push $CI_REPO/backend:$CI_COMMIT_SHA
 
