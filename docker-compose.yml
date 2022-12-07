@@ -10,7 +10,25 @@ services:
     build: frontend
     ports:
       - 8001:80
+
+  db:
+    image: mongo:6.0
+    ports:
+      - 8003:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
   
+  db-admin:
+    image: mongo-express:latest
+    restart: always
+    ports:
+      - 8004:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_MONGODB_URL: mongodb://root:password@db:27017/
+
   backend:
     build: backend
     ports:
