@@ -18,10 +18,18 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
   
   db-admin:
     image: mongo-express:latest
     restart: always
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - 8004:8081
     environment:
@@ -31,6 +39,9 @@ services:
 
   backend:
     build: backend
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - 8002:80
     volumes:
