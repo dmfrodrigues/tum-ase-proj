@@ -4,7 +4,17 @@ services:
   router:
     build: router
     ports:
-      - "8000:80"
+      - 8000:80
 
   frontend:
     build: frontend
+    ports:
+      - 8001:80
+  
+  backend:
+    build: backend
+    ports:
+      - 8002:80
+    volumes:
+      - ./backend:/app
+    command: "/run.dev.sh"

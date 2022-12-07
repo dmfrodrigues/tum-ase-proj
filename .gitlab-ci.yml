@@ -29,6 +29,17 @@ build-frontend:
     - docker build -t $CI_REPO/frontend:$CI_COMMIT_SHA frontend
     - docker push $CI_REPO/frontend:$CI_COMMIT_SHA
 
+build-backend:
+  stage: build
+  extends: .login-cr
+  script:
+    - cd backend
+    - chmod 755 gradlew
+    - ./gradlew build
+    - cd ..
+    - docker build -t $CI_REPO/backend:$CI_COMMIT_SHA backend
+    - docker push $CI_REPO/backend:$CI_COMMIT_SHA
+
 ## Deploy
 .deploy:
   stage: deploy
