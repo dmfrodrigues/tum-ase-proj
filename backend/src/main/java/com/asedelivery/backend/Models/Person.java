@@ -1,13 +1,10 @@
 package com.asedelivery.backend.Models;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document("user")
-public class User extends Agent {
+public class Person extends Agent {
     private String name;
     private String email;
 
-    public User(String name, String password, String email) {
+    public Person(String name, String password, String email) {
         super(password);
         this.name = name;
         this.email = email;
