@@ -43,6 +43,7 @@ public class BoxController {
 
     @DeleteMapping("/{id}")
     public void delCustomer(@PathVariable String id) {
-        boxRepo.deleteById(id);
+        if(!boxRepo.existsById(id)) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        else boxRepo.deleteById(id);
     }
 }
