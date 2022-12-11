@@ -43,6 +43,7 @@ public class DispatcherController {
 
     @DeleteMapping("/{id}")
     public void delDispatcher(@PathVariable String id) {
-        dispatcherRepo.deleteById(id);
+        if(!dispatcherRepo.existsById(id)) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        else dispatcherRepo.deleteById(id);
     }
 }
