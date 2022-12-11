@@ -43,6 +43,7 @@ public class DelivererController {
 
     @DeleteMapping("/{id}")
     public void delDeliverer(@PathVariable String id) {
-        delivererRepo.deleteById(id);
+        if(!delivererRepo.existsById(id)) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        else delivererRepo.deleteById(id);
     }
 }
