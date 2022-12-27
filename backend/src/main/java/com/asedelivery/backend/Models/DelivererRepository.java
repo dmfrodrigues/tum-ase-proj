@@ -2,6 +2,6 @@ package com.asedelivery.backend.Models;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface UserRepository extends MongoRepository<User, Integer> {
+public interface DelivererRepository extends MongoRepository<Deliverer, String> {
 
 }
