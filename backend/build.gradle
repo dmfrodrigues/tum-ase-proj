@@ -21,6 +21,11 @@ dependencies {
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE' // Temporary explicit version to fix Thymeleaf bug
+	implementation 'org.springframework.security:spring-security-test'
 }
 
 tasks {
