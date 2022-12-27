@@ -1,14 +1,15 @@
 package com.asedelivery.backend.Models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class Agent {
+public class Principal {
     @Id
     private String id;
 
     private String password;
 
-    public Agent(String password) {
+    public Principal(String password) {
         this.password = password;
     }
 

@@ -4,7 +4,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 @Document("box")
-public class Box extends Agent {
+public class Box extends Principal {
     private String name;
     private String address;
 
