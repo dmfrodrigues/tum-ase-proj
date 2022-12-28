@@ -1,3 +1,9 @@
-FROM httpd:2.4
+FROM node:alpine
 
-COPY ./public-html/ /usr/local/apache2/htdocs/
+COPY ase-t15-frontend/package.json ./
+COPY ase-t15-frontend/package-lock.json ./
+
+RUN npm install
+COPY ase-t15-frontend/ ./
+
+CMD ["npm", "start"]
