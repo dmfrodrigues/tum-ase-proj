@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.asedelivery.backend.Models.BoxRepository;
-import com.asedelivery.backend.Models.CustomerRepository;
-import com.asedelivery.backend.Models.DelivererRepository;
 import com.asedelivery.backend.Models.Delivery;
-import com.asedelivery.backend.Models.DeliveryRepository;
-import com.asedelivery.backend.Models.DispatcherRepository;
+import com.asedelivery.backend.Models.Repositories.BoxRepository;
+import com.asedelivery.backend.Models.Repositories.CustomerRepository;
+import com.asedelivery.backend.Models.Repositories.DelivererRepository;
+import com.asedelivery.backend.Models.Repositories.DeliveryRepository;
+import com.asedelivery.backend.Models.Repositories.DispatcherRepository;
 
 @RestController
 @RequestMapping("/delivery")

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.asedelivery.backend.Models.Deliverer;
-import com.asedelivery.backend.Models.DelivererRepository;
+import com.asedelivery.backend.Models.Principal;
+import com.asedelivery.backend.Models.Repositories.DelivererRepository;
+import com.asedelivery.backend.Models.Repositories.PrincipalRepository;
 
 @RestController
 @RequestMapping("/deliverer")
@@ -21,6 +23,9 @@ public class DelivererController {
 
     @Autowired
     DelivererRepository delivererRepo;
+
+    @Autowired
+    PrincipalRepository principalRepo;
 
     @GetMapping("")
     public List<Deliverer> getDeliverer() {
@@ -35,15 +40,20 @@ public class DelivererController {
 
     @PutMapping("")
     public Deliverer putDeliverer(
-            @RequestParam(value = "name") String name,
+            @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password,
+            @RequestParam(value = "name") String name,
             @RequestParam(value = "email") String email) {
-        return delivererRepo.save(new Deliverer(name, password, email));
+        Deliverer ret = delivererRepo.save(new Deliverer(username, name, email));
+        principalRepo.save(new Principal(ret.getId(), username, password));
+        return ret;
     }
 
     @DeleteMapping("/{id}")
     public void delDeliverer(@PathVariable String id) {
-        if(!delivererRepo.existsById(id)) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        else delivererRepo.deleteById(id);
+        if (!delivererRepo.existsById(id))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        else
+            delivererRepo.deleteById(id);
     }
 }

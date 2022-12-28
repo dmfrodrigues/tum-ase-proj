@@ -2,9 +2,9 @@ package com.asedelivery.backend.Models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("dispatcher")
+@Document("agent")
 public class Dispatcher extends Person {
-    public Dispatcher(String name, String password, String email){
-        super(name, password, email);
+    public Dispatcher(String username, String name, String email){
+        super(username, name, email);
     }
 }

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.asedelivery.backend.Models.Dispatcher;
-import com.asedelivery.backend.Models.DispatcherRepository;
+import com.asedelivery.backend.Models.Principal;
+import com.asedelivery.backend.Models.Repositories.DispatcherRepository;
+import com.asedelivery.backend.Models.Repositories.PrincipalRepository;
 
 @RestController
 @RequestMapping("/dispatcher")
@@ -21,6 +23,9 @@ public class DispatcherController {
 
     @Autowired
     DispatcherRepository dispatcherRepo;
+
+    @Autowired
+    PrincipalRepository principalRepo;
 
     @GetMapping("")
     public List<Dispatcher> getDispatcher() {
@@ -35,15 +40,20 @@ public class DispatcherController {
 
     @PutMapping("")
     public Dispatcher putDispatcher(
-            @RequestParam(value = "name") String name,
+            @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password,
+            @RequestParam(value = "name") String name,
             @RequestParam(value = "email") String email) {
-        return dispatcherRepo.save(new Dispatcher(name, password, email));
+        Dispatcher ret = dispatcherRepo.save(new Dispatcher(name, password, email));
+        principalRepo.save(new Principal(ret.getId(), username, password));
+        return ret;
     }
 
     @DeleteMapping("/{id}")
     public void delDispatcher(@PathVariable String id) {
-        if(!dispatcherRepo.existsById(id)) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        else dispatcherRepo.deleteById(id);
+        if (!dispatcherRepo.existsById(id))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        else
+            dispatcherRepo.deleteById(id);
     }
 }
