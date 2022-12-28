@@ -14,13 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.asedelivery.backend.Models.Box;
-import com.asedelivery.backend.Models.BoxRepository;
+import com.asedelivery.backend.Models.Principal;
+import com.asedelivery.backend.Models.Repositories.BoxRepository;
+import com.asedelivery.backend.Models.Repositories.PrincipalRepository;
 
 @RestController
 @RequestMapping("/box")
 public class BoxController {
     @Autowired
     BoxRepository boxRepo;
+
+    @Autowired
+    PrincipalRepository principalRepo;
 
     @GetMapping("")
     public List<Box> getBoxes() {
@@ -35,15 +40,19 @@ public class BoxController {
 
     @PutMapping("")
     public Box putBox(
-            @RequestParam(value = "name") String name,
+            @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password,
             @RequestParam(value = "email") String email) {
-        return boxRepo.save(new Box(name, password, email));
+        Box ret = boxRepo.save(new Box(username, email));
+        principalRepo.save(new Principal(ret.getId(), username, password));
+        return ret;
     }
 
     @DeleteMapping("/{id}")
     public void delCustomer(@PathVariable String id) {
-        if(!boxRepo.existsById(id)) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        else boxRepo.deleteById(id);
+        if (!boxRepo.existsById(id))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        else
+            boxRepo.deleteById(id);
     }
 }

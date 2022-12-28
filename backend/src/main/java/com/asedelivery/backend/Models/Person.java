@@ -4,8 +4,8 @@ public class Person extends Agent {
     private String name;
     private String email;
 
-    public Person(String name, String password, String email) {
-        super(password);
+    public Person(String username, String name, String email) {
+        super(username);
         this.name = name;
         this.email = email;
     }

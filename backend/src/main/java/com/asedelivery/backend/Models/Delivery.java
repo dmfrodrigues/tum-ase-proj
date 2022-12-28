@@ -32,4 +32,8 @@ public class Delivery {
         this.pickupAddress = pickupAddress;
         this.box = box;
     }
+
+    public String getPickupAddress(){
+        return pickupAddress;
+    }
 }
