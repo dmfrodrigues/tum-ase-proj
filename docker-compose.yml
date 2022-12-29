@@ -9,7 +9,7 @@ services:
   frontend:
     build: frontend
     ports:
-      - 8001:80
+      - 8001:3000
 
   db:
     image: mongo:6.0
@@ -23,7 +23,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-  
+
   db-admin:
     image: mongo-express:latest
     restart: always
@@ -44,6 +44,8 @@ services:
         condition: service_healthy
     ports:
       - 8002:80
+    environment:
+      ADMIN_PASSWORD: 1234
     volumes:
       - ./backend:/app
     command: "/run.dev.sh"

@@ -44,7 +44,7 @@ public class DispatcherController {
             @RequestParam(value = "password") String password,
             @RequestParam(value = "name") String name,
             @RequestParam(value = "email") String email) {
-        Dispatcher ret = dispatcherRepo.save(new Dispatcher(name, password, email));
+        Dispatcher ret = dispatcherRepo.save(new Dispatcher(username, name, email));
         principalRepo.save(new Principal(ret.getId(), username, password));
         return ret;
     }
