@@ -42,8 +42,8 @@ public class BoxController {
     public Box putBox(
             @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password,
-            @RequestParam(value = "email") String email) {
-        Box ret = boxRepo.save(new Box(username, email));
+            @RequestParam(value = "address") String address) {
+        Box ret = boxRepo.save(new Box(username, address));
         principalRepo.save(new Principal(ret.getId(), username, password));
         return ret;
     }
