@@ -1,5 +1,6 @@
 package com.asedelivery.backend.Controller;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.asedelivery.backend.Auth.Password;
 import com.asedelivery.backend.Models.Box;
 import com.asedelivery.backend.Models.Principal;
 import com.asedelivery.backend.Models.Repositories.BoxRepository;
@@ -44,7 +46,13 @@ public class BoxController {
             @RequestParam(value = "password") String password,
             @RequestParam(value = "address") String address) {
         Box ret = boxRepo.save(new Box(username, address));
-        principalRepo.save(new Principal(ret.getId(), username, password));
+        Password passwordObj;
+        try {
+            passwordObj = new Password(password);
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        }
+        principalRepo.save(new Principal(ret.getId(), username, passwordObj));
         return ret;
     }
 
