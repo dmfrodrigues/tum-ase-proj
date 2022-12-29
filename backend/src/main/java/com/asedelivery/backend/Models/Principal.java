@@ -20,11 +20,11 @@ public class Principal {
         return id;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return username;
     }
 
-    public boolean checkPassword(String token){
+    public boolean checkPassword(String token) {
         return token.equals(password);
     }
 }
