@@ -19,7 +19,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      test: test -f healthcheck.txt || (echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet && touch healthcheck.txt)
       interval: 10s
       timeout: 10s
       retries: 5
