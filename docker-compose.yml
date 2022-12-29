@@ -9,7 +9,7 @@ services:
   frontend:
     build: frontend
     ports:
-      - 8001:80
+      - 8001:3000
 
   db:
     image: mongo:6.0
