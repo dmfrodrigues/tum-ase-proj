@@ -1,6 +1,5 @@
 package com.asedelivery.backend.Controller;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.asedelivery.backend.Auth.Password;
 import com.asedelivery.backend.Models.Dispatcher;
 import com.asedelivery.backend.Models.Principal;
 import com.asedelivery.backend.Models.Repositories.DispatcherRepository;
@@ -47,13 +45,7 @@ public class DispatcherController {
             @RequestParam(value = "name") String name,
             @RequestParam(value = "email") String email) {
         Dispatcher ret = dispatcherRepo.save(new Dispatcher(username, name, email));
-        Password passwordObj;
-        try {
-            passwordObj = new Password(password);
-        } catch (NoSuchAlgorithmException e) {
-            return null;
-        }
-        principalRepo.save(new Principal(ret.getId(), username, passwordObj));
+        principalRepo.save(new Principal(ret.getId(), username, password));
         return ret;
     }
 

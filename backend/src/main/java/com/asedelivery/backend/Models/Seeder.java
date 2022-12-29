@@ -1,13 +1,10 @@
 package com.asedelivery.backend.Models;
 
-import java.security.NoSuchAlgorithmException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import com.asedelivery.backend.Auth.Password;
 import com.asedelivery.backend.Models.Repositories.DispatcherRepository;
 import com.asedelivery.backend.Models.Repositories.PrincipalRepository;
 
@@ -30,18 +27,11 @@ public class Seeder implements CommandLineRunner {
 
     private void seedAdmin() {
         if (dispatcherRepo.count() == 0) {
-            String adminPassword = System.getenv("ADMIN_PASSWORD");
-            Assert.notNull(adminPassword, "Admin password is null");
-
-            Password passwordObj;
-            try {
-                passwordObj = new Password(adminPassword);
-            } catch (NoSuchAlgorithmException e) {
-                return;
-            }
+            String password = System.getenv("ADMIN_PASSWORD");
+            Assert.notNull(password, "Admin password is null");
 
             Dispatcher admin = dispatcherRepo.save(new Dispatcher("admin", "Admin", "asedelivery@gmail.com"));
-            principalRepo.save(new Principal(admin.getId(), admin.getUsername(), passwordObj));
+            principalRepo.save(new Principal(admin.getId(), admin.getUsername(), password));
         }
         System.out.println(dispatcherRepo.count());
     }
