@@ -10,7 +10,7 @@ public class Box extends Agent {
     @DocumentReference
     private Customer customer;
 
-    public Box(String username, String address){
+    public Box(String username, String address) {
         super(username);
         this.address = address;
     }
@@ -23,7 +23,11 @@ public class Box extends Agent {
         this.customer = customer;
     }
 
-    public String getAddress(){
+    public String getAddress() {
         return address;
+    }
+
+    public String getRole() {
+        return "BOX";
     }
 }

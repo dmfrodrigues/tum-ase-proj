@@ -5,5 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import com.asedelivery.backend.Models.Agent;
 
 public interface AgentRepository extends MongoRepository<Agent, String> {
-
+    public Agent findByUsername(String username);
 }

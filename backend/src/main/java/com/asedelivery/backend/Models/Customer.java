@@ -14,6 +14,11 @@ public class Customer extends Person {
         } else if (obj instanceof Customer) {
             Customer customer = (Customer) obj;
             return customer.getId().equals(getId());
-        } else return false;
+        } else
+            return false;
+    }
+
+    public String getRole() {
+        return "CUSTOMER";
     }
 }

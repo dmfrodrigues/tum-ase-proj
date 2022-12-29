@@ -24,7 +24,7 @@ public class Principal {
         return username;
     }
 
-    public boolean checkPassword(String token) {
-        return token.equals(password);
+    public String getPassword() {
+        return password;
     }
 }

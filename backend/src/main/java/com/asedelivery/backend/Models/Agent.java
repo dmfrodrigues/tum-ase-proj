@@ -2,7 +2,7 @@ package com.asedelivery.backend.Models;
 
 import org.springframework.data.annotation.Id;
 
-public class Agent {
+public abstract class Agent {
     @Id
     private String id;
     private String username;
@@ -15,7 +15,9 @@ public class Agent {
         return id;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return username;
     }
+
+    abstract public String getRole();
 }
