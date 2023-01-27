@@ -2,7 +2,7 @@
 function Quote() {
   return (
     <p>
-      Bazinga
+      TEST
     </p>
   );
 }
