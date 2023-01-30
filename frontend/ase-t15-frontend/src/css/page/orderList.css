@@ -1,0 +1,45 @@
+.orderList {
+    flex: 5;
+}
+
+.orderList * {
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.orderListItem {
+    display: flex;
+    align-items: center;
+    font-size: xx-large;
+}
+
+.orderListImg {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.orderListEdit {
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+
+.orderListDelete {
+    color: #dd4b39;
+    cursor: pointer;
+}
+
+.orderStatusDelivered {
+    color: #00a65a;
+}
+
+.orderStatusPending {
+    color: #f39c12;
+}
+
+.orderStatusCanceled {
+    color: #dd4b39;
+}
