@@ -3,6 +3,7 @@ package com.asedelivery.backend.Controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,17 +29,13 @@ public class DelivererController {
     PrincipalRepository principalRepo;
 
     @GetMapping("")
+    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
     public List<Deliverer> getDeliverer() {
         return delivererRepo.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Deliverer getDelivererByID(@PathVariable String id) {
-        return delivererRepo.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-    }
-
     @PutMapping("")
+    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
     public Deliverer putDeliverer(
             @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password,
@@ -50,6 +47,7 @@ public class DelivererController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
     public void delDeliverer(@PathVariable String id) {
         if (!delivererRepo.existsById(id))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

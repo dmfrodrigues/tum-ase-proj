@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,17 +29,13 @@ public class BoxController {
     PrincipalRepository principalRepo;
 
     @GetMapping("")
+    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
     public List<Box> getBoxes() {
         return boxRepo.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Box getBoxById(@PathVariable String id) {
-        return boxRepo.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-    }
-
     @PutMapping("")
+    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
     public Box putBox(
             @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password,
@@ -49,6 +46,7 @@ public class BoxController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
     public void delCustomer(@PathVariable String id) {
         if (!boxRepo.existsById(id))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

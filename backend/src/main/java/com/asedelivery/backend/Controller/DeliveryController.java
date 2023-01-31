@@ -1,9 +1,16 @@
 package com.asedelivery.backend.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.asedelivery.backend.Models.Agent;
+import com.asedelivery.backend.Models.Customer;
+import com.asedelivery.backend.Models.Deliverer;
 import com.asedelivery.backend.Models.Delivery;
+import com.asedelivery.backend.Models.Dispatcher;
+import com.asedelivery.backend.Models.Principal;
+import com.asedelivery.backend.Models.Principal.Role;
+import com.asedelivery.backend.Models.Repositories.AgentRepository;
 import com.asedelivery.backend.Models.Repositories.BoxRepository;
 import com.asedelivery.backend.Models.Repositories.CustomerRepository;
 import com.asedelivery.backend.Models.Repositories.DelivererRepository;
@@ -38,18 +52,44 @@ public class DeliveryController {
     @Autowired
     BoxRepository boxRepo;
 
+    @Autowired
+    AgentRepository agentRepo;
+
     @GetMapping("")
     public List<Delivery> getDeliveries() {
-        return deliveryRepo.findAll();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        Agent agent = agentRepo.findByUsername(username);
+
+        String authority = auth.getAuthorities().iterator().next().getAuthority();
+        switch(authority){
+            case "ROLE_" + Role.DISPATCHER_STR: return deliveryRepo.findAll();
+            case "ROLE_" + Role.DELIVERER_STR: return deliveryRepo.findByDeliverer((Deliverer)agent);
+            case "ROLE_" + Role.CUSTOMER_STR: return deliveryRepo.findByCustomer((Customer)agent);
+            default: return new ArrayList<>();
+        }
     }
 
     @GetMapping("/{id}")
+    @PostAuthorize(
+        "hasRole('" + Principal.Role.DISPATCHER_STR + "') or " +
+        "(" + 
+            "hasRole('" + Principal.Role.DELIVERER_STR + "') and " +
+            "principal.username == returnObject.getDeliverer().getId()" +
+        ") or (" +
+            "hasRole('" + Principal.Role.CUSTOMER_STR + "') and " +
+            "principal.username == returnObject.getCustomer().getId()" +
+        ")"
+    )
     public Delivery getDeliveryById(@PathVariable String id) {
-        return deliveryRepo.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Delivery delivery = deliveryRepo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return delivery;
     }
 
     @PutMapping("")
+    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
     public Delivery putDelivery(
             @RequestParam(value = "customerId") String customerId,
             @RequestParam(value = "createdById") String createdById,
@@ -70,7 +110,8 @@ public class DeliveryController {
     }
 
     @DeleteMapping("/{id}")
-    public void delCustomer(@PathVariable String id) {
+    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    public void delDelivery(@PathVariable String id) {
         deliveryRepo.deleteById(id);
     }
 }
