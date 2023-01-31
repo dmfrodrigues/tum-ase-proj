@@ -67,32 +67,38 @@ export const orderData = [
 export const customerRows = [
   {
     id: 1,
-    username: "Federico Kereki",
+    name: "Federico Kereki",
+    type: "dispatcher",
     email: "federico@gmail.com",
   },
   {
     id: 2,
-    username: "Chinda Great",
+    name: "Chinda Great",
+    type: "dispatcher",
     email: "chinda@gmail.com",
   },
   {
     id: 3,
-    username: "Ejiro ThankGod",
+    name: "Ejiro ThankGod",
+    type: "deliverer",
     email: "ejiro@gmail.com",
   },
   {
     id: 4,
-    username: "Okoro Isaac",
+    name: "Okoro Isaac",
+    type: "deliverer",
     email: "isaac@gmail.com",
   },
   {
     id: 9,
-    username: "Banigo Kene",
+    name: "Banigo Kene",
+    type: "deliverer",
     email: "kene@gmail.com",
   },
   {
     id: 10,
-    username: "Ikechi Fortune",
+    name: "Ikechi Fortune",
+    type: "customer",
     email: "fortune@gmail.com",
   },
 ];

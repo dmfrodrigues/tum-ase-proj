@@ -1,72 +1,50 @@
-// import "./userList.css";
+
 import '../css/page/userList.css'
 import { DataGrid } from '@mui/x-data-grid';
-import { DeleteOutline } from "@mui/icons-material";
-import { dispatcherRows } from "../dummyData";
-import { Link } from "react-router-dom";
+import { orderRows } from "../dummyData";
+import { dispatcherRows, customerRows, boxRows } from "../dummyData";
 import { useState } from "react";
+import EditOrder from '../components/EditOrder';
+import DeleteModal from '../components/DeleteModal';
+import NewOrder from '../components/NewOrder';
+import { Person } from '@mui/icons-material';
 
 function UserList() {
-  const [data, setData] = useState(dispatcherRows);
+  const [data, setData] = useState(customerRows);
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
-  };
+  console.log(customerRows)
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
     {
-      field: "user",
-      headerName: "User",
-      width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="userListUser">
-            <img className="userListImg" src={params.row.avatar} alt="" />
-            {params.row.username}
-          </div>
-        );
-      },
-    },
-    { field: "email", headerName: "Email", width: 200 },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 120,
-    },
-    {
-      field: "transaction",
-      headerName: "Transaction Volume",
-      width: 160,
-    },
-    {
-      field: "action",
-      headerName: "Action",
+      field: "id",
       width: 150,
-      renderCell: (params) => {
-        return (
-          <>
-            <Link to={"/user/" + params.row.id}>
-              <button className="userListEdit">Edit</button>
-            </Link>
-            <DeleteOutline
-              className="userListDelete"
-              onClick={() => handleDelete(params.row.id)}
-            />
-          </>
-        );
-      },
+      headerName: "ID"
+    },
+    {
+      field: "name",
+      width: 150,
+      headerName: "Name",
+    },
+    {
+      field: "email",
+      width: 150,
+      headerName: "Email",
+    },
+    {
+      field: "type",
+      width: 150,
+      headerName: "Type",
     },
   ];
 
   return (
     <div className="userList">
       <DataGrid
+        className='userListTable'
         rows={data}
         disableSelectionOnClick
         columns={columns}
         pageSize={8}
-        checkboxSelection
       />
     </div>
   );

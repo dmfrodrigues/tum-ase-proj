@@ -6,9 +6,11 @@ import Form from 'react-bootstrap/Form';
 import { useState } from "react";
 
 function moveToFirst(arr, id) {
+    arr = [...arr];
     const index = arr.findIndex((el) => el.id === id);
     const first = arr[index];
     arr.sort(function (x, y) { return x == first ? -1 : y == first ? 1 : x < y; });
+    return arr;
 }
 
 function EditOrder({ customers, dispatchers, boxes, order }) {
@@ -17,9 +19,9 @@ function EditOrder({ customers, dispatchers, boxes, order }) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    moveToFirst(boxes, order.boxId);
-    moveToFirst(customers, order.customerId);
-    moveToFirst(dispatchers, order.dispatcherId);
+    boxes = moveToFirst(boxes, order.boxId);
+    customers = moveToFirst(customers, order.customerId);
+    dispatchers = moveToFirst(dispatchers, order.dispatcherId);
 
     return (
         <div>
