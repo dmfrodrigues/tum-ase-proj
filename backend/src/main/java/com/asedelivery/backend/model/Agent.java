@@ -1,8 +1,8 @@
-package com.asedelivery.backend.Models;
+package com.asedelivery.backend.model;
 
 import org.springframework.data.annotation.Id;
 
-import com.asedelivery.backend.Models.Principal.Role;
+import com.asedelivery.backend.model.Principal.Role;
 
 public abstract class Agent {
     @Id

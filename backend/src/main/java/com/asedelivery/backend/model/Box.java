@@ -1,9 +1,9 @@
-package com.asedelivery.backend.Models;
+package com.asedelivery.backend.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import com.asedelivery.backend.Models.Principal.Role;
+import com.asedelivery.backend.model.Principal.Role;
 
 @Document("agent")
 public class Box extends Agent {

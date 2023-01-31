@@ -1,4 +1,4 @@
-package com.asedelivery.backend.Controller;
+package com.asedelivery.backend.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,19 +20,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.asedelivery.backend.Models.Agent;
-import com.asedelivery.backend.Models.Customer;
-import com.asedelivery.backend.Models.Deliverer;
-import com.asedelivery.backend.Models.Delivery;
-import com.asedelivery.backend.Models.Dispatcher;
-import com.asedelivery.backend.Models.Principal;
-import com.asedelivery.backend.Models.Principal.Role;
-import com.asedelivery.backend.Models.Repositories.AgentRepository;
-import com.asedelivery.backend.Models.Repositories.BoxRepository;
-import com.asedelivery.backend.Models.Repositories.CustomerRepository;
-import com.asedelivery.backend.Models.Repositories.DelivererRepository;
-import com.asedelivery.backend.Models.Repositories.DeliveryRepository;
-import com.asedelivery.backend.Models.Repositories.DispatcherRepository;
+import com.asedelivery.backend.model.Agent;
+import com.asedelivery.backend.model.Customer;
+import com.asedelivery.backend.model.Deliverer;
+import com.asedelivery.backend.model.Delivery;
+import com.asedelivery.backend.model.Dispatcher;
+import com.asedelivery.backend.model.Principal;
+import com.asedelivery.backend.model.Principal.Role;
+import com.asedelivery.backend.model.repo.AgentRepository;
+import com.asedelivery.backend.model.repo.BoxRepository;
+import com.asedelivery.backend.model.repo.CustomerRepository;
+import com.asedelivery.backend.model.repo.DelivererRepository;
+import com.asedelivery.backend.model.repo.DeliveryRepository;
+import com.asedelivery.backend.model.repo.DispatcherRepository;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController

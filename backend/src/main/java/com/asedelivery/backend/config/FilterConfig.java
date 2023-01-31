@@ -2,7 +2,7 @@ package com.asedelivery.backend.config;
 
 import org.springframework.context.annotation.Configuration;
 
-import com.asedelivery.backend.Models.Delivery;
+import com.asedelivery.backend.model.Delivery;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 

@@ -5,10 +5,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import com.asedelivery.backend.Models.Dispatcher;
-import com.asedelivery.backend.Models.Principal;
-import com.asedelivery.backend.Models.Repositories.DispatcherRepository;
-import com.asedelivery.backend.Models.Repositories.PrincipalRepository;
+import com.asedelivery.backend.model.Dispatcher;
+import com.asedelivery.backend.model.Principal;
+import com.asedelivery.backend.model.repo.DispatcherRepository;
+import com.asedelivery.backend.model.repo.PrincipalRepository;
 
 @Component
 public class SeederAdmin implements CommandLineRunner {

@@ -1,8 +1,8 @@
-package com.asedelivery.backend.Models;
+package com.asedelivery.backend.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.asedelivery.backend.Models.Principal.Role;
+import com.asedelivery.backend.model.Principal.Role;
 
 @Document("agent")
 public class Dispatcher extends Person {

@@ -1,4 +1,4 @@
-package com.asedelivery.backend.Models;
+package com.asedelivery.backend.model;
 
 public abstract class Employee extends Person {
     public Employee(String username, String name, String email) {

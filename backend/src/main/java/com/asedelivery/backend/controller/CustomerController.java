@@ -1,4 +1,4 @@
-package com.asedelivery.backend.Controller;
+package com.asedelivery.backend.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,45 +13,45 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.asedelivery.backend.Models.Deliverer;
-import com.asedelivery.backend.Models.Principal;
-import com.asedelivery.backend.Models.Repositories.DelivererRepository;
-import com.asedelivery.backend.Models.Repositories.PrincipalRepository;
+import com.asedelivery.backend.model.Customer;
+import com.asedelivery.backend.model.Principal;
+import com.asedelivery.backend.model.repo.CustomerRepository;
+import com.asedelivery.backend.model.repo.PrincipalRepository;
 
 @RestController
-@RequestMapping("/deliverer")
-public class DelivererController {
+@RequestMapping("/customer")
+public class CustomerController {
 
     @Autowired
-    DelivererRepository delivererRepo;
+    CustomerRepository customerRepo;
 
     @Autowired
     PrincipalRepository principalRepo;
 
     @GetMapping("")
     @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
-    public List<Deliverer> getDeliverer() {
-        return delivererRepo.findAll();
+    public List<Customer> getCustomer() {
+        return customerRepo.findAll();
     }
 
     @PutMapping("")
     @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
-    public Deliverer putDeliverer(
+    public Customer putCustomer(
             @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password,
             @RequestParam(value = "name") String name,
             @RequestParam(value = "email") String email) {
-        Deliverer ret = delivererRepo.save(new Deliverer(username, name, email));
+        Customer ret = customerRepo.save(new Customer(username, name, email));
         principalRepo.save(new Principal(ret.getId(), ret.getRole(), username, password));
         return ret;
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
-    public void delDeliverer(@PathVariable String id) {
-        if (!delivererRepo.existsById(id))
+    public void delCustomer(@PathVariable String id) {
+        if (!customerRepo.existsById(id))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         else
-            delivererRepo.deleteById(id);
+            customerRepo.deleteById(id);
     }
 }

@@ -1,4 +1,4 @@
-package com.asedelivery.backend.Models;
+package com.asedelivery.backend.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

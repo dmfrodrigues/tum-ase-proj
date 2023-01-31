@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.asedelivery.backend.Models.Principal;
-import com.asedelivery.backend.Models.Repositories.PrincipalRepository;
+import com.asedelivery.backend.model.Principal;
+import com.asedelivery.backend.model.repo.PrincipalRepository;
 
 public class AseUserDetailsService implements UserDetailsService {
     @Autowired

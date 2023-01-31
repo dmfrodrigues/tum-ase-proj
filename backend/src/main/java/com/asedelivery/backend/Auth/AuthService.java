@@ -17,7 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.asedelivery.backend.Models.Principal;
+import com.asedelivery.backend.model.Principal;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController

@@ -1,4 +1,4 @@
-package com.asedelivery.backend.Controller;
+package com.asedelivery.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -4,18 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import com.asedelivery.backend.Models.Box;
-import com.asedelivery.backend.Models.Customer;
-import com.asedelivery.backend.Models.Deliverer;
-import com.asedelivery.backend.Models.Delivery;
-import com.asedelivery.backend.Models.Dispatcher;
-import com.asedelivery.backend.Models.Principal;
-import com.asedelivery.backend.Models.Repositories.BoxRepository;
-import com.asedelivery.backend.Models.Repositories.CustomerRepository;
-import com.asedelivery.backend.Models.Repositories.DelivererRepository;
-import com.asedelivery.backend.Models.Repositories.DeliveryRepository;
-import com.asedelivery.backend.Models.Repositories.DispatcherRepository;
-import com.asedelivery.backend.Models.Repositories.PrincipalRepository;
+
+import com.asedelivery.backend.model.Box;
+import com.asedelivery.backend.model.Customer;
+import com.asedelivery.backend.model.Deliverer;
+import com.asedelivery.backend.model.Delivery;
+import com.asedelivery.backend.model.Dispatcher;
+import com.asedelivery.backend.model.Principal;
+import com.asedelivery.backend.model.repo.BoxRepository;
+import com.asedelivery.backend.model.repo.CustomerRepository;
+import com.asedelivery.backend.model.repo.DelivererRepository;
+import com.asedelivery.backend.model.repo.DeliveryRepository;
+import com.asedelivery.backend.model.repo.DispatcherRepository;
+import com.asedelivery.backend.model.repo.PrincipalRepository;
 
 @Component
 @Order(1)

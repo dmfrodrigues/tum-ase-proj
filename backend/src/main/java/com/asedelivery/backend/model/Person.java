@@ -1,4 +1,4 @@
-package com.asedelivery.backend.Models;
+package com.asedelivery.backend.model;
 
 public abstract class Person extends Agent {
     private String name;

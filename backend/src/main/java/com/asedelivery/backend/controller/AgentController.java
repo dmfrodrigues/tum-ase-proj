@@ -1,4 +1,4 @@
-package com.asedelivery.backend.Controller;
+package com.asedelivery.backend.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.asedelivery.backend.Models.Agent;
-import com.asedelivery.backend.Models.Principal;
-import com.asedelivery.backend.Models.Repositories.AgentRepository;
+import com.asedelivery.backend.model.Agent;
+import com.asedelivery.backend.model.Principal;
+import com.asedelivery.backend.model.repo.AgentRepository;
 
 @RestController
 @RequestMapping("/agent")

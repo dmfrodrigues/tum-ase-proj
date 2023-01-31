@@ -1,7 +1,6 @@
-package com.asedelivery.backend.Controller;
+package com.asedelivery.backend.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,43 +13,45 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.asedelivery.backend.Models.Box;
-import com.asedelivery.backend.Models.Principal;
-import com.asedelivery.backend.Models.Repositories.BoxRepository;
-import com.asedelivery.backend.Models.Repositories.PrincipalRepository;
+import com.asedelivery.backend.model.Deliverer;
+import com.asedelivery.backend.model.Principal;
+import com.asedelivery.backend.model.repo.DelivererRepository;
+import com.asedelivery.backend.model.repo.PrincipalRepository;
 
 @RestController
-@RequestMapping("/box")
-public class BoxController {
+@RequestMapping("/deliverer")
+public class DelivererController {
+
     @Autowired
-    BoxRepository boxRepo;
+    DelivererRepository delivererRepo;
 
     @Autowired
     PrincipalRepository principalRepo;
 
     @GetMapping("")
     @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
-    public List<Box> getBoxes() {
-        return boxRepo.findAll();
+    public List<Deliverer> getDeliverer() {
+        return delivererRepo.findAll();
     }
 
     @PutMapping("")
     @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
-    public Box putBox(
+    public Deliverer putDeliverer(
             @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password,
-            @RequestParam(value = "address") String address) {
-        Box ret = boxRepo.save(new Box(username, address));
+            @RequestParam(value = "name") String name,
+            @RequestParam(value = "email") String email) {
+        Deliverer ret = delivererRepo.save(new Deliverer(username, name, email));
         principalRepo.save(new Principal(ret.getId(), ret.getRole(), username, password));
         return ret;
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
-    public void delCustomer(@PathVariable String id) {
-        if (!boxRepo.existsById(id))
+    public void delDeliverer(@PathVariable String id) {
+        if (!delivererRepo.existsById(id))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         else
-            boxRepo.deleteById(id);
+            delivererRepo.deleteById(id);
     }
 }
