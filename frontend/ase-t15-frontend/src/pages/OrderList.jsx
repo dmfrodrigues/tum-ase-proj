@@ -1,12 +1,15 @@
 import '../css/page/orderList.css'
 import { DataGrid } from '@mui/x-data-grid';
-import { Cancel, CheckCircle, DeleteOutline, LocalShipping, LocalShippingOutlined, Timer } from "@mui/icons-material";
 import { orderRows } from "../dummyData";
 import { Link } from "react-router-dom";
 import { dispatcherRows, customerRows, boxRows } from "../dummyData";
 import { useState } from "react";
 import OrderIcon from '../components/OrderIcon';
 import EditOrder from '../components/EditOrder';
+import DeleteModal from '../components/DeleteModal';
+import { Button } from '@mui/material';
+import { AddCircle, PlusOne } from '@mui/icons-material';
+import NewOrder from '../components/NewOrder';
 
 function OrderList() {
   const [data, setData] = useState(orderRows);
@@ -55,18 +58,20 @@ function OrderList() {
       }
     },
     {
-      field: "action",
-      headerName: "Action",
+      renderHeader: () => {
+        return (
+          <NewOrder customers={customerRows} dispatchers={dispatcherRows} boxes={boxRows} />
+        );
+      },
       flex: 1,
+      sortable: false,
+      filterable: false,
       renderCell: (params) => {
         return (
-          <>
+          <div className="orderListEdit">
             <EditOrder customers={customerRows} dispatchers={dispatcherRows} boxes={boxRows} order={params.row} />
-            <DeleteOutline
-              className="orderListDelete"
-              onClick={() => handleDelete(params.row.id)}
-            />
-          </>
+            <DeleteModal />
+          </div>
         );
       },
     },
@@ -75,11 +80,11 @@ function OrderList() {
   return (
     <div className="orderList">
       <DataGrid
+        className='orderListTable'
         rows={data}
         disableSelectionOnClick
         columns={columns}
         pageSize={8}
-        checkboxSelection
       />
     </div>
   );

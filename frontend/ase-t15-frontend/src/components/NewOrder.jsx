@@ -4,27 +4,24 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
 import { useState } from "react";
+import { AddCircle, AddCircleOutline } from '@mui/icons-material';
 
-function moveToFirst(arr, id) {
-    const index = arr.findIndex((el) => el.id === id);
-    const first = arr[index];
-    arr.sort(function (x, y) { return x == first ? -1 : y == first ? 1 : x < y; });
-}
-
-function EditOrder({ customers, dispatchers, boxes, order }) {
+function NewOrder({ customers, dispatchers, boxes }) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    moveToFirst(boxes, order.boxId);
-    moveToFirst(customers, order.customerId);
-    moveToFirst(dispatchers, order.dispatcherId);
-
     return (
-        <div>
-            <Button variant="outline-success" size="sm" className="orderListEditBtn" onClick={handleShow}>
-                Edit
+        <div className="orderListNew">
+            <Button
+                variant="outline-success"
+                startIcon={<AddCircle />}
+                onClick={handleShow}
+                className="orderListNewButton"
+            >
+                <AddCircleOutline />
+                <span className="orderListNewButtonSpan">New Order</span>
             </Button>
 
             <Modal show={show} onHide={handleClose}>
@@ -66,30 +63,27 @@ function EditOrder({ customers, dispatchers, boxes, order }) {
                             </Form.Select>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId={`formBasicStatus${order.id}`}>
+                        <Form.Group className="mb-3" controlId="formBasicStatus">
                             <Form.Label>Select Status</Form.Label>
                             <Form.Check
-                                defaultChecked={order.status === "pending" ? "checked" : ""}
                                 type="radio"
-                                id={`radio-1${order.id}`}
+                                id="radio-1"
                                 value="pending"
-                                name={`formBasicStatus${order.id}`}
+                                name="formBasicStatus"
                                 label={`Pending`}
                             />
                             <Form.Check
-                                defaultChecked={order.status === "canceled" ? "checked" : ""}
                                 type="radio"
-                                id={`radio-2${order.id}`}
+                                id="radio-2"
                                 value="canceled"
-                                name={`formBasicStatus${order.id}`}
+                                name="formBasicStatus"
                                 label={`Canceled`}
                             />
                             <Form.Check
-                                defaultChecked={order.status === "delivered" ? "checked" : ""}
                                 type="radio"
-                                id={`radio-3${order.id}`}
+                                id="radio-3"
                                 value="delivered"
-                                name={`formBasicStatus${order.id}`}
+                                name="formBasicStatus"
                                 label={`Delivered`}
                             />
 
@@ -111,4 +105,4 @@ function EditOrder({ customers, dispatchers, boxes, order }) {
 
 }
 
-export default EditOrder;
+export default NewOrder;

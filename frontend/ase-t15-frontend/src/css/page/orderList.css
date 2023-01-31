@@ -1,9 +1,23 @@
 .orderList {
+    display: flex;
     flex: 5;
+    flex-direction: row;
 }
 
 .orderList * {
     font-family: 'Josefin Sans', sans-serif;
+}
+
+.orderListTable {
+    flex: 10 !important;
+}
+
+.orderListAdd {
+    flex: 1;
+    color: #00a65a;
+    font-size: xx-large;
+    cursor: pointer;
+    text-align: center;
 }
 
 .orderListItem {
@@ -21,6 +35,14 @@
 }
 
 .orderListEdit {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.orderListEditBtn {
     padding: 5px 10px;
     cursor: pointer;
     margin-right: 20px;
@@ -42,4 +64,28 @@
 
 .orderStatusCanceled {
     color: #dd4b39;
+}
+
+.orderListNew {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.orderListNewButton {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.orderListNewButtonSpan {
+    padding: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: normal;
 }
