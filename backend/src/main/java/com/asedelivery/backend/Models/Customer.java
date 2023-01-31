@@ -2,6 +2,8 @@ package com.asedelivery.backend.Models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.asedelivery.backend.Models.Principal.Role;
+
 @Document("agent")
 public class Customer extends Person {
     public Customer(String username, String name, String email) {
@@ -18,7 +20,7 @@ public class Customer extends Person {
             return false;
     }
 
-    public String getRole() {
-        return "CUSTOMER";
+    public Role getRole() {
+        return Role.CUSTOMER;
     }
 }

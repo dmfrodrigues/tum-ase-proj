@@ -31,7 +31,7 @@ public class Seeder implements CommandLineRunner {
             Assert.notNull(password, "Admin password is null");
 
             Dispatcher admin = dispatcherRepo.save(new Dispatcher("admin", "Admin", "asedelivery@gmail.com"));
-            principalRepo.save(new Principal(admin.getId(), admin.getUsername(), password));
+            principalRepo.save(new Principal(admin.getId(), admin.getRole(), admin.getUsername(), password));
         }
         System.out.println(dispatcherRepo.count());
     }

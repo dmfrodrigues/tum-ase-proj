@@ -45,7 +45,7 @@ public class DelivererController {
             @RequestParam(value = "name") String name,
             @RequestParam(value = "email") String email) {
         Deliverer ret = delivererRepo.save(new Deliverer(username, name, email));
-        principalRepo.save(new Principal(ret.getId(), username, password));
+        principalRepo.save(new Principal(ret.getId(), ret.getRole(), username, password));
         return ret;
     }
 

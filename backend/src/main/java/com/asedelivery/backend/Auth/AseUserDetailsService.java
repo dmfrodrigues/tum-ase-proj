@@ -6,28 +6,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.asedelivery.backend.Models.Agent;
 import com.asedelivery.backend.Models.Principal;
-import com.asedelivery.backend.Models.Repositories.AgentRepository;
 import com.asedelivery.backend.Models.Repositories.PrincipalRepository;
 
 public class AseUserDetailsService implements UserDetailsService {
     @Autowired
     private PrincipalRepository principalRepo;
 
-    @Autowired
-    private AgentRepository agentRepo;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Principal principal = principalRepo.findByUsername(username);
 
-        Agent agent = agentRepo.findByUsername(username);
-
         return User.withDefaultPasswordEncoder()
                 .username(principal.getUsername())
                 .password(principal.getPassword())
-                .roles(agent.getRole())
+                .roles(principal.getRole().toString())
                 .build();
     }
 }
