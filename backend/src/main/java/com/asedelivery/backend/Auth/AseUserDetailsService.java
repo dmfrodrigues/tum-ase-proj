@@ -15,7 +15,8 @@ public class AseUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Principal principal = principalRepo.findByUsername(username);
+        Principal principal = principalRepo.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException(username));
 
         return User.withDefaultPasswordEncoder()
                 .username(principal.getId())

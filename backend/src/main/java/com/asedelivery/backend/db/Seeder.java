@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
-
 import com.asedelivery.backend.Models.Box;
 import com.asedelivery.backend.Models.Customer;
 import com.asedelivery.backend.Models.Deliverer;
@@ -46,12 +44,7 @@ public class Seeder implements CommandLineRunner {
     }
 
     private void seed() {
-        dispatcherRepo.deleteAll();
-        delivererRepo.deleteAll();
-        customerRepo.deleteAll();
-        boxRepo.deleteAll();
-        deliveryRepo.deleteAll();
-        principalRepo.deleteAll();
+        if(deliveryRepo.count() != 0) return;
 
         Dispatcher dispatcher = dispatcherRepo.save(new Dispatcher("dmfr", "Diogo Rodrigues", "dmfr@gmail.com"));
         principalRepo.save(new Principal(dispatcher.getId(), dispatcher.getRole(), dispatcher.getUsername(), "1234"));

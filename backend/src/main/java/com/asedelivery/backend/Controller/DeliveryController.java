@@ -33,6 +33,7 @@ import com.asedelivery.backend.Models.Repositories.CustomerRepository;
 import com.asedelivery.backend.Models.Repositories.DelivererRepository;
 import com.asedelivery.backend.Models.Repositories.DeliveryRepository;
 import com.asedelivery.backend.Models.Repositories.DispatcherRepository;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping("/delivery")
@@ -58,16 +59,25 @@ public class DeliveryController {
     @GetMapping("")
     public List<Delivery> getDeliveries() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
+        String id = auth.getName();
+        System.out.println("id=" + id);
 
-        Agent agent = agentRepo.findByUsername(username);
+        Agent agent = agentRepo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 
         String authority = auth.getAuthorities().iterator().next().getAuthority();
         switch(authority){
-            case "ROLE_" + Role.DISPATCHER_STR: return deliveryRepo.findAll();
-            case "ROLE_" + Role.DELIVERER_STR: return deliveryRepo.findByDeliverer((Deliverer)agent);
-            case "ROLE_" + Role.CUSTOMER_STR: return deliveryRepo.findByCustomer((Customer)agent);
-            default: return new ArrayList<>();
+            case "ROLE_" + Role.DISPATCHER_STR:
+                return deliveryRepo.findAll();
+            
+            case "ROLE_" + Role.DELIVERER_STR:
+                return deliveryRepo.findByDeliverer((Deliverer)agent);
+            
+            case "ROLE_" + Role.CUSTOMER_STR:
+                return deliveryRepo.findByCustomer((Customer)agent);
+            
+            default:
+                throw new IllegalStateException("Logged in user must have authority");
         }
     }
 
