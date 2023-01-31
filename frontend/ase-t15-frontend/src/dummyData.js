@@ -142,11 +142,24 @@ export const dispatcherRows = [
 export const boxRows = [
   {
     id: 1,
-    name: "Porto",
+    location: "Porto",
+    active: true,
+    password: "123456",
+    status: "Picked-up"
   },
   {
     id: 2,
-    name: "Munich",
+    location: "Munich",
+    active: false,
+    password: "1234",
+    status: "Delivered"
+  },
+  {
+    id: 3,
+    location: "Berlin",
+    active: true,
+    password: "12346",
+    status: "Ordered"
   },
 ];
 

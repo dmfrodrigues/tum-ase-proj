@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import { DeleteOutline } from "@mui/icons-material";
 import { useState } from "react";
 
-function DeleteModal() {
+function DeleteModal({ text }) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -20,7 +20,7 @@ function DeleteModal() {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Confirm Order Deletion</Modal.Title>
+                    <Modal.Title>{text}</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
                     <Button variant="outline-secondary" size="sm" onClick={handleClose}>

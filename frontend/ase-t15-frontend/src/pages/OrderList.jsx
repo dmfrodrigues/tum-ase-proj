@@ -7,6 +7,8 @@ import OrderIcon from '../components/OrderIcon';
 import EditOrder from '../components/EditOrder';
 import DeleteModal from '../components/DeleteModal';
 import NewOrder from '../components/NewOrder';
+import Order from './Order';
+import { Link } from 'react-router-dom';
 
 function OrderList() {
   const [data, setData] = useState(orderRows);
@@ -24,9 +26,11 @@ function OrderList() {
       width: 150,
       renderCell: (params) => {
         return (
-          <div className="orderListItem">
-            <OrderIcon status={params.row.status} />
-          </div>
+          <Link to={"/order/" + params.row.id}>
+            <div className="orderListItem">
+              <OrderIcon status={params.row.status} />
+            </div>
+          </Link >
         );
       },
     },
@@ -67,7 +71,7 @@ function OrderList() {
         return (
           <div className="orderListEdit">
             <EditOrder customers={customerRows} dispatchers={dispatcherRows} boxes={boxRows} order={params.row} />
-            <DeleteModal />
+            <DeleteModal text="Confirm Order Deletion" />
           </div>
         );
       },

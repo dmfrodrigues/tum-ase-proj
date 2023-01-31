@@ -26,7 +26,7 @@ function NewOrder({ customers, dispatchers, boxes }) {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Order</Modal.Title>
+                    <Modal.Title>New Order</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -96,7 +96,7 @@ function NewOrder({ customers, dispatchers, boxes }) {
                         Close
                     </Button>
                     <Button variant="success" size="sm" onClick={handleClose}>
-                        Save Changes
+                        Create
                     </Button>
                 </Modal.Footer>
             </Modal>

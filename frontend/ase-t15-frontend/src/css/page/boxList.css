@@ -1,19 +1,19 @@
-.userList {
+.boxList {
   display: flex;
   flex: 5;
   flex-direction: row;
 }
 
-.userList * {
+.boxList * {
   font-family: 'Josefin Sans', sans-serif;
 }
 
-.userListTable {
+.boxListTable {
   display: flex;
   flex: 10 !important;
 }
 
-.userListEdit {
+.boxListEdit {
   flex: 1;
   display: flex;
   align-items: center;
@@ -21,25 +21,25 @@
   flex-direction: row;
 }
 
-.userListEditBtn {
+.boxListEditBtn {
   padding: 5px 10px;
   cursor: pointer;
   margin-right: 20px;
 }
 
-.userListDelete {
+.boxListDelete {
   color: red;
   cursor: pointer;
 }
 
-.userListNewButton {
+.boxListNewButton {
   flex: 1;
   align-items: center;
   justify-content: center;
 
 }
 
-.userListNewButtonSpan {
+.boxListNewButtonSpan {
   padding: 5px;
   font-size: 15px;
   font-weight: bold;

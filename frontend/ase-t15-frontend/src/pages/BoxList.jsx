@@ -1,17 +1,21 @@
 
-import '../css/page/userList.css'
+import '../css/page/boxList.css'
 import { DataGrid } from '@mui/x-data-grid';
 import { orderRows } from "../dummyData";
 import { dispatcherRows, customerRows, boxRows } from "../dummyData";
 import { useState } from "react";
 import EditOrder from '../components/EditOrder';
 import DeleteModal from '../components/DeleteModal';
-import { Person } from '@mui/icons-material';
-import NewUser from '../components/NewUser';
 import EditUser from '../components/EditUser';
+import { Box } from '@mui/material';
+import NewBox from '../components/NewBox';
+import EditBox from '../components/EditBox';
+import { Inventory2Outlined, InventoryOutlined } from '@mui/icons-material';
 
-function UserList() {
-  const [data, setData] = useState(customerRows);
+function BoxList() {
+  const [data, setData] = useState(boxRows);
+
+  console.log(data)
 
   const columns = [
     {
@@ -21,34 +25,41 @@ function UserList() {
       headerName: "ID",
     },
     {
-      field: "name",
+      field: "location",
       width: 150,
       flex: 1,
-      headerName: "Name",
+      headerName: "Location",
       renderCell: (params) => {
         return (
           <div className="userListItem">
-            <Person />
-            {"  " + params.row.name}
+            <Inventory2Outlined />
+            {"  " + params.row.location}
           </div>
         );
       }
     },
     {
-      field: "email",
+      field: "active",
       width: 150,
       flex: 1,
-      headerName: "Email",
-    },
-    {
-      field: "type",
-      width: 150,
-      flex: 1,
-      headerName: "Type",
+      headerName: "Is Active",
       renderCell: (params) => {
         return (
-          <span className="userType">
-            {params.row.type[0].toUpperCase() + params.row.type.slice(1)}
+          <span className="boxActive">
+            {params.row.active ? "Yes" : "No"}
+          </span>
+        );
+      }
+    },
+    {
+      field: "status",
+      width: 150,
+      flex: 1,
+      headerName: "Status",
+      renderCell: (params) => {
+        return (
+          <span className="boxStatus">
+            {params.row.status[0].toUpperCase() + params.row.status.slice(1)}
           </span>
         );
       }
@@ -56,7 +67,7 @@ function UserList() {
     {
       renderHeader: () => {
         return (
-          <NewUser />
+          <NewBox />
         );
       },
       flex: 1,
@@ -64,9 +75,9 @@ function UserList() {
       filterable: false,
       renderCell: (params) => {
         return (
-          <div className="userListEdit">
-            <EditUser user={params.row} />
-            <DeleteModal text="Confirm User Deletion" />
+          <div className="orderListEdit">
+            <EditBox box={params.row} />
+            <DeleteModal text="Confirm Box Deletion" />
           </div>
         );
       },
@@ -74,9 +85,9 @@ function UserList() {
   ];
 
   return (
-    <div className="userList">
+    <div className="boxList">
       <DataGrid
-        className='userListTable'
+        className='boxListTable'
         rows={data}
         disableSelectionOnClick
         columns={columns}
@@ -86,4 +97,4 @@ function UserList() {
   );
 }
 
-export default UserList;
+export default BoxList;

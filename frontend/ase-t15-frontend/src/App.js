@@ -6,11 +6,10 @@ import "./App.css";
 import Home from "./pages/Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserList from "./pages/UserList";
-import User from "./pages/User";
-import NewUser from "./pages/NewUser";
 import OrderList from "./pages/OrderList";
-import Order from "./pages/Order";
-import NewProduct from "./pages/NewProduct";
+import BoxList from "./pages/BoxList";
+import Login from './pages/Login';
+import Order from './pages/Order';
 
 function App() {
   return (
@@ -19,10 +18,11 @@ function App() {
       <div className="container">
         <Sidebar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/users" element={<UserList />} />
           <Route path="/orders" element={<OrderList />} />
-          <Route path="/boxes" element={<OrderList />} />
+          <Route path="/boxes" element={<BoxList />} />
+          <Route path="/order/:id" element={<Order />} />
         </Routes>
       </div>
     </Router>
