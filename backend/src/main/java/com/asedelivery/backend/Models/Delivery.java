@@ -33,6 +33,26 @@ public class Delivery {
         this.box = box;
     }
 
+    public String getId(){
+        return id;
+    }
+
+    public Customer getCustomer(){
+        return customer;
+    }
+
+    public Box getBox(){
+        return box;
+    }
+
+    public Dispatcher getCreatedBy(){
+        return createdBy;
+    }
+
+    public Deliverer getDeliverer(){
+        return deliverer;
+    }
+
     public String getPickupAddress(){
         return pickupAddress;
     }
