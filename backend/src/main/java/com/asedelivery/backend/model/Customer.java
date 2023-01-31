@@ -1,6 +1,8 @@
-package com.asedelivery.backend.Models;
+package com.asedelivery.backend.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.asedelivery.backend.model.Principal.Role;
 
 @Document("agent")
 public class Customer extends Person {
@@ -14,6 +16,11 @@ public class Customer extends Person {
         } else if (obj instanceof Customer) {
             Customer customer = (Customer) obj;
             return customer.getId().equals(getId());
-        } else return false;
+        } else
+            return false;
+    }
+
+    public Role getRole() {
+        return Role.CUSTOMER;
     }
 }

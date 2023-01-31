@@ -1,7 +1,9 @@
-package com.asedelivery.backend.Models;
+package com.asedelivery.backend.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
+
+import com.asedelivery.backend.model.Principal.Role;
 
 @Document("agent")
 public class Box extends Agent {
@@ -10,7 +12,7 @@ public class Box extends Agent {
     @DocumentReference
     private Customer customer;
 
-    public Box(String username, String address){
+    public Box(String username, String address) {
         super(username);
         this.address = address;
     }
@@ -23,7 +25,11 @@ public class Box extends Agent {
         this.customer = customer;
     }
 
-    public String getAddress(){
+    public String getAddress() {
         return address;
+    }
+
+    public Role getRole() {
+        return Role.BOX;
     }
 }
