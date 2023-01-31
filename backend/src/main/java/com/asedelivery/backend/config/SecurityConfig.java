@@ -1,7 +1,8 @@
-package com.asedelivery.backend.Auth;
+package com.asedelivery.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,17 +11,33 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.asedelivery.backend.Auth.AseUserDetailsService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain genericFilterChain(HttpSecurity http) throws Exception {
         http
                 .formLogin()
                 .and()
                 .csrf().disable()
                 .authorizeHttpRequests()
                     .requestMatchers("/**").authenticated()
+                    .requestMatchers("/auth/**").permitAll()
+                .and()
+                .sessionManagement().disable();
+
+        return http.build();
+    }
+
+    @Bean
+    @Order(1)
+    public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .securityMatcher("/auth/**")
+                .authorizeHttpRequests()
                     .requestMatchers("/auth/**").permitAll()
                 .and()
                 .httpBasic()
@@ -40,8 +57,8 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();
     }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    // @Bean
+    // public BCryptPasswordEncoder passwordEncoder() {
+    //     return new BCryptPasswordEncoder();
+    // }
 }
