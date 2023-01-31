@@ -18,7 +18,7 @@ public class AseUserDetailsService implements UserDetailsService {
         Principal principal = principalRepo.findByUsername(username);
 
         return User.withDefaultPasswordEncoder()
-                .username(principal.getUsername())
+                .username(principal.getId())
                 .password(principal.getPassword())
                 .roles(principal.getRole().toString())
                 .build();
