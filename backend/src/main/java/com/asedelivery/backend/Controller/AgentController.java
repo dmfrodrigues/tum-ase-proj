@@ -32,7 +32,7 @@ public class AgentController {
     }
 
     @DeleteMapping("/{id}")
-    public void delDeliverer(@PathVariable String id) {
+    public void delAgent(@PathVariable String id) {
         if (!agentRepo.existsById(id))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         else
