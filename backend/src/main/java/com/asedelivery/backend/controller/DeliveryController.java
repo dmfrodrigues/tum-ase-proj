@@ -108,14 +108,14 @@ public class DeliveryController {
         return deliveryRepo.save(
                 new Delivery(
                         customerRepo.findById(customerId)
-                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)),
+                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer not found")),
                         dispatcherRepo.findById(createdById)
-                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)),
+                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dispatcher not found")),
                         delivererRepo.findById(delivererId)
-                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)),
+                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Deliverer not found")),
                         pickupAddress,
                         boxRepo.findById(boxId)
-                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))));
+                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Box not found"))));
     }
 
     @Transactional
@@ -148,19 +148,19 @@ public class DeliveryController {
                 if(!authority.equals("ROLE_" + Role.DISPATCHER_STR))
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only DISPATCHER can change customerId");
                 delivery.customer = customerRepo.findById(customerId.get())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer not found"));
             }
             if(createdById.isPresent()){
                 if(!authority.equals("ROLE_" + Role.DISPATCHER_STR))
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only DISPATCHER can change createdById");
                 delivery.createdBy = dispatcherRepo.findById(createdById.get())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dispatcher not found"));
             }
             if(delivererId.isPresent()){
                 if(!authority.equals("ROLE_" + Role.DISPATCHER_STR))
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only DISPATCHER can change delivererId");
                 delivery.deliverer = delivererRepo.findById(delivererId.get())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Deliverer not found"));
             }
             if(pickupAddress.isPresent()){
                 if(!authority.equals("ROLE_" + Role.DISPATCHER_STR))
@@ -171,7 +171,7 @@ public class DeliveryController {
                 if(!authority.equals("ROLE_" + Role.DISPATCHER_STR))
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only DISPATCHER can change boxId");
                 delivery.box = boxRepo.findById(boxId.get())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Box not found"));
             }
             if(state.isPresent()){
                 try {

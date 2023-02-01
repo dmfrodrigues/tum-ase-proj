@@ -12,6 +12,8 @@ public interface AuthService extends UserDetailsService {
 
     ResponseEntity<String> authenticateUser(String authorization, HttpServletRequest request);
 
+    ResponseEntity<String> authenticateUserWithApiToken(String string, HttpServletRequest request);
+
     void setAuthentication(String username, Collection<? extends GrantedAuthority> authorities);
     
 }

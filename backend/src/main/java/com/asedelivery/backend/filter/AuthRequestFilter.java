@@ -39,6 +39,7 @@ public class AuthRequestFilter extends OncePerRequestFilter {
         Collection<? extends GrantedAuthority> authorities = null;
         String jwt = null;
         final String authHeader = request.getHeader("Authorization");
+        final String apiToken = request.getHeader("X-API-TOKEN");
         final Cookie[] cookies = request.getCookies();
         if(cookies != null){
             Map<String, String> cookiesMap = new HashMap<>();
@@ -60,8 +61,11 @@ public class AuthRequestFilter extends OncePerRequestFilter {
             }
         } else {
             // No valid authentication, No go
-            if (authHeader == null || !authHeader.startsWith("Basic")) {
-                response.sendError(HttpStatus.BAD_REQUEST.value(), "No JWT Token or Basic Auth Info Found");
+            if (
+                (authHeader == null || !authHeader.startsWith("Basic")) &&
+                apiToken == null
+            ) {
+                response.sendError(HttpStatus.BAD_REQUEST.value(), "No JWT Token, API Token or Basic Auth Info Found");
             }
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
