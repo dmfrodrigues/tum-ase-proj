@@ -3,3 +3,18 @@ server:
 
 frontend:
   address: ${FRONTEND_ADDRESS:http://localhost}
+
+spring:
+  mail:
+    protocol: smtp
+    host: ${EMAIL_HOST}
+    port: ${EMAIL_PORT}
+    from: ${EMAIL_ADDRESS}
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

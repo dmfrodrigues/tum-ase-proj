@@ -36,3 +36,8 @@ services:
     environment:
       ADMIN_PASSWORD: ${BACKEND_ADMIN_PASSWORD}
       FRONTEND_ADDRESS: http://www.coolwebsite.com
+      EMAIL_HOST: smtp.gmail.com
+      EMAIL_PORT: 587
+      EMAIL_ADDRESS: asedelivery.t15@gmail.com
+      EMAIL_USERNAME: asedelivery.t15@gmail.com
+      EMAIL_PASSWORD: ${BACKEND_EMAIL_PASSWORD}
