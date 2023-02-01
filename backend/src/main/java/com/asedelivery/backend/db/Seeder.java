@@ -1,5 +1,11 @@
 package com.asedelivery.backend.db;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -48,7 +54,7 @@ public class Seeder implements CommandLineRunner {
         seed();
     }
 
-    private void seed() {
+    private void seed() throws ParseException {
         if(deliveryRepo.count() != 0) return;
 
         Dispatcher dispatcher = dispatcherRepo.save(new Dispatcher("dmfr", "Diogo Rodrigues", "dmfr@gmail.com"));
@@ -66,7 +72,13 @@ public class Seeder implements CommandLineRunner {
         Box box = boxRepo.save(new Box("garching1", "Boltzmannstr. 3\n85748 Garching bei München"));
         principalRepo.save(new Principal(box.getId(), box.getRole(), box.getUsername(), bCryptPasswordEncoder.encode("3456")));
 
-        Delivery delivery = deliveryRepo.save(new Delivery(customer, dispatcher, deliverer1, "Lichtenbergstr. 6\n85748 Garching bei München", box));
+        Delivery delivery = new Delivery(customer, dispatcher, deliverer1, "Lichtenbergstr. 6\n85748 Garching bei München", box);
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SortedSet<Delivery.Event> events = new TreeSet<>();
+        events.add(new Delivery.Event(formatter.parse("2023-01-15 16:32:54"), Delivery.State.ORDERED));
+        events.add(new Delivery.Event(formatter.parse("2023-01-20 09:18:27"), Delivery.State.PICKED_UP));
+        delivery.setEvents(events);
+        delivery = deliveryRepo.save(delivery);
 
         System.out.println("DB seeded with sample data");
     }

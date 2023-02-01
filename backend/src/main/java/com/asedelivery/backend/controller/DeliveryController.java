@@ -1,16 +1,20 @@
 package com.asedelivery.backend.controller;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,7 +60,7 @@ public class DeliveryController {
         String id = auth.getName();
 
         Agent agent = agentRepo.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
 
         String authority = auth.getAuthorities().iterator().next().getAuthority();
         switch(authority){
@@ -79,10 +83,10 @@ public class DeliveryController {
         "hasRole('" + Principal.Role.DISPATCHER_STR + "') or " +
         "(" + 
             "hasRole('" + Principal.Role.DELIVERER_STR + "') and " +
-            "principal.username == returnObject.getDeliverer().getId()" +
+            "principal.username == returnObject.deliverer.getId()" +
         ") or (" +
             "hasRole('" + Principal.Role.CUSTOMER_STR + "') and " +
-            "principal.username == returnObject.getCustomer().getId()" +
+            "principal.username == returnObject.customer.getId()" +
         ")"
     )
     public Delivery getDeliveryById(@PathVariable String id) {
@@ -111,6 +115,41 @@ public class DeliveryController {
                         pickupAddress,
                         boxRepo.findById(boxId)
                                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))));
+    }
+
+    @Transactional
+    @PatchMapping("/{id}")
+    @PostAuthorize(
+        "hasRole('" + Principal.Role.DISPATCHER_STR + "') or " +
+        "(" + 
+            "hasRole('" + Principal.Role.DELIVERER_STR + "') and " +
+            "principal.username == returnObject.deliverer.getId()" +
+        ")"
+    )
+    public Delivery patchDelivery(
+        @PathVariable String id,
+        @RequestParam(value = "customerId") Optional<String> customerId,
+        @RequestParam(value = "createdById") Optional<String> createdById,
+        @RequestParam(value = "delivererId") Optional<String> delivererId,
+        @RequestParam(value = "pickupAddress") Optional<String> pickupAddress,
+        @RequestParam(value = "boxId") Optional<String> boxId
+    ){
+        Delivery delivery = deliveryRepo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        
+        if(customerId.isPresent()) delivery.customer = customerRepo.findById(customerId.get())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if(createdById.isPresent()) delivery.createdBy = dispatcherRepo.findById(createdById.get())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if(delivererId.isPresent()) delivery.deliverer = delivererRepo.findById(delivererId.get())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if(pickupAddress.isPresent()) delivery.pickupAddress = pickupAddress.get();
+        if(boxId.isPresent()) delivery.box = boxRepo.findById(boxId.get())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        delivery = deliveryRepo.save(delivery);
+    
+        return delivery;
     }
 
     @DeleteMapping("/{id}")

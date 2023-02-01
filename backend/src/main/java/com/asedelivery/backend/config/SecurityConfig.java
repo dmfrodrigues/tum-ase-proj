@@ -12,11 +12,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.asedelivery.backend.filter.AuthRequestFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableTransactionManagement(order=0)
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
@@ -26,8 +28,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain genericFilterChain(HttpSecurity http) throws Exception {
         http
-                .formLogin()
-                .and()
                 .csrf().disable()
                 .authorizeHttpRequests()
                     .requestMatchers("/**").authenticated()
