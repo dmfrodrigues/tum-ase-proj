@@ -136,16 +136,20 @@ public class DeliveryController {
     ){
         Delivery delivery = deliveryRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        
-        if(customerId.isPresent()) delivery.customer = customerRepo.findById(customerId.get())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if(createdById.isPresent()) delivery.createdBy = dispatcherRepo.findById(createdById.get())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if(delivererId.isPresent()) delivery.deliverer = delivererRepo.findById(delivererId.get())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if(pickupAddress.isPresent()) delivery.pickupAddress = pickupAddress.get();
-        if(boxId.isPresent()) delivery.box = boxRepo.findById(boxId.get())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        try {
+            if(customerId.isPresent()) delivery.customer = customerRepo.findById(customerId.get())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            if(createdById.isPresent()) delivery.createdBy = dispatcherRepo.findById(createdById.get())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            if(delivererId.isPresent()) delivery.deliverer = delivererRepo.findById(delivererId.get())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            if(pickupAddress.isPresent()) delivery.pickupAddress = pickupAddress.get();
+            if(boxId.isPresent()) delivery.box = boxRepo.findById(boxId.get())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        } catch(IllegalStateException | IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
 
         delivery = deliveryRepo.save(delivery);
     

@@ -102,7 +102,7 @@ public class Delivery {
         return events.last().date;
     }
 
-    public Date advanceState(){
+    public Date advanceState() throws IllegalStateException {
         Date now = new Date();
         if(now.before(getStateDate()))
             throw new IllegalStateException("Now comes before the most recent event; database is likely broken");
@@ -118,7 +118,7 @@ public class Delivery {
         return events;
     }
 
-    public void setEvents(SortedSet<Event> events) {
+    public void setEvents(SortedSet<Event> events) throws IllegalArgumentException {
         if(events.size() > 1){
             Iterator<Event> it1 = events.iterator(), it2 = events.iterator();
             it2.next();
