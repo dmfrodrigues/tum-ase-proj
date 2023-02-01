@@ -28,6 +28,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain genericFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .csrf().disable()
                 .authorizeHttpRequests()
                     .requestMatchers("/**").authenticated()
@@ -43,6 +45,8 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .csrf().disable()
                 .securityMatcher("/auth/**")
                 .authorizeHttpRequests()
