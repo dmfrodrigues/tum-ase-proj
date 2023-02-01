@@ -15,8 +15,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.asedelivery.backend.auth.jwt.JwtUtil;
 import com.asedelivery.backend.model.Principal;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +30,12 @@ public class AuthService {
     private AuthenticationManager authManager;
     @Autowired
     private AseUserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    // @Autowired
+    // private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public ResponseEntity<String> authenticateUser(
         String authorization,
@@ -57,6 +66,16 @@ public class AuthService {
             return new ResponseEntity<>("Login successful", HttpStatus.OK);
         }
 
+        // if(bCryptPasswordEncoder.matches(password, user.getPassword())){
+        //     final String jwt = jwtUtil.generateToken(user);
+        //     return new ResponseEntity<String>(jwt, HttpStatus.OK);
+        // } else {
+        //     return new ResponseEntity<String>(
+        //         "Email or password is incorrect",
+        //         HttpStatus.UNAUTHORIZED
+        //     );
+        // }
+
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities(Principal principal) {
@@ -65,6 +84,16 @@ public class AuthService {
         list.add(new SimpleGrantedAuthority("ROLE_" + principal.getRole().toString()));
 
         return list;
+    }
+
+    public void setAuthentication(UserDetails userDetails, HttpServletRequest request) {
+        PreAuthenticatedAuthenticationToken token =
+            new PreAuthenticatedAuthenticationToken(
+                userDetails.getUsername(),
+                "[Protected]",
+                userDetails.getAuthorities()
+            );
+        SecurityContextHolder.getContext().setAuthentication(token);
     }
 }
 

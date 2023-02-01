@@ -2,6 +2,7 @@ package com.asedelivery.backend.db;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -18,6 +19,9 @@ public class SeederAdmin implements CommandLineRunner {
     @Autowired
     PrincipalRepository principalRepo;
 
+    // @Autowired
+    // BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     public void run(String... args) throws Exception {
         seed();
@@ -31,6 +35,7 @@ public class SeederAdmin implements CommandLineRunner {
 
         Dispatcher admin = dispatcherRepo.save(new Dispatcher("admin", "Admin", "asedelivery@gmail.com"));
         principalRepo.save(new Principal(admin.getId(), admin.getRole(), admin.getUsername(), password));
+        // principalRepo.save(new Principal(admin.getId(), admin.getRole(), admin.getUsername(), bCryptPasswordEncoder.encode(password)));
 
         System.out.println("DB seeded with admin");
     }
