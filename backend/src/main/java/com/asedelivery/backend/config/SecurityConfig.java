@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.asedelivery.backend.Auth.AseUserDetailsService;
+import com.asedelivery.backend.auth.AseUserDetailsService;
 
 @Configuration
 @EnableWebSecurity

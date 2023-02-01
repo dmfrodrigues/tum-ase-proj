@@ -1,4 +1,4 @@
-package com.asedelivery.backend.Auth;
+package com.asedelivery.backend.auth;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
