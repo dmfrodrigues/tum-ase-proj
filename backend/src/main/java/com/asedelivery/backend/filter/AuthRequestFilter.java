@@ -2,6 +2,8 @@ package com.asedelivery.backend.filter;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import com.asedelivery.backend.auth.jwt.JwtUtil;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -34,23 +37,23 @@ public class AuthRequestFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String username = null;
         Collection<? extends GrantedAuthority> authorities = null;
-        String jwt = null;
         final String authHeader = request.getHeader("Authorization");
+        final Cookie[] cookies = request.getCookies();
+        Map<String, String> cookiesMap = new HashMap<>();
+        for(final Cookie cookie: cookies)
+            cookiesMap.put(cookie.getName(), cookie.getValue());
+
+        String jwt = cookiesMap.get("jwt");
+
         // System.out.println("Authenticate Header " + authHeader);
-        if (authHeader != null && authHeader.startsWith("Bearer")) {
-            // Get the JWT in the header.
-            String[] authHeaderSplit = authHeader.split(" ");
-            if(authHeaderSplit.length >= 2){
-                jwt = authHeaderSplit[1];
-            
-                // If the JWT expires or not signed by us, send an error to the client
-                if(!jwtUtil.verifyJwtSignature(jwt)){
-                    jwt = null;
-                } else {
-                    // Extract the username from the JWT token.
-                    username = jwtUtil.extractUsername(jwt);
-                    authorities = jwtUtil.extractUserRoles(jwt);
-                }
+        if (jwt != null) {
+            // If the JWT expires or not signed by us, send an error to the client
+            if(!jwtUtil.verifyJwtSignature(jwt)){
+                jwt = null;
+            } else {
+                // Extract the username from the JWT token.
+                username = jwtUtil.extractUsername(jwt);
+                authorities = jwtUtil.extractUserRoles(jwt);
             }
         } else {
             // No valid authentication, No go

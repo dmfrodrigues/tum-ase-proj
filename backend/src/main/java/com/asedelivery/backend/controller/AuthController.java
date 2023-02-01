@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.asedelivery.backend.auth.AuthService;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -29,7 +30,19 @@ public class AuthController {
         System.out.println("Request to /auth");
 
         try {
-            return authService.authenticateUser(authorization, request);
+            ResponseEntity<String> responseEntity =
+                authService.authenticateUser(authorization, request);
+            if(responseEntity.getStatusCode().equals(HttpStatus.OK)){
+                String jwt = responseEntity.getBody();
+                Cookie jwtCookie = new Cookie("jwt", jwt);
+                // Configure the cookie to be HttpOnly and expires after a period
+                // Then include the cookie into the response
+                jwtCookie.setHttpOnly(true);
+                jwtCookie.setSecure(false);
+                jwtCookie.setPath("/");
+                response.addCookie(jwtCookie);
+            }
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Invalid Login", HttpStatus.UNAUTHORIZED);
         }
