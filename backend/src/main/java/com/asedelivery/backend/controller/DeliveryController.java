@@ -2,6 +2,7 @@ package com.asedelivery.backend.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.SortedSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -132,21 +133,64 @@ public class DeliveryController {
         @RequestParam(value = "createdById") Optional<String> createdById,
         @RequestParam(value = "delivererId") Optional<String> delivererId,
         @RequestParam(value = "pickupAddress") Optional<String> pickupAddress,
-        @RequestParam(value = "boxId") Optional<String> boxId
+        @RequestParam(value = "boxId") Optional<String> boxId,
+        @RequestParam(value = "state") Optional<Delivery.State> state,
+        @RequestParam(value = "events") Optional<SortedSet<Delivery.Event>> events
     ){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String authority = auth.getAuthorities().iterator().next().getAuthority();
+
         Delivery delivery = deliveryRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         try {
-            if(customerId.isPresent()) delivery.customer = customerRepo.findById(customerId.get())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            if(createdById.isPresent()) delivery.createdBy = dispatcherRepo.findById(createdById.get())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            if(delivererId.isPresent()) delivery.deliverer = delivererRepo.findById(delivererId.get())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            if(pickupAddress.isPresent()) delivery.pickupAddress = pickupAddress.get();
-            if(boxId.isPresent()) delivery.box = boxRepo.findById(boxId.get())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            if(customerId.isPresent()){
+                if(!authority.equals("ROLE_" + Role.DISPATCHER_STR))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only DISPATCHER can change customerId");
+                delivery.customer = customerRepo.findById(customerId.get())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            }
+            if(createdById.isPresent()){
+                if(!authority.equals("ROLE_" + Role.DISPATCHER_STR))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only DISPATCHER can change createdById");
+                delivery.createdBy = dispatcherRepo.findById(createdById.get())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            }
+            if(delivererId.isPresent()){
+                if(!authority.equals("ROLE_" + Role.DISPATCHER_STR))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only DISPATCHER can change delivererId");
+                delivery.deliverer = delivererRepo.findById(delivererId.get())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            }
+            if(pickupAddress.isPresent()){
+                if(!authority.equals("ROLE_" + Role.DISPATCHER_STR))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only DISPATCHER can change pickupAddress");
+                delivery.pickupAddress = pickupAddress.get();
+            }
+            if(boxId.isPresent()){
+                if(!authority.equals("ROLE_" + Role.DISPATCHER_STR))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only DISPATCHER can change boxId");
+                delivery.box = boxRepo.findById(boxId.get())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            }
+            if(state.isPresent()){
+                try {
+                    if(state.get() != delivery.getState().next())
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Delivery state " + delivery.getState() +
+                            " can only be advanced to " + delivery.getState().next() +
+                            ", not to " + state.get()
+                        );
+                } catch(IllegalStateException e){
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+                }
+                delivery.advanceState();
+            }
+            if(events.isPresent()){
+                if(!authority.equals("ROLE_" + Role.DISPATCHER_STR))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only DISPATCHER can change events");
+                delivery.setEvents(events.get());
+            }
         } catch(IllegalStateException | IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
