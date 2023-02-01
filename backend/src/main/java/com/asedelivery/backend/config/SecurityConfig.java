@@ -1,5 +1,6 @@
 package com.asedelivery.backend.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -8,16 +9,20 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.asedelivery.backend.auth.AseUserDetailsService;
+import com.asedelivery.backend.filter.AuthRequestFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+
+    @Autowired
+    private AuthRequestFilter authRequestFilter;
+
     @Bean
     public SecurityFilterChain genericFilterChain(HttpSecurity http) throws Exception {
         http
@@ -28,7 +33,8 @@ public class SecurityConfig {
                     .requestMatchers("/**").authenticated()
                     .requestMatchers("/auth/**").permitAll()
                 .and()
-                .sessionManagement().disable();
+                .sessionManagement().disable()
+                .addFilterBefore(authRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -50,17 +56,12 @@ public class SecurityConfig {
     }
 
     @Bean
-	public UserDetailsService userDetailsService() {
-		return new AseUserDetailsService();
-	}
-
-    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
-    // @Bean
-    // public BCryptPasswordEncoder passwordEncoder() {
-    //     return new BCryptPasswordEncoder();
-    // }
+    @Bean
+    static public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

@@ -1,11 +1,7 @@
 package com.asedelivery.backend.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +20,6 @@ import com.asedelivery.backend.model.Agent;
 import com.asedelivery.backend.model.Customer;
 import com.asedelivery.backend.model.Deliverer;
 import com.asedelivery.backend.model.Delivery;
-import com.asedelivery.backend.model.Dispatcher;
 import com.asedelivery.backend.model.Principal;
 import com.asedelivery.backend.model.Principal.Role;
 import com.asedelivery.backend.model.repo.AgentRepository;
@@ -33,7 +28,6 @@ import com.asedelivery.backend.model.repo.CustomerRepository;
 import com.asedelivery.backend.model.repo.DelivererRepository;
 import com.asedelivery.backend.model.repo.DeliveryRepository;
 import com.asedelivery.backend.model.repo.DispatcherRepository;
-import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping("/delivery")
@@ -60,7 +54,6 @@ public class DeliveryController {
     public List<Delivery> getDeliveries() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String id = auth.getName();
-        System.out.println("id=" + id);
 
         Agent agent = agentRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -77,7 +70,7 @@ public class DeliveryController {
                 return deliveryRepo.findByCustomer((Customer)agent);
             
             default:
-                throw new IllegalStateException("Logged in user must have authority");
+                throw new IllegalStateException("Invalid authority " + authority);
         }
     }
 
