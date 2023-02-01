@@ -19,8 +19,8 @@ public class SeederAdmin implements CommandLineRunner {
     @Autowired
     PrincipalRepository principalRepo;
 
-    // @Autowired
-    // BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -34,8 +34,7 @@ public class SeederAdmin implements CommandLineRunner {
         Assert.notNull(password, "Admin password is null");
 
         Dispatcher admin = dispatcherRepo.save(new Dispatcher("admin", "Admin", "asedelivery@gmail.com"));
-        principalRepo.save(new Principal(admin.getId(), admin.getRole(), admin.getUsername(), password));
-        // principalRepo.save(new Principal(admin.getId(), admin.getRole(), admin.getUsername(), bCryptPasswordEncoder.encode(password)));
+        principalRepo.save(new Principal(admin.getId(), admin.getRole(), admin.getUsername(), bCryptPasswordEncoder.encode(password)));
 
         System.out.println("DB seeded with admin");
     }

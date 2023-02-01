@@ -85,7 +85,6 @@ public class Delivery {
                 if(authority.equals("ROLE_" + Role.DISPATCHER_STR)){
                     write = true;
                 } else {
-                    write = true;
                     switch(writer.getName()){
                         case "customer":
                             write = authority.equals("ROLE_" + Role.CUSTOMER_STR);

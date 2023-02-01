@@ -1,11 +1,18 @@
 package com.asedelivery.backend.auth.jwt;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +28,7 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", userDetails.getAuthorities());
+        claims.put("authorities", userDetails.getAuthorities());
         return createToken(claims, userDetails.getUsername());
     }
 
@@ -64,6 +71,19 @@ public class JwtUtil {
         return loadJwtParser()
             .parseClaimsJws(token)
             .getBody();
+    }
+
+    public Collection<? extends GrantedAuthority> extractUserRoles(String token) {
+        Claims claims = extractAllClaims(token);
+
+        Collection<Map<String,String>> authoritiesRaw = (Collection<Map<String,String>>)claims.get("authorities");
+        List<SimpleGrantedAuthority> authorities = authoritiesRaw
+            .stream()
+            .map((map) -> map.get("authority"))
+            .map((authorityStr) -> new SimpleGrantedAuthority(authorityStr))
+            .collect(Collectors.toList());
+
+        return authorities;
     }
 
     private boolean isTokenExpired(String token) {

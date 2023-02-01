@@ -40,8 +40,8 @@ public class Seeder implements CommandLineRunner {
     @Autowired
     PrincipalRepository principalRepo;
 
-    // @Autowired
-    // BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -52,35 +52,19 @@ public class Seeder implements CommandLineRunner {
         if(deliveryRepo.count() != 0) return;
 
         Dispatcher dispatcher = dispatcherRepo.save(new Dispatcher("dmfr", "Diogo Rodrigues", "dmfr@gmail.com"));
-        principalRepo.save(new Principal(dispatcher.getId(), dispatcher.getRole(), dispatcher.getUsername(), "1234"));
+        principalRepo.save(new Principal(dispatcher.getId(), dispatcher.getRole(), dispatcher.getUsername(), bCryptPasswordEncoder.encode("1234")));
 
         Deliverer deliverer1 = delivererRepo.save(new Deliverer("lucas", "João Lucas Martins", "lucas@gmail.com"));
-        principalRepo.save(new Principal(deliverer1.getId(), deliverer1.getRole(), deliverer1.getUsername(), "5678"));
+        principalRepo.save(new Principal(deliverer1.getId(), deliverer1.getRole(), deliverer1.getUsername(), bCryptPasswordEncoder.encode("5678")));
 
         Deliverer deliverer2 = delivererRepo.save(new Deliverer("martin", "Martin Mõhle", "martin@gmail.com"));
-        principalRepo.save(new Principal(deliverer2.getId(), deliverer2.getRole(), deliverer2.getUsername(), "5678"));
+        principalRepo.save(new Principal(deliverer2.getId(), deliverer2.getRole(), deliverer2.getUsername(), bCryptPasswordEncoder.encode("5678")));
 
         Customer customer = customerRepo.save(new Customer("mocho", "Tiago Silva", "mocho@gmail.com"));
-        principalRepo.save(new Principal(customer.getId(), customer.getRole(), customer.getUsername(), "9012"));
+        principalRepo.save(new Principal(customer.getId(), customer.getRole(), customer.getUsername(), bCryptPasswordEncoder.encode("9012")));
 
         Box box = boxRepo.save(new Box("garching1", "Boltzmannstr. 3\n85748 Garching bei München"));
-        principalRepo.save(new Principal(box.getId(), box.getRole(), box.getUsername(), "3456"));
-
-
-        // Dispatcher dispatcher = dispatcherRepo.save(new Dispatcher("dmfr", "Diogo Rodrigues", "dmfr@gmail.com"));
-        // principalRepo.save(new Principal(dispatcher.getId(), dispatcher.getRole(), dispatcher.getUsername(), bCryptPasswordEncoder.encode("1234")));
-
-        // Deliverer deliverer1 = delivererRepo.save(new Deliverer("lucas", "João Lucas Martins", "lucas@gmail.com"));
-        // principalRepo.save(new Principal(deliverer1.getId(), deliverer1.getRole(), deliverer1.getUsername(), bCryptPasswordEncoder.encode("5678")));
-
-        // Deliverer deliverer2 = delivererRepo.save(new Deliverer("martin", "Martin Mõhle", "martin@gmail.com"));
-        // principalRepo.save(new Principal(deliverer2.getId(), deliverer2.getRole(), deliverer2.getUsername(), bCryptPasswordEncoder.encode("5678")));
-
-        // Customer customer = customerRepo.save(new Customer("mocho", "Tiago Silva", "mocho@gmail.com"));
-        // principalRepo.save(new Principal(customer.getId(), customer.getRole(), customer.getUsername(), bCryptPasswordEncoder.encode("9012")));
-
-        // Box box = boxRepo.save(new Box("garching1", "Boltzmannstr. 3\n85748 Garching bei München"));
-        // principalRepo.save(new Principal(box.getId(), box.getRole(), box.getUsername(), bCryptPasswordEncoder.encode("3456")));
+        principalRepo.save(new Principal(box.getId(), box.getRole(), box.getUsername(), bCryptPasswordEncoder.encode("3456")));
 
         Delivery delivery = deliveryRepo.save(new Delivery(customer, dispatcher, deliverer1, "Lichtenbergstr. 6\n85748 Garching bei München", box));
 
