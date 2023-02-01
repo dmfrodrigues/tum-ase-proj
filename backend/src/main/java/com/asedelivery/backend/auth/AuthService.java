@@ -1,4 +1,4 @@
-package com.asedelivery.backend.Auth;
+package com.asedelivery.backend.auth;
 
 import java.util.ArrayList;
 import java.util.Base64;

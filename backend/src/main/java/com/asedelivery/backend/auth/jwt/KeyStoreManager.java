@@ -1,4 +1,4 @@
-package com.asedelivery.backend.Auth.jwt;
+package com.asedelivery.backend.auth.jwt;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
@@ -41,23 +41,21 @@ public class KeyStoreManager {
 
     protected PublicKey getPublicKey() {
         try {
-            // Get public key from keyStore and return it
             Certificate cert = keyStore.getCertificate(keyAlias);
             PublicKey publicKey = cert.getPublicKey();
             return publicKey;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
 
     protected Key getPrivateKey() {
         try {
-            // Get private key from keyStore and return it
             Key privateKey = (PrivateKey) keyStore.getKey(keyAlias, password);
             return privateKey;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

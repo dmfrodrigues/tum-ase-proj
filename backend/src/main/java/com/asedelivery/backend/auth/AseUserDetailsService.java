@@ -1,4 +1,4 @@
-package com.asedelivery.backend.Auth;
+package com.asedelivery.backend.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
