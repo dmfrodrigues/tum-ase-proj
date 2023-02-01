@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.asedelivery.backend.auth.jwt.JwtUtil;
 import com.asedelivery.backend.model.Principal;
+import com.asedelivery.backend.model.Token;
 import com.asedelivery.backend.model.repo.PrincipalRepository;
+import com.asedelivery.backend.model.repo.TokenRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -40,10 +42,25 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private PrincipalRepository principalRepo;
 
+    @Autowired
+    private TokenRepository tokenRepo;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Principal principal = principalRepo.findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException(username));
+
+        return User.withUsername(principal.getId())
+                .password(principal.password)
+                .roles(principal.role.toString())
+                .build();
+    }
+
+    public UserDetails loadUserByApiToken(String apiToken) {
+        Token token = tokenRepo.findById(apiToken)
+            .orElseThrow(() -> new UsernameNotFoundException("token:" + apiToken));
+
+        Principal principal = token.principal;
 
         return User.withUsername(principal.getId())
                 .password(principal.password)
@@ -78,6 +95,17 @@ public class AuthServiceImpl implements AuthService {
                 HttpStatus.UNAUTHORIZED
             );
         }
+    }
+
+    @Override
+    public ResponseEntity<String> authenticateUserWithApiToken(String apiToken, HttpServletRequest request) {
+        UserDetails user = loadUserByApiToken(apiToken);
+        if (user == null) {
+            return new ResponseEntity<>("User does not exist!", HttpStatus.UNAUTHORIZED);
+        }
+
+        final String jwt = jwtUtil.generateToken(user);
+        return new ResponseEntity<String>(jwt, HttpStatus.OK);
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities(Principal principal) {

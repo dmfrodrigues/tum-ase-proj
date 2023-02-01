@@ -18,12 +18,14 @@ import com.asedelivery.backend.model.Deliverer;
 import com.asedelivery.backend.model.Delivery;
 import com.asedelivery.backend.model.Dispatcher;
 import com.asedelivery.backend.model.Principal;
+import com.asedelivery.backend.model.Token;
 import com.asedelivery.backend.model.repo.BoxRepository;
 import com.asedelivery.backend.model.repo.CustomerRepository;
 import com.asedelivery.backend.model.repo.DelivererRepository;
 import com.asedelivery.backend.model.repo.DeliveryRepository;
 import com.asedelivery.backend.model.repo.DispatcherRepository;
 import com.asedelivery.backend.model.repo.PrincipalRepository;
+import com.asedelivery.backend.model.repo.TokenRepository;
 
 @Component
 @Order(1)
@@ -45,6 +47,9 @@ public class Seeder implements CommandLineRunner {
 
     @Autowired
     PrincipalRepository principalRepo;
+
+    @Autowired
+    TokenRepository tokenRepo;
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -79,6 +84,14 @@ public class Seeder implements CommandLineRunner {
         events.add(new Delivery.Event(formatter.parse("2023-01-20 09:18:27"), Delivery.State.PICKED_UP));
         delivery.setEvents(events);
         delivery = deliveryRepo.save(delivery);
+
+        Token token = tokenRepo.save(
+            new Token(
+                Token.Type.RFID,
+                principalRepo.findById(deliverer1.getId()).orElseThrow(() -> new IllegalArgumentException("deliverer1 was not actually inserted in DB")),
+                "12345678"
+            )
+        );
 
         System.out.println("DB seeded with sample data");
     }
