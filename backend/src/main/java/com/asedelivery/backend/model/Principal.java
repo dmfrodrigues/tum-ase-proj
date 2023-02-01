@@ -30,11 +30,11 @@ public class Principal {
     @Id
     private String id;
 
-    private Role role;
+    public Role role;
 
     private String username;
 
-    private String password;
+    public String password;
 
     public Principal(String id, Role role, String username, String password) {
         this.id = id;
@@ -49,13 +49,5 @@ public class Principal {
 
     public String getUsername() {
         return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Role getRole() {
-        return role;
     }
 }

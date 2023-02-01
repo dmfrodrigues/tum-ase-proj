@@ -1,8 +1,8 @@
 package com.asedelivery.backend.model;
 
 public abstract class Person extends Agent {
-    private String name;
-    private String email;
+    public String name;
+    public String email;
 
     public Person(String username, String name, String email) {
         super(username);

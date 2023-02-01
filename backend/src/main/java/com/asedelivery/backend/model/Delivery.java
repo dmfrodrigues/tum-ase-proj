@@ -21,21 +21,21 @@ public class Delivery {
     private String id;
 
     @DocumentReference
-    private Customer customer;
+    public Customer customer;
 
     @DocumentReference
-    private Box box;
+    public Box box;
 
     @DocumentReference
-    private Dispatcher createdBy;
+    public Dispatcher createdBy;
 
     @DocumentReference
-    private Deliverer deliverer;
+    public Deliverer deliverer;
 
-    private String pickupAddress;
+    public String pickupAddress;
 
     public Delivery(Customer customer, Dispatcher createdBy, Deliverer deliverer, String pickupAddress, Box box) {
-        assert box.getCustomer().equals(customer);
+        assert box.customer.equals(customer);
 
         this.customer = customer;
         this.createdBy = createdBy;
@@ -46,26 +46,6 @@ public class Delivery {
 
     public String getId() {
         return id;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public Box getBox() {
-        return box;
-    }
-
-    public Dispatcher getCreatedBy() {
-        return createdBy;
-    }
-
-    public Deliverer getDeliverer() {
-        return deliverer;
-    }
-
-    public String getPickupAddress() {
-        return pickupAddress;
     }
 
     static public class PropertyFilter extends SimpleBeanPropertyFilter {

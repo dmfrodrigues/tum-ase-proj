@@ -94,11 +94,12 @@ public class DeliveryController {
     @PutMapping("")
     @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
     public Delivery putDelivery(
-            @RequestParam(value = "customerId") String customerId,
-            @RequestParam(value = "createdById") String createdById,
-            @RequestParam(value = "delivererId") String delivererId,
-            @RequestParam(value = "pickupAddress") String pickupAddress,
-            @RequestParam(value = "boxId") String boxId) {
+        @RequestParam(value = "customerId") String customerId,
+        @RequestParam(value = "createdById") String createdById,
+        @RequestParam(value = "delivererId") String delivererId,
+        @RequestParam(value = "pickupAddress") String pickupAddress,
+        @RequestParam(value = "boxId") String boxId
+    ) {
         return deliveryRepo.save(
                 new Delivery(
                         customerRepo.findById(customerId)

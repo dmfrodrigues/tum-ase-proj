@@ -46,8 +46,8 @@ public class AuthServiceImpl implements AuthService {
             .orElseThrow(() -> new UsernameNotFoundException(username));
 
         return User.withUsername(principal.getId())
-                .password(principal.getPassword())
-                .roles(principal.getRole().toString())
+                .password(principal.password)
+                .roles(principal.role.toString())
                 .build();
     }
 
@@ -55,14 +55,14 @@ public class AuthServiceImpl implements AuthService {
         String authorization,
         HttpServletRequest request
     ) {
-        // TODO: Get the username and password by decoding the Base64 credential inside
+        // Get the username and password by decoding the Base64 credential inside
         // the Basic Authentication
         String headerString = authorization.substring("Basic".length()).trim();
         String decoded = new String(Base64.getDecoder().decode(headerString));
         String username = decoded.split(":", 2)[0];
         String password = decoded.split(":", 2)[1];
 
-        // TODO: find if there is any user exists in the database based on the credential,
+        // Find if there is any user exists in the database based on the credential,
         // and authenticate the user using the Spring Authentication Manager
         UserDetails user = loadUserByUsername(username);
         if (user == null) {
@@ -83,7 +83,7 @@ public class AuthServiceImpl implements AuthService {
     public Collection<? extends GrantedAuthority> getAuthorities(Principal principal) {
         List<GrantedAuthority> list = new ArrayList<>();
 
-        list.add(new SimpleGrantedAuthority("ROLE_" + principal.getRole().toString()));
+        list.add(new SimpleGrantedAuthority("ROLE_" + principal.role.toString()));
 
         return list;
     }
