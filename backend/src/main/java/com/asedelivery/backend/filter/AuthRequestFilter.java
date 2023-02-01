@@ -37,13 +37,16 @@ public class AuthRequestFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String username = null;
         Collection<? extends GrantedAuthority> authorities = null;
+        String jwt = null;
         final String authHeader = request.getHeader("Authorization");
         final Cookie[] cookies = request.getCookies();
-        Map<String, String> cookiesMap = new HashMap<>();
-        for(final Cookie cookie: cookies)
-            cookiesMap.put(cookie.getName(), cookie.getValue());
+        if(cookies != null){
+            Map<String, String> cookiesMap = new HashMap<>();
+            for(final Cookie cookie: cookies)
+                cookiesMap.put(cookie.getName(), cookie.getValue());
 
-        String jwt = cookiesMap.get("jwt");
+            jwt = cookiesMap.get("jwt");
+        }
 
         // System.out.println("Authenticate Header " + authHeader);
         if (jwt != null) {
