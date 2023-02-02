@@ -50,7 +50,9 @@ services:
     ports:
       - 8002:80
     environment:
-      ADMIN_PASSWORD: 1234
+      BACKEND_ADMIN_PASSWORD: 1234
+      FRONTEND_ADDRESS: http://localhost
+      MONGO_INITDB_ROOT_PASSWORD: password
       EMAIL_HOST: mailhog
       EMAIL_PORT: 1025
       EMAIL_ADDRESS: asedelivery@mailhog.com
