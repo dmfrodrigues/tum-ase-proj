@@ -3,13 +3,12 @@ package com.asedelivery.backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import com.asedelivery.backend.email.RegistrationEmail;
+
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailService {
@@ -23,20 +22,31 @@ public class EmailService {
     @Value("${spring.mail.from}")
     private String FROM;
 
-    public void sendMail(String to, String subject, String text) throws MessagingException {
-        MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+    @Value("${frontend.address}")
+    private String FRONTEND_URL;
 
-        Context context = new Context();
-        context.setVariable("name", "Developer!");
-        context.setVariable("location", "United States");
-        context.setVariable("sign", "Java Developer");
-        String html = templateEngine.process("newsletter-template", context);
+    public EmailService(){
+    }
 
-        helper.setFrom(FROM);
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(html, true);
-        emailSender.send(message);
+    public RegistrationEmail createRegistrationEmail(
+        String email,
+        String name,
+        String username,
+        String password
+    ) throws MessagingException {
+        String LOGIN_URL = FRONTEND_URL + "/login";
+
+        System.out.println("FRONTEND_URL=" + FRONTEND_URL);
+        System.out.println("LOGIN_URL=" + LOGIN_URL);
+        return new RegistrationEmail(
+            emailSender,
+            templateEngine,
+            FROM,
+            email,
+            name,
+            username,
+            password,
+            LOGIN_URL
+        );
     }
 }

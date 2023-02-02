@@ -19,7 +19,7 @@ public class ThymeleafTemplateConfig {
     @Bean
     public SpringResourceTemplateResolver htmlTemplateResolver(){
         SpringResourceTemplateResolver emailTemplateResolver = new SpringResourceTemplateResolver();
-        emailTemplateResolver.setPrefix("classpath:/templates/");
+        emailTemplateResolver.setPrefix("classpath:/templates/email/");
         emailTemplateResolver.setSuffix(".html");
         emailTemplateResolver.setTemplateMode(TemplateMode.HTML);
         emailTemplateResolver.setCharacterEncoding(StandardCharsets.UTF_8.name());

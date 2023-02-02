@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.asedelivery.backend.email.Email;
 import com.asedelivery.backend.service.EmailService;
 
 import jakarta.mail.MessagingException;
@@ -20,7 +21,13 @@ public class MyController {
     public ResponseEntity<String> sendmail() {
 
         try {
-            emailService.sendMail("kate@example.com", "Test Subject", "Test mail");
+            Email email = emailService.createRegistrationEmail(
+                "dmfr@email.com",
+                "Diogo Rodrigues",
+                "dmfr",
+                "1234"
+            );
+            email.send();
         } catch (MessagingException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
