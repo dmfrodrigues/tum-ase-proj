@@ -19,7 +19,7 @@ public class DeliveredDeliveryEmail extends Email {
         String deliveryURL
     ) throws MessagingException {
         super(emailSender, templateEngine, "delivered-delivery", from, email,
-            "Your delivery " + delivery.getId() + " has been delivered");
+            "Your delivery has been delivered");
         set("name", name);
         set("email", email);
         

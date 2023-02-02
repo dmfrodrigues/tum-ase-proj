@@ -18,7 +18,7 @@ public class CompletedDeliveryEmail extends Email {
         Delivery delivery
     ) throws MessagingException {
         super(emailSender, templateEngine, "completed-delivery", from, email,
-            "Your delivery " + delivery.getId() + " has been delivered");
+            "Your delivery has been completed");
         set("name", name);
         set("email", email);
         

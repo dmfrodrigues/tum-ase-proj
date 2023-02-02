@@ -24,8 +24,6 @@ import com.asedelivery.backend.model.Token;
 import com.asedelivery.backend.model.repo.PrincipalRepository;
 import com.asedelivery.backend.model.repo.TokenRepository;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 /**
  * The AuthService and AuthService thing is actually a workaround to avoid
  * circular Bean dependencies.
@@ -68,10 +66,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
-    public ResponseEntity<String> authenticateUser(
-        String authorization,
-        HttpServletRequest request
-    ) {
+    public ResponseEntity<String> authenticateUser(String authorization) {
         // Get the username and password by decoding the Base64 credential inside
         // the Basic Authentication
         String headerString = authorization.substring("Basic".length()).trim();
@@ -98,7 +93,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<String> authenticateUserWithApiToken(String apiToken, HttpServletRequest request) {
+    public ResponseEntity<String> authenticateUserWithApiToken(String apiToken) {
         UserDetails user = loadUserByApiToken(apiToken);
         if (user == null) {
             return new ResponseEntity<>("User does not exist!", HttpStatus.UNAUTHORIZED);

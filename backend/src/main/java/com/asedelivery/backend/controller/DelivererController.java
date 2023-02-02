@@ -61,6 +61,7 @@ public class DelivererController {
             mail.send();
         } catch(MessagingException e){
             System.err.println("Failed to send registration email to " + email);
+            e.printStackTrace();
         }
 
         return ret;

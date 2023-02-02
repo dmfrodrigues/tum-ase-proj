@@ -35,8 +35,8 @@ public class AuthController {
 
         try {
             ResponseEntity<String> responseEntity = null;
-            if(authorization.isPresent()) responseEntity = authService.authenticateUser(authorization.get(), request);
-            else if(apiToken.isPresent()) responseEntity = authService.authenticateUserWithApiToken(apiToken.get(), request);
+            if(authorization.isPresent()) responseEntity = authService.authenticateUser(authorization.get());
+            else if(apiToken.isPresent()) responseEntity = authService.authenticateUserWithApiToken(apiToken.get());
             else return new ResponseEntity<>("Either Basic Auth or API Token must be provided", HttpStatus.BAD_REQUEST);
             
             if(responseEntity.getStatusCode().equals(HttpStatus.OK)){

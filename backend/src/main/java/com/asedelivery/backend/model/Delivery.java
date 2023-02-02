@@ -160,11 +160,6 @@ public class Delivery {
                         case "deliverer":
                             write = authority.equals("ROLE_" + Role.DELIVERER_STR);
                             break;
-                        case "box":
-                            write =
-                                authority.equals("ROLE_" + Role.BOX_STR) ||
-                                authority.equals("ROLE_" + Role.DELIVERER_STR);
-                            break;
                         case "createdBy":
                             break;
                         default:

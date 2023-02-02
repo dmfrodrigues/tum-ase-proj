@@ -62,6 +62,8 @@ public class Seeder implements CommandLineRunner {
     private void seed() throws ParseException {
         if(deliveryRepo.count() != 0) return;
 
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         Dispatcher dispatcher = dispatcherRepo.save(new Dispatcher("dmfr", "Diogo Rodrigues", "dmfr@gmail.com"));
         principalRepo.save(new Principal(dispatcher.getId(), dispatcher.getRole(), dispatcher.getUsername(), bCryptPasswordEncoder.encode("1234")));
 
@@ -74,22 +76,39 @@ public class Seeder implements CommandLineRunner {
         Customer customer = customerRepo.save(new Customer("mocho", "Tiago Silva", "mocho@gmail.com"));
         principalRepo.save(new Principal(customer.getId(), customer.getRole(), customer.getUsername(), bCryptPasswordEncoder.encode("9012")));
 
-        Box box = boxRepo.save(new Box("garching1", "Boltzmannstr. 3\n85748 Garching bei München"));
+        Box box = new Box("garching1", "Boltzmannstr. 3\n85748 Garching bei München");
+        box.customer = customer;
+        box = boxRepo.save(box);
         principalRepo.save(new Principal(box.getId(), box.getRole(), box.getUsername(), bCryptPasswordEncoder.encode("3456")));
 
-        Delivery delivery = new Delivery(customer, dispatcher, deliverer1, "Lichtenbergstr. 6\n85748 Garching bei München", box);
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SortedSet<Delivery.Event> events = new TreeSet<>();
-        events.add(new Delivery.Event(formatter.parse("2023-01-15 16:32:54"), Delivery.State.ORDERED));
-        events.add(new Delivery.Event(formatter.parse("2023-01-20 09:18:27"), Delivery.State.PICKED_UP));
-        delivery.setEvents(events);
-        delivery = deliveryRepo.save(delivery);
+        Delivery delivery1 = new Delivery(customer, dispatcher, deliverer1, "Lichtenbergstr. 6\n85748 Garching bei München", box);
+        SortedSet<Delivery.Event> events1 = new TreeSet<>();
+        events1.add(new Delivery.Event(formatter.parse("2023-01-15 16:32:54"), Delivery.State.ORDERED));
+        events1.add(new Delivery.Event(formatter.parse("2023-01-20 09:18:27"), Delivery.State.PICKED_UP));
+        delivery1.setEvents(events1);
+        delivery1 = deliveryRepo.save(delivery1);
 
-        Token token = tokenRepo.save(
+        Delivery delivery2 = new Delivery(customer, dispatcher, deliverer1, "Lichtenbergstr. 6\n85748 Garching bei München", box);
+        SortedSet<Delivery.Event> events2 = new TreeSet<>();
+        events2.add(new Delivery.Event(formatter.parse("2023-01-16 16:32:54"), Delivery.State.ORDERED));
+        events2.add(new Delivery.Event(formatter.parse("2023-01-21 09:18:27"), Delivery.State.PICKED_UP));
+        events2.add(new Delivery.Event(formatter.parse("2023-01-28 09:18:27"), Delivery.State.DELIVERED));
+        delivery2.setEvents(events2);
+        delivery2 = deliveryRepo.save(delivery2);
+
+        tokenRepo.save(
             new Token(
                 Token.Type.RFID,
                 principalRepo.findById(deliverer1.getId()).orElseThrow(() -> new IllegalArgumentException("deliverer1 was not actually inserted in DB")),
                 "12345678"
+            )
+        );
+
+        tokenRepo.save(
+            new Token(
+                Token.Type.RFID,
+                principalRepo.findById(customer.getId()).orElseThrow(() -> new IllegalArgumentException("deliverer1 was not actually inserted in DB")),
+                "90123456"
             )
         );
 
