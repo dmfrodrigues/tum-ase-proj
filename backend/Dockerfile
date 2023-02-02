@@ -5,7 +5,7 @@ RUN apk add \
     inotify-tools
 
 RUN mkdir -p /gradle_zip
-RUN curl -L https://services.gradle.org/distributions/gradle-7.2-bin.zip --output /gradle_zip/gradle-7.2-bin.zip
+RUN curl -L https://services.gradle.org/distributions/gradle-7.5.1-bin.zip --output /gradle_zip/gradle-7.5.1-bin.zip
 
 RUN mkdir -p /app
 WORKDIR /app
