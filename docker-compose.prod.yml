@@ -29,10 +29,19 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${ME_CONFIG_MONGODB_ADMINPASSWORD}
-      ME_CONFIG_MONGODB_URL: mongodb://root:${ME_CONFIG_MONGODB_ADMINPASSWORD}@db:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://root:${MONGO_INITDB_ROOT_PASSWORD}@db:27017/
 
   backend:
     image: gitlab.lrz.de:5005/ase-22-23/team15/tum-ase-proj/backend:${TAG}
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
-      ADMIN_PASSWORD: ${BACKEND_ADMIN_PASSWORD}
+      BACKEND_ADMIN_PASSWORD: ${BACKEND_ADMIN_PASSWORD}
       FRONTEND_ADDRESS: http://www.coolwebsite.com
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      EMAIL_HOST: smtp.gmail.com
+      EMAIL_PORT: 587
+      EMAIL_ADDRESS: asedelivery.t15@gmail.com
+      EMAIL_USERNAME: asedelivery.t15@gmail.com
+      EMAIL_PASSWORD: ${BACKEND_EMAIL_PASSWORD}

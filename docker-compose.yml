@@ -23,6 +23,8 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
+    logging:
+      driver: none
 
   db-admin:
     image: mongo-express:latest
@@ -36,6 +38,9 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
       ME_CONFIG_MONGODB_URL: mongodb://root:password@db:27017/
+    logging:
+      driver: none
+
 
   backend:
     build: backend
@@ -45,7 +50,21 @@ services:
     ports:
       - 8002:80
     environment:
-      ADMIN_PASSWORD: 1234
+      BACKEND_ADMIN_PASSWORD: 1234
+      FRONTEND_ADDRESS: http://localhost
+      MONGO_INITDB_ROOT_PASSWORD: password
+      EMAIL_HOST: mailhog
+      EMAIL_PORT: 1025
+      EMAIL_ADDRESS: asedelivery@mailhog.com
+      EMAIL_USERNAME: user123
+      EMAIL_PASSWORD: 1234
     volumes:
       - ./backend:/app
     command: "/run.dev.sh"
+
+  mailhog:
+    build: mailhog
+    ports:
+      - 8025:8025
+    logging:
+      driver: none
