@@ -1,6 +1,8 @@
 FROM openjdk:17-jdk-alpine
 
-RUN apk add inotify-tools
+RUN apk add \
+    curl \
+    inotify-tools
 
 RUN mkdir -p /gradle_zip
 RUN curl -L https://services.gradle.org/distributions/gradle-7.2-bin.zip --output /gradle_zip/gradle-7.2-bin.zip
