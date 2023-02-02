@@ -7,9 +7,9 @@ import com.asedelivery.backend.model.Delivery;
 
 import jakarta.mail.MessagingException;
 
-public class NewOrderEmail extends Email {
+public class NewDeliveryEmail extends Email {
 
-    public NewOrderEmail(
+    public NewDeliveryEmail(
         JavaMailSender emailSender,
         SpringTemplateEngine templateEngine,
         String from,
@@ -18,8 +18,8 @@ public class NewOrderEmail extends Email {
         Delivery delivery,
         String deliveryURL
     ) throws MessagingException {
-        super(emailSender, templateEngine, "new-order", from, email,
-            "Your new order " + delivery.getId() + " has been ordered");
+        super(emailSender, templateEngine, "new-delivery", from, email,
+            "Your new delivery " + delivery.getId() + " has been ordered");
         set("name", name);
         set("email", email);
         

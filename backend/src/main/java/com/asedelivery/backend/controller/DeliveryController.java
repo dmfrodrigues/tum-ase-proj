@@ -134,7 +134,7 @@ public class DeliveryController {
         );
         
         try {
-            Email mail = emailService.createNewOrderEmail(
+            Email mail = emailService.createNewDeliveryEmail(
                 customer.email,
                 customer.name,
                 delivery

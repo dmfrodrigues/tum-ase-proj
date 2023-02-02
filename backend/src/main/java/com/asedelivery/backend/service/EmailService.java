@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import com.asedelivery.backend.email.Email;
-import com.asedelivery.backend.email.NewOrderEmail;
+import com.asedelivery.backend.email.NewDeliveryEmail;
 import com.asedelivery.backend.email.RegistrationEmail;
 import com.asedelivery.backend.model.Delivery;
 
@@ -51,10 +51,10 @@ public class EmailService {
         );
     }
 
-    public Email createNewOrderEmail(String email, String name, Delivery delivery) throws MessagingException {
+    public Email createNewDeliveryEmail(String email, String name, Delivery delivery) throws MessagingException {
         String DELIVERY_URL = FRONTEND_URL + "/delivery/" + delivery.getId();
 
-        return new NewOrderEmail(
+        return new NewDeliveryEmail(
             emailSender,
             templateEngine,
             FROM,
