@@ -132,11 +132,11 @@ public class DeliveryController {
                 box
             )
         );
-        
+
         try {
             Email mail = emailService.createNewDeliveryEmail(
-                customer.email,
-                customer.name,
+                delivery.customer.email,
+                delivery.customer.name,
                 delivery
             );
             mail.send();
@@ -202,6 +202,9 @@ public class DeliveryController {
                 delivery.box = boxRepo.findById(boxId.get())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Box not found"));
             }
+            if(state.isPresent() && events.isPresent()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only one of state or events can be defined");
+            }
             if(state.isPresent()){
                 try {
                     if(state.get() != delivery.getState().next())
@@ -225,6 +228,25 @@ public class DeliveryController {
         }
 
         delivery = deliveryRepo.save(delivery);
+
+        if(
+            delivery.getState() == Delivery.State.DELIVERED &&
+            (
+                state.isPresent() ||
+                events.isPresent()
+            )
+        ){
+            try {
+                Email mail = emailService.createDeliveryDeliveredEmail(
+                    delivery.customer.email,
+                    delivery.customer.name,
+                    delivery
+                );
+                mail.send();
+            } catch(MessagingException e){
+                System.err.println("Failed to send delivered delivery email to " + delivery.customer.email);
+            }
+        }
     
         return delivery;
     }

@@ -51,7 +51,11 @@ public class EmailService {
         );
     }
 
-    public Email createNewDeliveryEmail(String email, String name, Delivery delivery) throws MessagingException {
+    public Email createNewDeliveryEmail(
+        String email,
+        String name,
+        Delivery delivery
+    ) throws MessagingException {
         String DELIVERY_URL = FRONTEND_URL + "/delivery/" + delivery.getId();
 
         return new NewDeliveryEmail(
@@ -63,5 +67,13 @@ public class EmailService {
             delivery,
             DELIVERY_URL
         );
+    }
+
+    public Email createDeliveryDeliveredEmail(
+        String email,
+        String name,
+        Delivery delivery
+    ) throws MessagingException {
+        return null;
     }
 }
