@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.asedelivery.backend.service.EmailService;
 
+import jakarta.mail.MessagingException;
+
 @Controller
 public class MyController {
 
@@ -17,7 +19,11 @@ public class MyController {
     @GetMapping("/sendmail")
     public ResponseEntity<String> sendmail() {
 
-        emailService.sendMail("kate@example.com", "Test Subject", "Test mail");
+        try {
+            emailService.sendMail("kate@example.com", "Test Subject", "Test mail");
+        } catch (MessagingException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
