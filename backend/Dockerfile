@@ -12,4 +12,4 @@ RUN chmod 755 /*.sh
 COPY . .
 RUN chmod +x gradlew
 
-CMD ["./gradlew", "run"]
+CMD ["./gradlew", "bootRun"]
