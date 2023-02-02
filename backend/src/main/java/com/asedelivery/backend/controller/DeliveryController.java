@@ -147,14 +147,10 @@ public class DeliveryController {
         return delivery;
     }
 
-    @Transactional
     @PatchMapping("/{id}")
     @PostAuthorize(
         "hasRole('" + Principal.Role.DISPATCHER_STR + "') or " +
-        "(" + 
-            "hasRole('" + Principal.Role.DELIVERER_STR + "') and " +
-            "principal.username == returnObject.deliverer.getId()" +
-        ")"
+        "hasRole('" + Principal.Role.DELIVERER_STR  + "')"
     )
     public Delivery patchDelivery(
         @PathVariable String id,
@@ -171,6 +167,9 @@ public class DeliveryController {
 
         Delivery delivery = deliveryRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if(!delivery.deliverer.getId().equals(auth.getName()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
         try {
             if(customerId.isPresent()){
