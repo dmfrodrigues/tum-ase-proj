@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.asedelivery.backend.email.Email;
 import com.asedelivery.backend.model.Dispatcher;
 import com.asedelivery.backend.model.Principal;
 import com.asedelivery.backend.model.repo.DispatcherRepository;
 import com.asedelivery.backend.model.repo.PrincipalRepository;
+import com.asedelivery.backend.service.EmailService;
+
+import jakarta.mail.MessagingException;
 
 @RestController
 @RequestMapping("/dispatcher")
@@ -27,6 +31,9 @@ public class DispatcherController {
 
     @Autowired
     PrincipalRepository principalRepo;
+
+    @Autowired
+    EmailService emailService;
 
     @GetMapping("")
     @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
@@ -43,6 +50,19 @@ public class DispatcherController {
             @RequestParam(value = "email") String email) {
         Dispatcher ret = dispatcherRepo.save(new Dispatcher(username, name, email));
         principalRepo.save(new Principal(ret.getId(), ret.getRole(), username, password));
+        
+        try {
+            Email mail = emailService.createRegistrationEmail(
+                email,
+                name,
+                username,
+                password
+            );
+            mail.send();
+        } catch(MessagingException e){
+            System.err.println("Failed to send registration email to " + email);
+        }
+        
         return ret;
     }
 
