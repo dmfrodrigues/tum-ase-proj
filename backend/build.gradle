@@ -49,10 +49,6 @@ tasks {
 
 jar {
 	enabled = false
-	processResources.exclude('*')
-	manifest {
-        attributes('Class-Path' : 'src/main/resources' )
-    }
 }
 
 tasks.named('test') {

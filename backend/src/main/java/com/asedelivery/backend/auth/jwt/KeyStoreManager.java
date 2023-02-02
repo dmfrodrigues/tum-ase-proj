@@ -20,16 +20,13 @@ public class KeyStoreManager {
         loadKeyStore();
     }
 
-    @Value("${spring.keys.keystore.path}")
-    private String keystorePath;
-
     public void loadKeyStore() throws KeyStoreException, IOException {
         keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         FileInputStream fis = null;
 
         try {
             // Get the path to the keystore file in the resources folder
-            File keystoreFile = ResourceUtils.getFile(keystorePath);
+            File keystoreFile = ResourceUtils.getFile("classpath:ase_project.keystore");
             fis = new FileInputStream(keystoreFile);
             keyStore.load(fis, password);
             keyAlias = keyStore.aliases().nextElement();
