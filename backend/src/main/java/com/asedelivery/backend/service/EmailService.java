@@ -36,8 +36,6 @@ public class EmailService {
     ) throws MessagingException {
         String LOGIN_URL = FRONTEND_URL + "/login";
 
-        System.out.println("FRONTEND_URL=" + FRONTEND_URL);
-        System.out.println("LOGIN_URL=" + LOGIN_URL);
         return new RegistrationEmail(
             emailSender,
             templateEngine,
