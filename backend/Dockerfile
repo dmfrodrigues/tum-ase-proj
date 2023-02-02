@@ -14,7 +14,7 @@ RUN mkdir -p build/libs
 COPY ${JAR_FILE} build/libs/app.jar
 
 # Copy keystore
-RUN mkdir -p src/main/resources
-COPY src/main/resources/*.keystore src/main/resources
+RUN mkdir -p src/main
+COPY src/main/resources src/main/resources
 
 CMD ["java","-jar","build/libs/app.jar"]

@@ -49,7 +49,10 @@ tasks {
 
 jar {
 	enabled = false
-	processResources.exclude('*.keystore')
+	processResources.exclude('*')
+	manifest {
+        attributes('Class-Path' : 'src/main/resources' )
+    }
 }
 
 tasks.named('test') {
