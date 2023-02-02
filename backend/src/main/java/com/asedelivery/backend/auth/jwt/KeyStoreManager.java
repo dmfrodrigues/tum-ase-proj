@@ -1,5 +1,6 @@
 package com.asedelivery.backend.auth.jwt;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
@@ -19,13 +20,16 @@ public class KeyStoreManager {
         loadKeyStore();
     }
 
+    @Value("${spring.keys.keystore.path}")
+    private String keystorePath;
+
     public void loadKeyStore() throws KeyStoreException, IOException {
         keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         FileInputStream fis = null;
 
         try {
             // Get the path to the keystore file in the resources folder
-            File keystoreFile = ResourceUtils.getFile("classpath:ase_project.keystore");
+            File keystoreFile = ResourceUtils.getFile(keystorePath);
             fis = new FileInputStream(keystoreFile);
             keyStore.load(fis, password);
             keyAlias = keyStore.aliases().nextElement();

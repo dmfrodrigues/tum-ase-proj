@@ -49,6 +49,7 @@ tasks {
 
 jar {
 	enabled = false
+	processResources.exclude('*.keystore')
 }
 
 tasks.named('test') {

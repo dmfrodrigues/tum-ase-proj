@@ -13,6 +13,10 @@ spring:
       username: root
       password: ${MONGO_INITDB_ROOT_PASSWORD}
 
+  keys:
+    keystore:
+      path: src/main/resources/ase_project.keystore
+
   mail:
     protocol: smtp
     host: ${EMAIL_HOST}
