@@ -6,7 +6,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import com.asedelivery.backend.email.Email;
+import com.asedelivery.backend.email.NewOrderEmail;
 import com.asedelivery.backend.email.RegistrationEmail;
+import com.asedelivery.backend.model.Delivery;
 
 import jakarta.mail.MessagingException;
 
@@ -45,6 +48,20 @@ public class EmailService {
             username,
             password,
             LOGIN_URL
+        );
+    }
+
+    public Email createNewOrderEmail(String email, String name, Delivery delivery) throws MessagingException {
+        String DELIVERY_URL = FRONTEND_URL + "/delivery/" + delivery.getId();
+
+        return new NewOrderEmail(
+            emailSender,
+            templateEngine,
+            FROM,
+            email,
+            name,
+            delivery,
+            DELIVERY_URL
         );
     }
 }
