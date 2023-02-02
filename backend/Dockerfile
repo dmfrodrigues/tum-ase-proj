@@ -10,5 +10,6 @@ RUN chmod 755 /*.sh
 
 # Copy
 COPY . .
+RUN chmod +x gradlew
 
 CMD ["./gradlew", "run"]
