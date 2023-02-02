@@ -229,25 +229,31 @@ public class DeliveryController {
 
         delivery = deliveryRepo.save(delivery);
 
-        if(
-            delivery.getState() == Delivery.State.DELIVERED &&
-            (
+        try {
+            if(
                 state.isPresent() ||
                 events.isPresent()
-            )
-        ){
-            try {
-                Email mail = emailService.createDeliveryDeliveredEmail(
-                    delivery.customer.email,
-                    delivery.customer.name,
-                    delivery
-                );
-                mail.send();
-            } catch(MessagingException e){
-                System.err.println("Failed to send delivered delivery email to " + delivery.customer.email);
+            ){
+                Email mail = null;
+                if(delivery.getState() == Delivery.State.DELIVERED){
+                    mail = emailService.createDeliveryDeliveredEmail(
+                        delivery.customer.email,
+                        delivery.customer.name,
+                        delivery
+                    );
+                } else if(delivery.getState() == Delivery.State.COMPLETED){
+                    mail = emailService.createCompletedDeliveredEmail(
+                        delivery.customer.email,
+                        delivery.customer.name,
+                        delivery
+                    );
+                }
+                if(mail != null) mail.send();
             }
+        } catch(MessagingException e){
+            System.err.println("Failed to send delivered delivery email to " + delivery.customer.email);
         }
-    
+
         return delivery;
     }
 

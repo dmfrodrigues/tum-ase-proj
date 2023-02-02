@@ -6,6 +6,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import com.asedelivery.backend.email.CompletedDeliveryEmail;
+import com.asedelivery.backend.email.DeliveredDeliveryEmail;
 import com.asedelivery.backend.email.Email;
 import com.asedelivery.backend.email.NewDeliveryEmail;
 import com.asedelivery.backend.email.RegistrationEmail;
@@ -74,6 +76,27 @@ public class EmailService {
         String name,
         Delivery delivery
     ) throws MessagingException {
-        return null;
+        String DELIVERY_URL = FRONTEND_URL + "/delivery/" + delivery.getId();
+
+        return new DeliveredDeliveryEmail(
+            emailSender,
+            templateEngine,
+            FROM,
+            email,
+            name,
+            delivery,
+            DELIVERY_URL
+        );
+    }
+
+    public Email createCompletedDeliveredEmail(String email, String name, Delivery delivery) throws MessagingException {
+        return new CompletedDeliveryEmail(
+            emailSender,
+            templateEngine,
+            FROM,
+            email,
+            name,
+            delivery
+        );
     }
 }
