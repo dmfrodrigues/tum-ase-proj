@@ -11,10 +11,22 @@ import NewUser from "./pages/NewUser";
 import OrderList from "./pages/OrderList";
 import Order from "./pages/Order";
 import NewProduct from "./pages/NewProduct";
+import OrderDetail from "./pages/OrderDetail";
+
+// 
+
+
 function App() {
   return (
+	<div>
+	<Router></Router>
     <Router>
       <Topbar />
+	  
+	  <Routes>
+		<Route path="/orders/:id" element={<OrderDetail />} />
+	  </Routes>
+	
       <div className="container">
         <Sidebar />
         <Routes>
@@ -25,6 +37,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+	</div>
   );
 }
 
