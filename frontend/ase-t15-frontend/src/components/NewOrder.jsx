@@ -26,7 +26,7 @@ function NewOrder({ customers, dispatchers, boxes }) {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Order</Modal.Title>
+                    <Modal.Title>New Order</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -62,32 +62,6 @@ function NewOrder({ customers, dispatchers, boxes }) {
                                 }
                             </Form.Select>
                         </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="formBasicStatus">
-                            <Form.Label>Select Status</Form.Label>
-                            <Form.Check
-                                type="radio"
-                                id="radio-1"
-                                value="pending"
-                                name="formBasicStatus"
-                                label={`Pending`}
-                            />
-                            <Form.Check
-                                type="radio"
-                                id="radio-2"
-                                value="canceled"
-                                name="formBasicStatus"
-                                label={`Canceled`}
-                            />
-                            <Form.Check
-                                type="radio"
-                                id="radio-3"
-                                value="delivered"
-                                name="formBasicStatus"
-                                label={`Delivered`}
-                            />
-
-                        </Form.Group>
                     </Form>
 
                 </Modal.Body>
@@ -96,7 +70,7 @@ function NewOrder({ customers, dispatchers, boxes }) {
                         Close
                     </Button>
                     <Button variant="success" size="sm" onClick={handleClose}>
-                        Save Changes
+                        Create
                     </Button>
                 </Modal.Footer>
             </Modal>

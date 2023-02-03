@@ -67,32 +67,38 @@ export const orderData = [
 export const customerRows = [
   {
     id: 1,
-    username: "Federico Kereki",
+    name: "Federico Kereki",
+    type: "dispatcher",
     email: "federico@gmail.com",
   },
   {
     id: 2,
-    username: "Chinda Great",
+    name: "Chinda Great",
+    type: "dispatcher",
     email: "chinda@gmail.com",
   },
   {
     id: 3,
-    username: "Ejiro ThankGod",
+    name: "Ejiro ThankGod",
+    type: "deliverer",
     email: "ejiro@gmail.com",
   },
   {
     id: 4,
-    username: "Okoro Isaac",
+    name: "Okoro Isaac",
+    type: "deliverer",
     email: "isaac@gmail.com",
   },
   {
     id: 9,
-    username: "Banigo Kene",
+    name: "Banigo Kene",
+    type: "deliverer",
     email: "kene@gmail.com",
   },
   {
     id: 10,
-    username: "Ikechi Fortune",
+    name: "Ikechi Fortune",
+    type: "customer",
     email: "fortune@gmail.com",
   },
 ];
@@ -135,12 +141,25 @@ export const dispatcherRows = [
 
 export const boxRows = [
   {
-    id: 1,
-    name: "Porto",
+    id: "a9df6055-7a4f-48af-b52d-33577089d13b",
+    location: "Porto",
+    active: true,
+    password: "123456",
+    status: "Picked-up"
   },
   {
-    id: 2,
-    name: "Munich",
+    id: "3b621d38-fb63-4572-8ef7-eeedda8c3628",
+    location: "Munich",
+    active: false,
+    password: "1234",
+    status: "Delivered"
+  },
+  {
+    id: "f8da0036-07d7-4de6-b761-4005c8d7828d",
+    location: "Berlin",
+    active: true,
+    password: "12346",
+    status: "Ordered"
   },
 ];
 

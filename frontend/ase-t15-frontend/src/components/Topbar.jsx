@@ -2,6 +2,8 @@ import React from "react";
 import '../css/component/topbar.css'
 
 import "@fontsource/josefin-sans"
+import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 function Topbar() {
   return (
@@ -11,8 +13,12 @@ function Topbar() {
           <span className="logo">Name Of App</span>
         </div>
         <div className="topRight">
-          <span className="logIn">Logged in as: Dispatcher</span>
+          <span className="logInMsg">Logged in as:</span>
+          <span className="logInUser">Dispatcher</span>
         </div>
+        <Link to="/login">
+          <Button variant="contained" color="error" className="logOut">Log Out</Button>
+        </Link>
       </div>
     </div>
   );
