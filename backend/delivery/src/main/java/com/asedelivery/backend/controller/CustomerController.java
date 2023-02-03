@@ -15,10 +15,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.asedelivery.backend.email.Email;
 import com.asedelivery.backend.model.Customer;
-import com.asedelivery.backend.model.Principal;
 import com.asedelivery.backend.model.repo.CustomerRepository;
-import com.asedelivery.backend.model.repo.PrincipalRepository;
 import com.asedelivery.backend.service.EmailService;
+import com.asedelivery.common.model.Role;
 
 import jakarta.mail.MessagingException;
 
@@ -29,27 +28,28 @@ public class CustomerController {
     @Autowired
     CustomerRepository customerRepo;
 
-    @Autowired
-    PrincipalRepository principalRepo;
+    // @Autowired
+    // PrincipalRepository principalRepo;
 
     @Autowired
     EmailService emailService;
 
     @GetMapping("")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public List<Customer> getCustomer() {
         return customerRepo.findAll();
     }
 
     @PutMapping("")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public Customer putCustomer(
             @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password,
             @RequestParam(value = "name") String name,
             @RequestParam(value = "email") String email) {
         Customer ret = customerRepo.save(new Customer(username, name, email));
-        principalRepo.save(new Principal(ret.getId(), ret.getRole(), username, password));
+        // TODO: save principal
+        // principalRepo.save(new Principal(ret.getId(), ret.getRole(), username, password));
 
         try {
             Email mail = emailService.createRegistrationEmail(
@@ -68,7 +68,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public void delCustomer(@PathVariable String id) {
         if (!customerRepo.existsById(id))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

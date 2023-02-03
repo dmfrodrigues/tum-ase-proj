@@ -1,4 +1,4 @@
-package com.asedelivery.backend.auth.jwt;
+package com.asedelivery.common.auth.jwt;
 
 import java.util.Collection;
 import java.util.Date;

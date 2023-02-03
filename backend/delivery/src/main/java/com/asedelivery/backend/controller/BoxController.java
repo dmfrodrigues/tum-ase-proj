@@ -20,17 +20,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.asedelivery.backend.auth.AuthService;
-import com.asedelivery.backend.auth.jwt.JwtUtil;
 import com.asedelivery.backend.email.Email;
 import com.asedelivery.backend.model.Box;
 import com.asedelivery.backend.model.Delivery;
-import com.asedelivery.backend.model.Principal;
-import com.asedelivery.backend.model.Principal.Role;
 import com.asedelivery.backend.model.repo.BoxRepository;
 import com.asedelivery.backend.model.repo.DeliveryRepository;
-import com.asedelivery.backend.model.repo.PrincipalRepository;
+import com.asedelivery.backend.service.AuthServiceDelivery;
 import com.asedelivery.backend.service.EmailService;
+import com.asedelivery.common.auth.AuthService;
+import com.asedelivery.common.auth.jwt.JwtUtil;
+import com.asedelivery.common.model.Role;
 
 import jakarta.mail.MessagingException;
 
@@ -40,14 +39,14 @@ public class BoxController {
     @Autowired
     BoxRepository boxRepo;
 
-    @Autowired
-    PrincipalRepository principalRepo;
+    // @Autowired
+    // PrincipalRepository principalRepo;
 
     @Autowired
     DeliveryRepository deliveryRepo;
 
     @Autowired
-    AuthService authService;
+    AuthServiceDelivery authService;
 
     @Autowired
     JwtUtil jwtUtil;
@@ -56,24 +55,25 @@ public class BoxController {
     EmailService emailService;
 
     @GetMapping("")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public List<Box> getBoxes() {
         return boxRepo.findAll();
     }
 
     @PutMapping("")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public Box putBox(
             @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password,
             @RequestParam(value = "address") String address) {
         Box ret = boxRepo.save(new Box(username, address));
-        principalRepo.save(new Principal(ret.getId(), ret.getRole(), username, password));
+        // TODO: save principal
+        // principalRepo.save(new Principal(ret.getId(), ret.getRole(), username, password));
         return ret;
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public void delCustomer(@PathVariable String id) {
         if (!boxRepo.existsById(id))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -82,10 +82,11 @@ public class BoxController {
     }
 
     @PostMapping("/{id}/open")
-    @PreAuthorize("hasRole('" + Principal.Role.BOX_STR + "')")
+    @PreAuthorize("hasRole('" + Role.BOX_STR + "')")
     public Boolean canOpenBox(
         @RequestParam(value = "token") String token
     ){
+        // TODO
         ResponseEntity<String> response = authService.authenticateUserWithApiToken(token);
         if(response.getStatusCode() != HttpStatus.OK) return false;
 

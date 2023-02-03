@@ -1,4 +1,4 @@
-package com.asedelivery.backend.auth.jwt;
+package com.asedelivery.common.auth.jwt;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;

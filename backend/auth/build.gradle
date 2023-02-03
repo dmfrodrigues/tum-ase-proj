@@ -39,6 +39,8 @@ dependencies {
 
 	// Email
 	implementation 'org.springframework.boot:spring-boot-starter-mail:3.0.0'
+
+	implementation project(':library')
 }
 
 jar {

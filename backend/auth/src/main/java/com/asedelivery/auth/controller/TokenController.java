@@ -1,4 +1,4 @@
-package com.asedelivery.backend.controller;
+package com.asedelivery.auth.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.asedelivery.backend.model.Principal;
-import com.asedelivery.backend.model.Token;
-import com.asedelivery.backend.model.repo.PrincipalRepository;
-import com.asedelivery.backend.model.repo.TokenRepository;
+import com.asedelivery.auth.model.Token;
+import com.asedelivery.auth.model.repo.PrincipalRepository;
+import com.asedelivery.auth.model.repo.TokenRepository;
+import com.asedelivery.common.model.Role;
 
 @RestController
 @RequestMapping("/token")
@@ -30,14 +30,14 @@ public class TokenController {
     TokenRepository tokenRepo;
 
     @GetMapping("")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public List<Token> getTokens() {
         return tokenRepo.findAll();
     }
 
     @GetMapping("/{id}")
     @PostAuthorize(
-        "hasRole('" + Principal.Role.DISPATCHER_STR + "') or " +
+        "hasRole('" + Role.DISPATCHER_STR + "') or " +
         "principal.username == returnObject.principal.getId()"
     )
     public Token getToken(@PathVariable String id) {
@@ -46,7 +46,7 @@ public class TokenController {
     }
 
     @PatchMapping("/{id}")
-    @PostAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PostAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public Token patchDelivery(
         @PathVariable String id,
         @RequestParam(value = "principalId") String principalId
@@ -61,7 +61,7 @@ public class TokenController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public void delAgent(@PathVariable String id) {
         if (!tokenRepo.existsById(id))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

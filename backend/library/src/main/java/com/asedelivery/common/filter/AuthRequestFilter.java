@@ -1,4 +1,4 @@
-package com.asedelivery.backend.filter;
+package com.asedelivery.common.filter;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -12,8 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.asedelivery.backend.auth.AuthService;
-import com.asedelivery.backend.auth.jwt.JwtUtil;
+import com.asedelivery.common.auth.jwt.JwtUtil;
+import com.asedelivery.common.auth.AuthService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

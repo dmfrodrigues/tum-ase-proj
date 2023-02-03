@@ -1,4 +1,4 @@
-package com.asedelivery.backend.controller;
+package com.asedelivery.auth.controller;
 
 import java.util.Optional;
 
@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.asedelivery.backend.auth.AuthService;
-
+import com.asedelivery.auth.service.AuthServiceAuth;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthController {
 
     @Autowired
-    private AuthService authService;
+    private AuthServiceAuth authService;
 
     @PostMapping
     public ResponseEntity<String> login(

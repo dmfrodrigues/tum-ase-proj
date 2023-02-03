@@ -1,4 +1,4 @@
-package com.asedelivery.backend.auth;
+package com.asedelivery.auth.service;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -13,23 +13,25 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.asedelivery.backend.auth.jwt.JwtUtil;
-import com.asedelivery.backend.model.Principal;
-import com.asedelivery.backend.model.Token;
-import com.asedelivery.backend.model.repo.PrincipalRepository;
-import com.asedelivery.backend.model.repo.TokenRepository;
+import com.asedelivery.auth.model.Principal;
+import com.asedelivery.auth.model.Token;
+import com.asedelivery.auth.model.repo.PrincipalRepository;
+import com.asedelivery.auth.model.repo.TokenRepository;
+import com.asedelivery.common.auth.AuthService;
+import com.asedelivery.common.auth.jwt.JwtUtil;
 
 /**
  * The AuthService and AuthService thing is actually a workaround to avoid
  * circular Bean dependencies.
  */
 @RestController
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceAuth implements AuthService, UserDetailsService {
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -92,7 +94,6 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    @Override
     public ResponseEntity<String> authenticateUserWithApiToken(String apiToken) {
         UserDetails user = loadUserByApiToken(apiToken);
         if (user == null) {

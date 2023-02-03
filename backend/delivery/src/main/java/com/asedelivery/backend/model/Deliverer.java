@@ -2,7 +2,7 @@ package com.asedelivery.backend.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.asedelivery.backend.model.Principal.Role;
+import com.asedelivery.common.model.Role;
 
 @Document("agent")
 public class Deliverer extends Person {

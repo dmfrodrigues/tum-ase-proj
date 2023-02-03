@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.asedelivery.backend.filter.AuthRequestFilter;
+import com.asedelivery.common.filter.AuthRequestFilter;
 
 @Configuration
 @EnableWebSecurity

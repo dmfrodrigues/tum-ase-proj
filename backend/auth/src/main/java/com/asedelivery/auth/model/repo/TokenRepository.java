@@ -1,8 +1,10 @@
-package com.asedelivery.backend.model.repo;
+package com.asedelivery.auth.model.repo;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.asedelivery.backend.model.Token;
+import com.asedelivery.auth.model.Token;
+
+
 
 public interface TokenRepository extends MongoRepository<Token, String> {
 

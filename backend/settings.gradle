@@ -1,3 +1,5 @@
 rootProject.name = 'asedelivery-backend'
 
-include 'delivery', 'auth', 'library'
+include(':delivery')
+include(':auth')
+include(':library')

@@ -7,17 +7,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import com.asedelivery.backend.model.Dispatcher;
-import com.asedelivery.backend.model.Principal;
 import com.asedelivery.backend.model.repo.DispatcherRepository;
-import com.asedelivery.backend.model.repo.PrincipalRepository;
 
 @Component
 public class SeederAdmin implements CommandLineRunner {
     @Autowired
     DispatcherRepository dispatcherRepo;
 
-    @Autowired
-    PrincipalRepository principalRepo;
+    // @Autowired
+    // PrincipalRepository principalRepo;
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -28,13 +26,15 @@ public class SeederAdmin implements CommandLineRunner {
     }
 
     private void seed() {
-        if(principalRepo.findByUsername("admin").isPresent()) return;
+        // TODO: save principal
+
+        // if(principalRepo.findByUsername("admin").isPresent()) return;
 
         String password = System.getenv("BACKEND_ADMIN_PASSWORD");
         Assert.notNull(password, "Admin password is null");
 
         Dispatcher admin = dispatcherRepo.save(new Dispatcher("admin", "Admin", "asedelivery@gmail.com"));
-        principalRepo.save(new Principal(admin.getId(), admin.getRole(), admin.getUsername(), bCryptPasswordEncoder.encode(password)));
+        // principalRepo.save(new Principal(admin.getId(), admin.getRole(), admin.getUsername(), bCryptPasswordEncoder.encode(password)));
 
         System.out.println("DB seeded with admin");
     }

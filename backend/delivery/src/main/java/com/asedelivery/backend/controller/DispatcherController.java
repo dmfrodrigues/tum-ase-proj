@@ -15,10 +15,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.asedelivery.backend.email.Email;
 import com.asedelivery.backend.model.Dispatcher;
-import com.asedelivery.backend.model.Principal;
 import com.asedelivery.backend.model.repo.DispatcherRepository;
-import com.asedelivery.backend.model.repo.PrincipalRepository;
 import com.asedelivery.backend.service.EmailService;
+import com.asedelivery.common.model.Role;
 
 import jakarta.mail.MessagingException;
 
@@ -29,27 +28,28 @@ public class DispatcherController {
     @Autowired
     DispatcherRepository dispatcherRepo;
 
-    @Autowired
-    PrincipalRepository principalRepo;
+    // @Autowired
+    // PrincipalRepository principalRepo;
 
     @Autowired
     EmailService emailService;
 
     @GetMapping("")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public List<Dispatcher> getDispatcher() {
         return dispatcherRepo.findAll();
     }
 
     @PutMapping("")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public Dispatcher putDispatcher(
             @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password,
             @RequestParam(value = "name") String name,
             @RequestParam(value = "email") String email) {
         Dispatcher ret = dispatcherRepo.save(new Dispatcher(username, name, email));
-        principalRepo.save(new Principal(ret.getId(), ret.getRole(), username, password));
+        // TODO: save principal
+        // principalRepo.save(new Principal(ret.getId(), ret.getRole(), username, password));
         
         try {
             Email mail = emailService.createRegistrationEmail(
@@ -68,7 +68,7 @@ public class DispatcherController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public void delDispatcher(@PathVariable String id) {
         if (!dispatcherRepo.existsById(id))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

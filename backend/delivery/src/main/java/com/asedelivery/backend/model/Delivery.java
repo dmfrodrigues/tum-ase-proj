@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.asedelivery.backend.model.Principal.Role;
+import com.asedelivery.common.model.Role;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerator;

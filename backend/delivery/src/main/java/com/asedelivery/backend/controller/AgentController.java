@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.asedelivery.backend.model.Agent;
-import com.asedelivery.backend.model.Principal;
 import com.asedelivery.backend.model.repo.AgentRepository;
+import com.asedelivery.common.model.Role;
 
 @RestController
 @RequestMapping("/agent")
@@ -23,14 +23,14 @@ public class AgentController {
     AgentRepository agentRepo;
 
     @GetMapping("")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public List<Agent> getAgent() {
         return agentRepo.findAll();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize(
-        "hasRole('" + Principal.Role.DISPATCHER_STR + "') or " +
+        "hasRole('" + Role.DISPATCHER_STR + "') or " +
         "principal.username == #id"
     )
     public Agent getAgentByID(@PathVariable String id) {
@@ -39,7 +39,7 @@ public class AgentController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public void delAgent(@PathVariable String id) {
         if (!agentRepo.existsById(id))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

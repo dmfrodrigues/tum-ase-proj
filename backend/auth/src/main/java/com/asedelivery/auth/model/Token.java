@@ -1,4 +1,4 @@
-package com.asedelivery.backend.model;
+package com.asedelivery.auth.model;
 
 import java.security.SecureRandom;
 import java.util.Locale;

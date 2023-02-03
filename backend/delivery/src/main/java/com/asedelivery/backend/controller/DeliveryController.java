@@ -27,8 +27,6 @@ import com.asedelivery.backend.model.Customer;
 import com.asedelivery.backend.model.Deliverer;
 import com.asedelivery.backend.model.Delivery;
 import com.asedelivery.backend.model.Dispatcher;
-import com.asedelivery.backend.model.Principal;
-import com.asedelivery.backend.model.Principal.Role;
 import com.asedelivery.backend.model.repo.AgentRepository;
 import com.asedelivery.backend.model.repo.BoxRepository;
 import com.asedelivery.backend.model.repo.CustomerRepository;
@@ -36,6 +34,7 @@ import com.asedelivery.backend.model.repo.DelivererRepository;
 import com.asedelivery.backend.model.repo.DeliveryRepository;
 import com.asedelivery.backend.model.repo.DispatcherRepository;
 import com.asedelivery.backend.service.EmailService;
+import com.asedelivery.common.model.Role;
 
 import jakarta.mail.MessagingException;
 
@@ -89,12 +88,12 @@ public class DeliveryController {
 
     @GetMapping("/{id}")
     @PostAuthorize(
-        "hasRole('" + Principal.Role.DISPATCHER_STR + "') or " +
+        "hasRole('" + Role.DISPATCHER_STR + "') or " +
         "(" + 
-            "hasRole('" + Principal.Role.DELIVERER_STR + "') and " +
+            "hasRole('" + Role.DELIVERER_STR + "') and " +
             "principal.username == returnObject.deliverer.getId()" +
         ") or (" +
-            "hasRole('" + Principal.Role.CUSTOMER_STR + "') and " +
+            "hasRole('" + Role.CUSTOMER_STR + "') and " +
             "principal.username == returnObject.customer.getId()" +
         ")"
     )
@@ -105,7 +104,7 @@ public class DeliveryController {
     }
 
     @PutMapping("")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public Delivery putDelivery(
         @RequestParam(value = "customerId") String customerId,
         @RequestParam(value = "createdById") String createdById,
@@ -149,8 +148,8 @@ public class DeliveryController {
 
     @PatchMapping("/{id}")
     @PostAuthorize(
-        "hasRole('" + Principal.Role.DISPATCHER_STR + "') or " +
-        "hasRole('" + Principal.Role.DELIVERER_STR  + "')"
+        "hasRole('" + Role.DISPATCHER_STR + "') or " +
+        "hasRole('" + Role.DELIVERER_STR  + "')"
     )
     public Delivery patchDelivery(
         @PathVariable String id,
@@ -258,7 +257,7 @@ public class DeliveryController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('" + Principal.Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public void delDelivery(@PathVariable String id) {
         deliveryRepo.deleteById(id);
     }
