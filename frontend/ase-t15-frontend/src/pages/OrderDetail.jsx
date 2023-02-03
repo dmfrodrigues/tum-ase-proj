@@ -79,7 +79,7 @@ function OrderDetail() {
 			});
 			// set progress bar width  
 			progressBar.style.width =
-				((order_history.status - 1) / (steps.length - 1)) * 50 + "vw";
+				((order_history.status - 1) / (steps.length - 1)) * 55 + "%";
 			// enable disable prev and next buttons
 			if (order_history.status === 1) {
 				progressPrev.disabled = true;

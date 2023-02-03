@@ -1,6 +1,5 @@
 .orderDetailContainer {
-	width: 100vw;
-	height: 100vh;
+	flex: 5;
 }
 
 .orderDetailCaptionContainer {
@@ -12,13 +11,16 @@
 .orderDetailStatusContainer {
 	padding: 1em;
 	padding-top: 4em;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
 }
 
 .orderDetailStatusImgStatusContainer {
 	display: flex;
 	justify-content: space-between;
-	width: calc(50vw + 5em - 30px);
-	left: calc(25vw - 2.5em + 15px);
+	padding-left: 20%;
+	padding-right: 20%;
 	position: relative;
 	padding-bottom: 15px;
 }
@@ -47,28 +49,30 @@
 	height: 5px;
 	width: 0%;
 	top: calc(50% - 2.5px);
-	left: 25vw;
+	left: 22%;
+	right: 88%;
 }
 
 #progress-num {
-	width: 50vw;
-	position: relative;
-	left: 25vw;
 	margin: 0;
 	padding: 0;
 	list-style: none;
 	display: flex;
 	justify-content: space-between;
+	padding-left: 22%;
+	padding-right: 22%;
 }
 
 #progress-num::before {
 	content: "";
 	background-color: lightgray;
 	position: absolute;
-	top: calc(50% - 2.5px);
-	left: 0;
 	height: 5px;
-	width: 50vw;
+	width: 0%;
+	top: calc(50% - 2.5px);
+	left: 22%;
+	right: 88%;
+	width: 55%;
 	z-index: -1;
 }
 
@@ -98,13 +102,10 @@
 
 
 .bottomContainer {
-	padding-top: 4em;
 	display: flex;
-	justify-content: space-around;
-	width: 60vw;
-	left: 20vw;
-	position: relative;
-
+	justify-content: center;
+	text-align: center;
+	align-items: flex-start;
 }
 
 
@@ -222,7 +223,6 @@
 
 .orderContainer {
 	display: inline-block;
-	width: 80em;
 	text-align: center;
 	padding: 20px;
 	margin: 20px;
