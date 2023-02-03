@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,6 @@ import com.asedelivery.backend.model.repo.BoxRepository;
 import com.asedelivery.backend.model.repo.DeliveryRepository;
 import com.asedelivery.backend.service.AuthServiceDelivery;
 import com.asedelivery.backend.service.EmailService;
-import com.asedelivery.common.auth.AuthService;
 import com.asedelivery.common.auth.jwt.JwtUtil;
 import com.asedelivery.common.model.Role;
 
@@ -38,9 +38,6 @@ import jakarta.mail.MessagingException;
 public class BoxController {
     @Autowired
     BoxRepository boxRepo;
-
-    // @Autowired
-    // PrincipalRepository principalRepo;
 
     @Autowired
     DeliveryRepository deliveryRepo;
@@ -63,12 +60,12 @@ public class BoxController {
     @PutMapping("")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public Box putBox(
+            @CookieValue("jwt") String jwt,
             @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password,
             @RequestParam(value = "address") String address) {
         Box ret = boxRepo.save(new Box(username, address));
-        // TODO: save principal
-        // principalRepo.save(new Principal(ret.getId(), ret.getRole(), username, password));
+        authService.putPrincipal(jwt, ret.getId(), ret.getRole(), username, password);
         return ret;
     }
 
