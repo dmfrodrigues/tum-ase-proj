@@ -37,8 +37,6 @@ public class AuthRequestFilter extends OncePerRequestFilter {
         String username = null;
         Collection<? extends GrantedAuthority> authorities = null;
         String jwt = null;
-        final String authHeader = request.getHeader("Authorization");
-        final String apiToken = request.getHeader(AuthService.API_TOKEN_HEADER);
         final Cookie[] cookies = request.getCookies();
         if(cookies != null){
             Map<String, String> cookiesMap = new HashMap<>();
