@@ -7,11 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +28,14 @@ import com.asedelivery.backend.service.EmailService;
 import com.asedelivery.common.auth.jwt.JwtUtil;
 import com.asedelivery.common.model.Role;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 
+@Tag(name="Box")
 @RestController
 @RequestMapping("/api/box")
 public class BoxController {
@@ -51,43 +54,46 @@ public class BoxController {
     @Autowired
     EmailService emailService;
 
+    @Operation(summary="Get all boxes")
     @GetMapping("")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public List<Box> getBoxes() {
         return boxRepo.findAll();
     }
 
+    @Operation(summary="Create box")
     @PutMapping("")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public Box putBox(
-            @CookieValue("jwt") String jwt,
-            @RequestParam(value = "username") String username,
-            @RequestParam(value = "password") String password,
-            @RequestParam(value = "address") String address) {
+        @CookieValue("jwt") @Parameter(description="JWT token") String jwt,
+        @RequestParam(value = "username") @Parameter(description="New box username") String username,
+        @RequestParam(value = "password") @Parameter(description="New box password") String password,
+        @RequestParam(value = "address") @Parameter(description="New box address") String address
+    ){
         Box ret = boxRepo.save(new Box(username, address));
         authService.putPrincipal(jwt, ret.getId(), ret.getRole(), username, password);
         return ret;
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
-    public void delCustomer(@PathVariable String id) {
-        if (!boxRepo.existsById(id))
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        else
-            boxRepo.deleteById(id);
-    }
-
+    @Operation(summary="Open a box")
+    @ApiResponses(value = { 
+        @ApiResponse(
+            responseCode = "200",
+            description = "Boolean, indicating if the box can be opened or not"
+        )
+    })
     @PostMapping("/{id}/open")
-    @PreAuthorize("hasRole('" + Role.BOX_STR + "')")
+    @PreAuthorize(
+        "hasRole('" + Role.BOX_STR + "') and" +
+        "principal.username == #boxId"
+    )
     public Boolean canOpenBox(
-        @RequestParam(value = "token") String token
+        @PathVariable @Parameter(description="Box ID") String boxId,
+        @RequestParam(value = "token") @Parameter(description="Token of user trying to open the box") String token
     ){
         ResponseEntity<String> response = authService.authenticateUserWithApiToken(token);
         if(response.getStatusCode() != HttpStatus.OK) return false;
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String boxId = auth.getName();
+  
         Box box = boxRepo.findById(boxId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 

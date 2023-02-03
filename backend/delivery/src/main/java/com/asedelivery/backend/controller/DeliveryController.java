@@ -36,8 +36,12 @@ import com.asedelivery.backend.model.repo.DispatcherRepository;
 import com.asedelivery.backend.service.EmailService;
 import com.asedelivery.common.model.Role;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 
+@Tag(name="Delivery")
 @RestController
 @RequestMapping("/api/delivery")
 public class DeliveryController {
@@ -62,6 +66,7 @@ public class DeliveryController {
     @Autowired
     EmailService emailService;
 
+    @Operation(summary="Get all deliveries")
     @GetMapping("")
     public List<Delivery> getDeliveries() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -86,6 +91,7 @@ public class DeliveryController {
         }
     }
 
+    @Operation(summary="Get delivery")
     @GetMapping("/{id}")
     @PostAuthorize(
         "hasRole('" + Role.DISPATCHER_STR + "') or " +
@@ -97,20 +103,26 @@ public class DeliveryController {
             "principal.username == returnObject.customer.getId()" +
         ")"
     )
-    public Delivery getDeliveryById(@PathVariable String id) {
+    public Delivery getDeliveryById(
+        @PathVariable @Parameter(description="Delivery ID") String id
+    ) {
         Delivery delivery = deliveryRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return delivery;
     }
 
+    @Operation(summary="Create delivery")
     @PutMapping("")
-    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
+    @PreAuthorize(
+        "hasRole('" + Role.DISPATCHER_STR + "') and " +
+        "principal.username == #createdById"
+    )
     public Delivery putDelivery(
-        @RequestParam(value = "customerId") String customerId,
-        @RequestParam(value = "createdById") String createdById,
-        @RequestParam(value = "delivererId") String delivererId,
-        @RequestParam(value = "pickupAddress") String pickupAddress,
-        @RequestParam(value = "boxId") String boxId
+        @RequestParam(value = "customerId") @Parameter(description="Customer that ordered the delivery") String customerId,
+        @RequestParam(value = "createdById") @Parameter(description="Dispatcher that created the delivery") String createdById,
+        @RequestParam(value = "delivererId") @Parameter(description="Deliverer responsible for the delivery") String delivererId,
+        @RequestParam(value = "pickupAddress") @Parameter(description="Delivery pick-up address") String pickupAddress,
+        @RequestParam(value = "boxId") @Parameter(description="Box where delivery will be delivered") String boxId
     ) {
         Customer customer = customerRepo.findById(customerId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer not found"));
@@ -146,6 +158,7 @@ public class DeliveryController {
         return delivery;
     }
 
+    @Operation(summary="Modify delivery")
     @PatchMapping("/{id}")
     @PostAuthorize(
         "hasRole('" + Role.DISPATCHER_STR + "') or " +
@@ -153,13 +166,13 @@ public class DeliveryController {
     )
     public Delivery patchDelivery(
         @PathVariable String id,
-        @RequestParam(value = "customerId") Optional<String> customerId,
-        @RequestParam(value = "createdById") Optional<String> createdById,
-        @RequestParam(value = "delivererId") Optional<String> delivererId,
-        @RequestParam(value = "pickupAddress") Optional<String> pickupAddress,
-        @RequestParam(value = "boxId") Optional<String> boxId,
-        @RequestParam(value = "state") Optional<Delivery.State> state,
-        @RequestParam(value = "events") Optional<SortedSet<Delivery.Event>> events
+        @RequestParam(value = "customerId") @Parameter(description="Customer") Optional<String> customerId,
+        @RequestParam(value = "createdById") @Parameter(description="Dispatcher") Optional<String> createdById,
+        @RequestParam(value = "delivererId") @Parameter(description="Deliverer") Optional<String> delivererId,
+        @RequestParam(value = "pickupAddress") @Parameter(description="Pick-up address") Optional<String> pickupAddress,
+        @RequestParam(value = "boxId") @Parameter(description="Box") Optional<String> boxId,
+        @RequestParam(value = "state") @Parameter(description="State that the delivery is now on") Optional<Delivery.State> state,
+        @RequestParam(value = "events") @Parameter(description="To change the sequence of events of a delivery") Optional<SortedSet<Delivery.Event>> events
     ){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String authority = auth.getAuthorities().iterator().next().getAuthority();
@@ -256,9 +269,12 @@ public class DeliveryController {
         return delivery;
     }
 
+    @Operation(summary="Delete delivery")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
-    public void delDelivery(@PathVariable String id) {
+    public void delDelivery(
+        @PathVariable @Parameter(description="Delivery ID") String id
+    ) {
         deliveryRepo.deleteById(id);
     }
 }
