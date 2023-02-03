@@ -11,10 +11,56 @@ services:
     ports:
       - 8001:3000
 
+  delivery:
+    container_name: delivery
+    build:
+      context: backend
+      dockerfile: delivery.Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8002:80
+    environment:
+      FRONTEND_ADDRESS: http://localhost
+      MONGO_INITDB_ROOT_PASSWORD: password
+      EMAIL_HOST: mailhog
+      EMAIL_PORT: 1025
+      EMAIL_ADDRESS: asedelivery@mailhog.com
+      EMAIL_USERNAME: user123
+      EMAIL_PASSWORD: 1234
+    volumes:
+      - ./backend/delivery/src:/app/delivery/src
+      - ./backend/delivery/build.gradle:/app/delivery/build.gradle
+      - ./backend/library/src:/app/library/src
+      - ./backend/library/build.gradle:/app/library/build.gradle
+    command: ["/run.dev.sh", "delivery"]
+  
+  auth:
+    container_name: auth
+    build:
+      context: backend
+      dockerfile: auth.Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8003:80
+    environment:
+      FRONTEND_ADDRESS: http://localhost
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./backend/auth/src:/app/auth/src
+      - ./backend/auth/build.gradle:/app/auth/build.gradle
+      - ./backend/library/src:/app/library/src
+      - ./backend/library/build.gradle:/app/library/build.gradle
+    command: ["/run.dev.sh", "auth"]
+
+
   db:
     image: mongo:6.0
     ports:
-      - 8003:27017
+      - 8004:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
@@ -25,6 +71,17 @@ services:
       retries: 5
     logging:
       driver: none
+  
+  db-seed:
+    build: db/seed
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      MONGO_HOST: db
+      MONGO_DB: asedelivery
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
 
   db-admin:
     image: mongo-express:latest
@@ -33,34 +90,13 @@ services:
       db:
         condition: service_healthy
     ports:
-      - 8004:8081
+      - 8005:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
       ME_CONFIG_MONGODB_URL: mongodb://root:password@db:27017/
     logging:
       driver: none
-
-
-  backend:
-    build: backend
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - 8002:80
-    environment:
-      BACKEND_ADMIN_PASSWORD: 1234
-      FRONTEND_ADDRESS: http://localhost
-      MONGO_INITDB_ROOT_PASSWORD: password
-      EMAIL_HOST: mailhog
-      EMAIL_PORT: 1025
-      EMAIL_ADDRESS: asedelivery@mailhog.com
-      EMAIL_USERNAME: user123
-      EMAIL_PASSWORD: 1234
-    volumes:
-      - ./backend/src:/app/src
-    command: "/run.dev.sh"
 
   mailhog:
     build: mailhog
