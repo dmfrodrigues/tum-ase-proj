@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                     .requestMatchers("/swagger-ui/**").permitAll()
                     .requestMatchers("/v3/api-docs/**").permitAll()
-                    .requestMatchers("/**").authenticated()
+                    .requestMatchers("/api/**").authenticated()
                 .and()
                 .sessionManagement().disable()
                 .addFilterBefore(authRequestFilter, UsernamePasswordAuthenticationFilter.class);
