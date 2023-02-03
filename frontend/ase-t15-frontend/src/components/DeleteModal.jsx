@@ -22,6 +22,9 @@ function DeleteModal({ text }) {
                 <Modal.Header closeButton>
                     <Modal.Title>{text}</Modal.Title>
                 </Modal.Header>
+                <Modal.Body>
+                    Are you sure that you want to delete?
+                </Modal.Body>
                 <Modal.Footer>
                     <Button variant="outline-secondary" size="sm" onClick={handleClose}>
                         Close

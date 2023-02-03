@@ -62,32 +62,6 @@ function NewOrder({ customers, dispatchers, boxes }) {
                                 }
                             </Form.Select>
                         </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="formBasicStatus">
-                            <Form.Label>Select Status</Form.Label>
-                            <Form.Check
-                                type="radio"
-                                id="radio-1"
-                                value="pending"
-                                name="formBasicStatus"
-                                label={`Pending`}
-                            />
-                            <Form.Check
-                                type="radio"
-                                id="radio-2"
-                                value="canceled"
-                                name="formBasicStatus"
-                                label={`Canceled`}
-                            />
-                            <Form.Check
-                                type="radio"
-                                id="radio-3"
-                                value="delivered"
-                                name="formBasicStatus"
-                                label={`Delivered`}
-                            />
-
-                        </Form.Group>
                     </Form>
 
                 </Modal.Body>

@@ -40,7 +40,7 @@ function NewUser() {
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Insert one time Password</Form.Label>
+                            <Form.Label>Insert Password</Form.Label>
                             <Form.Control type="password" placeholder="Enter password" />
                         </Form.Group>
 
