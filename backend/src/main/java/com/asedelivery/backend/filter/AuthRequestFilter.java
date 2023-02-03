@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -58,14 +57,6 @@ public class AuthRequestFilter extends OncePerRequestFilter {
                 // Extract the username from the JWT token.
                 username = jwtUtil.extractUsername(jwt);
                 authorities = jwtUtil.extractUserRoles(jwt);
-            }
-        } else {
-            // No valid authentication, No go
-            if (
-                (authHeader == null || !authHeader.startsWith("Basic")) &&
-                apiToken == null
-            ) {
-                response.sendError(HttpStatus.BAD_REQUEST.value(), "No JWT Token, API Token or Basic Auth Info Found");
             }
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
