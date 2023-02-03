@@ -4,10 +4,8 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.asedelivery.backend.model.Box;
 import com.asedelivery.backend.model.Customer;
 import com.asedelivery.backend.model.Deliverer;
 import com.asedelivery.backend.model.Delivery;
