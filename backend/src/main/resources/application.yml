@@ -1,2 +1,33 @@
 server:
   port: 80
+
+frontend:
+  address: ${FRONTEND_ADDRESS}
+
+spring:
+  data:
+    mongodb:
+      host: db
+      authentication-database: admin
+      database: asedelivery
+      username: root
+      password: ${MONGO_INITDB_ROOT_PASSWORD}
+
+  keys:
+    keystore:
+      path: src/main/resources/ase_project.keystore
+
+  mail:
+    protocol: smtp
+    host: ${EMAIL_HOST}
+    port: ${EMAIL_PORT}
+    from: ${EMAIL_ADDRESS}
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+

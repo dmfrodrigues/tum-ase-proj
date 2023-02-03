@@ -33,10 +33,6 @@ build-backend:
   stage: build
   extends: .login-cr
   script:
-    - cd backend
-    - chmod 755 gradlew
-    - ./gradlew build
-    - cd ..
     - docker build -t $CI_REPO/backend:$CI_COMMIT_SHA backend
     - docker push $CI_REPO/backend:$CI_COMMIT_SHA
 
@@ -65,8 +61,8 @@ deploy-stag:
   extends: .deploy
   variables:
     SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY_STAG
-    USER: ase
-    HOST: tum-ase.westeurope.cloudapp.azure.com
+    USER: ubuntu
+    HOST: 138.246.237.201
     DEPLOYMENT_PATH: /deployments/stag
   script:
     - !reference [.deploy, script]
@@ -79,8 +75,8 @@ deploy-prod:
   extends: .deploy
   variables:
     SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY_PROD
-    USER: ase
-    HOST: tum-ase.westeurope.cloudapp.azure.com
+    USER: ubuntu
+    HOST: 138.246.237.201
     DEPLOYMENT_PATH: /deployments/prod
   script:
     - !reference [.deploy, script]

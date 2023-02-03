@@ -26,7 +26,7 @@ function OrderList() {
       width: 150,
       renderCell: (params) => {
         return (
-          <Link to={"/order/" + params.row.id}>
+          <Link to={"/orders/" + params.row.id}>
             <div className="orderListItem">
               <OrderIcon status={params.row.status} />
             </div>
