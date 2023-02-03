@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.asedelivery.auth.service.AuthServiceAuth;
+import com.asedelivery.common.auth.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +27,7 @@ public class AuthController {
     @PostMapping
     public ResponseEntity<String> login(
         @RequestHeader("Authorization") Optional<String> authorization,
-        @RequestHeader("X-API-TOKEN") Optional<String> apiToken,
+        @RequestHeader(AuthService.API_TOKEN_HEADER) Optional<String> apiToken,
         HttpServletRequest request,
         HttpServletResponse response
     ) throws Exception {

@@ -86,7 +86,6 @@ public class BoxController {
     public Boolean canOpenBox(
         @RequestParam(value = "token") String token
     ){
-        // TODO
         ResponseEntity<String> response = authService.authenticateUserWithApiToken(token);
         if(response.getStatusCode() != HttpStatus.OK) return false;
 
