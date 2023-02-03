@@ -71,6 +71,9 @@ services:
       EMAIL_PASSWORD: 1234
     volumes:
       - ./backend/delivery/src:/app/delivery/src
+      - ./backend/delivery/build.gradle:/app/delivery/build.gradle
+      - ./backend/library/src:/app/library/src
+      - ./backend/library/build.gradle:/app/library/build.gradle
     command: "/run.dev.sh"
 
   mailhog:

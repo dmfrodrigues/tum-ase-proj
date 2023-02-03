@@ -21,6 +21,6 @@ RUN chmod +x gradlew
 
 WORKDIR /app
 
-RUN ../gradlew assemble
+RUN ./gradlew delivery:assemble
 
-CMD ["../gradlew", "bootRun"]
+CMD ["./gradlew", "delivery:bootRun"]
