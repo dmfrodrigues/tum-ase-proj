@@ -1,1 +1,3 @@
 rootProject.name = 'asedelivery-backend'
+
+include 'delivery'

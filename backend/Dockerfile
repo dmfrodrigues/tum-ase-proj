@@ -19,4 +19,6 @@ RUN mv gradle/wrapper/gradle-wrapper.docker.properties \
        gradle/wrapper/gradle-wrapper.properties
 RUN chmod +x gradlew
 
-CMD ["./gradlew", "bootRun"]
+WORKDIR /app/delivery
+
+CMD ["../gradlew", "bootRun"]

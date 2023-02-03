@@ -59,7 +59,7 @@ services:
       EMAIL_USERNAME: user123
       EMAIL_PASSWORD: 1234
     volumes:
-      - ./backend/src:/app/src
+      - ./backend/delivery/src:/app/delivery/src
     command: "/run.dev.sh"
 
   mailhog:
