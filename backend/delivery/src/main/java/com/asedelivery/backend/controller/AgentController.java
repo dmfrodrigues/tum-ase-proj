@@ -16,7 +16,7 @@ import com.asedelivery.backend.model.repo.AgentRepository;
 import com.asedelivery.common.model.Role;
 
 @RestController
-@RequestMapping("/agent")
+@RequestMapping("/api/agent")
 public class AgentController {
 
     @Autowired

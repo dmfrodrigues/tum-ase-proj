@@ -39,7 +39,7 @@ import com.asedelivery.common.model.Role;
 import jakarta.mail.MessagingException;
 
 @RestController
-@RequestMapping("/delivery")
+@RequestMapping("/api/delivery")
 public class DeliveryController {
     @Autowired
     DeliveryRepository deliveryRepo;

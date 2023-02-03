@@ -34,7 +34,7 @@ import com.asedelivery.common.model.Role;
 import jakarta.mail.MessagingException;
 
 @RestController
-@RequestMapping("/box")
+@RequestMapping("/api/box")
 public class BoxController {
     @Autowired
     BoxRepository boxRepo;

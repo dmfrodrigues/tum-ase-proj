@@ -24,7 +24,7 @@ import com.asedelivery.common.model.Role;
 import jakarta.mail.MessagingException;
 
 @RestController
-@RequestMapping("/deliverer")
+@RequestMapping("/api/deliverer")
 public class DelivererController {
 
     @Autowired
