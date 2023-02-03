@@ -1,0 +1,56 @@
+[
+    {
+        "_id": {
+            "$oid": "63dd3d452bda2b1a5055a54c"
+        },
+        "role": "DISPATCHER",
+        "username": "dmfr",
+        "password": "$2a$10$gAtl8/k1bylcYrgjeXu6vOVz0y8fU6VUwbd8Y0qJ5br1WdPaWGDQq",
+        "_class": "com.asedelivery.backend.model.Principal"
+    },
+    {
+        "_id": {
+            "$oid": "63dd3d452bda2b1a5055a54d"
+        },
+        "role": "DELIVERER",
+        "username": "lucas",
+        "password": "$2a$10$ftYrbsZ3krf.fp088jKvf.S7eVs55Hyb50uhB36K4geN0e6nuS15W",
+        "_class": "com.asedelivery.backend.model.Principal"
+    },
+    {
+        "_id": {
+            "$oid": "63dd3d452bda2b1a5055a54e"
+        },
+        "role": "DELIVERER",
+        "username": "martin",
+        "password": "$2a$10$yUmxRpXbvmMiZKgUxlLX2ez8/.3Xqy3D6RAa5w2d.bDd.t8qGeTF2",
+        "_class": "com.asedelivery.backend.model.Principal"
+    },
+    {
+        "_id": {
+            "$oid": "63dd3d462bda2b1a5055a54f"
+        },
+        "role": "CUSTOMER",
+        "username": "mocho",
+        "password": "$2a$10$V47IY.zMMLwdHoxoqgeISuMOen9f56b0.Hj6/bQL3BG8HvHk4nAga",
+        "_class": "com.asedelivery.backend.model.Principal"
+    },
+    {
+        "_id": {
+            "$oid": "63dd3d462bda2b1a5055a550"
+        },
+        "role": "BOX",
+        "username": "garching1",
+        "password": "$2a$10$v8/bwIMc7qOqEPNyj7e5C.Ixw.kqupsiffLfEiG.NjzF0LDOr8N/C",
+        "_class": "com.asedelivery.backend.model.Principal"
+    },
+    {
+        "_id": {
+            "$oid": "63dd3d462bda2b1a5055a553"
+        },
+        "role": "DISPATCHER",
+        "username": "admin",
+        "password": "$2a$10$hT84KgqvyYHFodzoE2HFJujjCK80Qq4CWUH53f2g0K7Pmbc1P.FrG",
+        "_class": "com.asedelivery.backend.model.Principal"
+    }
+]

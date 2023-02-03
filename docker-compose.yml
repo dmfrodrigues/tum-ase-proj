@@ -25,6 +25,17 @@ services:
       retries: 5
     logging:
       driver: none
+  
+  db-seed:
+    build: db/seed
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      MONGO_HOST: db
+      MONGO_DB: asedelivery
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
 
   db-admin:
     image: mongo-express:latest

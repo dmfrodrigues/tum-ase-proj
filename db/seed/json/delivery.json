@@ -1,0 +1,74 @@
+[
+    {
+        "_id": {
+            "$oid": "63dd3d462bda2b1a5055a551"
+        },
+        "customer": {
+            "$oid": "63dd3d462bda2b1a5055a54f"
+        },
+        "box": {
+            "$oid": "63dd3d462bda2b1a5055a550"
+        },
+        "createdBy": {
+            "$oid": "63dd3d452bda2b1a5055a54c"
+        },
+        "deliverer": {
+            "$oid": "63dd3d452bda2b1a5055a54d"
+        },
+        "pickupAddress": "Lichtenbergstr. 6\n85748 Garching bei München",
+        "events": [
+            {
+                "date": {
+                    "$date": "2023-01-15T16:32:54Z"
+                },
+                "state": "ORDERED"
+            },
+            {
+                "date": {
+                    "$date": "2023-01-20T09:18:27Z"
+                },
+                "state": "PICKED_UP"
+            }
+        ],
+        "_class": "com.asedelivery.backend.model.Delivery"
+    },
+    {
+        "_id": {
+            "$oid": "63dd3d462bda2b1a5055a552"
+        },
+        "customer": {
+            "$oid": "63dd3d462bda2b1a5055a54f"
+        },
+        "box": {
+            "$oid": "63dd3d462bda2b1a5055a550"
+        },
+        "createdBy": {
+            "$oid": "63dd3d452bda2b1a5055a54c"
+        },
+        "deliverer": {
+            "$oid": "63dd3d452bda2b1a5055a54d"
+        },
+        "pickupAddress": "Lichtenbergstr. 6\n85748 Garching bei München",
+        "events": [
+            {
+                "date": {
+                    "$date": "2023-01-16T16:32:54Z"
+                },
+                "state": "ORDERED"
+            },
+            {
+                "date": {
+                    "$date": "2023-01-21T09:18:27Z"
+                },
+                "state": "PICKED_UP"
+            },
+            {
+                "date": {
+                    "$date": "2023-01-28T09:18:27Z"
+                },
+                "state": "DELIVERED"
+            }
+        ],
+        "_class": "com.asedelivery.backend.model.Delivery"
+    }
+]
