@@ -14,13 +14,13 @@ COPY run.dev.sh watch_changes.sh /
 RUN chmod 755 /*.sh
 
 # Copy
-COPY . .
+COPY gradle gradle
+COPY library library
+COPY delivery delivery
+COPY gradlew gradlew.bat run.dev.sh settings.gradle watch_changes.sh ./
+
 RUN mv gradle/wrapper/gradle-wrapper.docker.properties \
        gradle/wrapper/gradle-wrapper.properties
 RUN chmod +x gradlew
-
-WORKDIR /app
-
-RUN ./gradlew delivery:assemble
 
 CMD ["./gradlew", "delivery:bootRun"]

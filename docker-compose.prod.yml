@@ -37,7 +37,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      BACKEND_ADMIN_PASSWORD: ${BACKEND_ADMIN_PASSWORD}
+      # BACKEND_ADMIN_PASSWORD: ${BACKEND_ADMIN_PASSWORD}
       FRONTEND_ADDRESS: http://www.coolwebsite.com
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       EMAIL_HOST: smtp.gmail.com

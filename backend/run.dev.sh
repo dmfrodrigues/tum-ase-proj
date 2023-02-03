@@ -2,6 +2,6 @@
 
 chmod 755 ./gradlew
 
-./watch_changes.sh ./gradlew delivery:bootJar --build-cache &
+./watch_changes.sh ./gradlew $1:bootJar --build-cache &
 
-./gradlew delivery:bootRun
+./gradlew $1:bootRun
