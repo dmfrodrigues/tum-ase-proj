@@ -28,7 +28,7 @@ public class SeederAdmin implements CommandLineRunner {
     private void seed() {
         // TODO: save principal
 
-        // if(principalRepo.findByUsername("admin").isPresent()) return;
+        if(dispatcherRepo.findByUsername("admin").isPresent()) return;
 
         String password = System.getenv("BACKEND_ADMIN_PASSWORD");
         Assert.notNull(password, "Admin password is null");
