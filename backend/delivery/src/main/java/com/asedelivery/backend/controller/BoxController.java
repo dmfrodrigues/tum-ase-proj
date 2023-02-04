@@ -115,7 +115,7 @@ public class BoxController {
     @PostMapping("/{id}/open")
     @PreAuthorize(
         "hasRole('" + Role.BOX_STR + "') and" +
-        "principal.username == #boxId"
+        "principal == #boxId"
     )
     public Boolean canOpenBox(
         @PathVariable @Parameter(description="Box ID") String boxId,
