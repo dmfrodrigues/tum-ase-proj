@@ -40,19 +40,17 @@ CMD ["/run.dev.sh", "delivery"]
 
 
 FROM api-gateway AS api-gateway-prod
-RUN ./gradlew api-gateway:assemble
+# RUN ./gradlew api-gateway:assemble
 CMD ["./gradlew", "api-gateway:bootRun"]
 
 FROM service-registry AS service-registry-prod
-RUN ./gradlew service-registry:assemble
+# RUN ./gradlew service-registry:assemble
 CMD ["./gradlew", "service-registry:bootRun"]
 
 FROM auth AS auth-prod
-RUN ./gradlew auth:assemble
+# RUN ./gradlew auth:assemble
 CMD ["./gradlew", "auth:bootRun"]
 
 FROM delivery AS delivery-prod
-COPY library library
-COPY delivery delivery
-RUN ./gradlew delivery:assemble
+# RUN ./gradlew delivery:assemble
 CMD ["./gradlew", "delivery:bootRun"]
