@@ -1,6 +1,7 @@
 package com.asedelivery.auth.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.asedelivery.common.model.Role;
@@ -13,6 +14,7 @@ public class Principal {
 
     public Role role;
 
+    @Indexed(unique = true)
     private String username;
 
     public String password;
