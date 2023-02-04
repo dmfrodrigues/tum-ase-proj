@@ -100,6 +100,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: asedelivery
     healthcheck:
       test: test -f healthcheck.txt || (echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet && touch healthcheck.txt)
       start_period: 5s

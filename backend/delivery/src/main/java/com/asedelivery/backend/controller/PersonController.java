@@ -1,11 +1,14 @@
 package com.asedelivery.backend.controller;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.asedelivery.backend.email.Email;
-import com.asedelivery.backend.model.Customer;
 import com.asedelivery.backend.model.Person;
+import com.asedelivery.backend.model.repo.AgentRepository;
 import com.asedelivery.backend.model.repo.PersonRepository;
 import com.asedelivery.backend.service.AuthServiceDelivery;
 import com.asedelivery.backend.service.EmailService;
@@ -32,6 +35,9 @@ import jakarta.mail.MessagingException;
 public class PersonController {
 
     @Autowired
+    AgentRepository agentRepo;
+
+    @Autowired
     PersonRepository personRepo;
 
     @Autowired
@@ -39,19 +45,32 @@ public class PersonController {
 
     @Autowired
     AuthServiceDelivery authService;
+
+    @Operation(summary="Get all persons")
+    @GetMapping("")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
+    public List<Person> getPerson() {
+        return agentRepo
+            .findAll()
+            .stream()
+            .filter((a) -> a instanceof Person)
+            .map((a) -> (Person)a)
+            .collect(Collectors.toList())
+        ;
+    }
     
-    @Operation(summary="Modify customer")
+    @Operation(summary="Modify person")
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
-    public Person patchCustomer(
+    public Person patchPerson(
         @CookieValue("jwt") @Parameter(description="JWT token") String jwt,
-        @PathVariable @Parameter(description="Customer ID") String customerId,
-        @RequestParam(value = "username") @Parameter(description="Customer username") Optional<String> username,
-        @RequestParam(value = "password") @Parameter(description="Customer password") Optional<String> password,
-        @RequestParam(value = "name") @Parameter(description="Customer name") Optional<String> name,
-        @RequestParam(value = "email") @Parameter(description="Customer email address") Optional<String> email
+        @PathVariable @Parameter(description="Person ID") String personId,
+        @RequestParam(value = "username") @Parameter(description="Person username") Optional<String> username,
+        @RequestParam(value = "password") @Parameter(description="Person password") Optional<String> password,
+        @RequestParam(value = "name") @Parameter(description="Person name") Optional<String> name,
+        @RequestParam(value = "email") @Parameter(description="Person email address") Optional<String> email
     ){
-        Person ret = personRepo.findByIdAndClass(customerId, Customer.class.getName())
+        Person ret = (Person)personRepo.findById(personId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         String oldUsername = ret.username;
@@ -73,7 +92,7 @@ public class PersonController {
             !ret.email   .equals(oldEmail   ) ||
             password.isPresent()
         ){
-            ret = personRepo.save(ret);
+            // ret = personRepo.save(ret);
 
             try {
                 Email mail = emailService.createModifiedPersonEmail(
