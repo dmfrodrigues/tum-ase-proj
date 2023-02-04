@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.asedelivery.auth.service.AuthServiceAuth;
 import com.asedelivery.common.auth.AuthService;
+import com.asedelivery.common.auth.jwt.JwtUtil;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -47,6 +50,7 @@ public class AuthController {
                 jwtCookie.setHttpOnly(true);
                 jwtCookie.setSecure(false);
                 jwtCookie.setPath("/");
+                jwtCookie.setMaxAge((int)(JwtUtil.EXPIRATION_MILLIS / 1000));
                 response.addCookie(jwtCookie);
 
                 return new ResponseEntity<>(HttpStatus.OK);
@@ -54,5 +58,21 @@ public class AuthController {
             
         } catch (UsernameNotFoundException e) {}
         return new ResponseEntity<>("Invalid Login", HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ){
+        Cookie jwtCookie = new Cookie("jwt", null);
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setSecure(false);
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(0);
+
+        response.addCookie(jwtCookie);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
