@@ -62,7 +62,6 @@ public class AuthServiceDelivery implements AuthService {
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
         String authUrl = authServiceUrl();
-        System.out.println("Auth URL = " + authUrl);
 
         ResponseEntity<String> response = restTemplate.postForEntity(
             authUrl + "/api/auth",
