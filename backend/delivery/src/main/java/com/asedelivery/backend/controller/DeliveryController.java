@@ -133,6 +133,13 @@ public class DeliveryController {
         Box box = boxRepo.findById(boxId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Box not found"));
 
+        if(box.customer == null){
+            box.customer = customer;
+            box = boxRepo.save(box);
+        } else if(!box.customer.equals(customer)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Box is already taken by another customer");
+        }
+
         Delivery delivery = deliveryRepo.save(
             new Delivery(
                 customer,
@@ -180,7 +187,10 @@ public class DeliveryController {
         Delivery delivery = deliveryRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if(!delivery.deliverer.getId().equals(auth.getName()))
+        if(
+            authority.equals("ROLE_" + Role.DELIVERER_STR) &&
+            !delivery.deliverer.getId().equals(auth.getName())
+        )
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
         try {
