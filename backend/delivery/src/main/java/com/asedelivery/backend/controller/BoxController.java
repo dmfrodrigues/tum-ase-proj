@@ -119,6 +119,19 @@ public class BoxController {
                         delivery.advanceState();
                     }
                     deliveries = deliveryRepo.saveAll(deliveries);
+
+                    /* If all deliveries of the client in that box have been
+                     * delivered, this box no longer belongs to this user.
+                     */
+                    List<Delivery> boxDeliveries = deliveryRepo
+                        .findByBoxIdAndCustomerId(boxId, userId);
+                    boolean allDeliveriesCompleted = boxDeliveries.stream()
+                        .anyMatch((delivery) -> delivery.getState() == Delivery.State.COMPLETED);
+                    if(allDeliveriesCompleted){
+                        box.customer = null;
+                        box = boxRepo.save(box);
+                    }
+
                     for(Delivery delivery: deliveries){
                         try {
                             Email email = emailService.createCompletedDeliveredEmail(
