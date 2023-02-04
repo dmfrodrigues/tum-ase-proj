@@ -9,6 +9,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import com.asedelivery.backend.email.CompletedDeliveryEmail;
 import com.asedelivery.backend.email.DeliveredDeliveryEmail;
 import com.asedelivery.backend.email.Email;
+import com.asedelivery.backend.email.ModifiedPersonEmail;
 import com.asedelivery.backend.email.NewDeliveryEmail;
 import com.asedelivery.backend.email.RegistrationEmail;
 import com.asedelivery.backend.model.Delivery;
@@ -50,6 +51,27 @@ public class EmailService {
             username,
             password,
             LOGIN_URL
+        );
+    }
+
+    public Email createModifiedPersonEmail(
+        String email,
+        String name,
+        String oldUsername, String newUsername,
+        String oldName, String newName,
+        String oldEmail, String newEmail,
+        String newPassword
+    ) throws MessagingException {
+        return new ModifiedPersonEmail(
+            emailSender,
+            templateEngine,
+            FROM,
+            email,
+            name,
+            oldUsername, newUsername,
+            oldName, newName,
+            oldEmail, newEmail,
+            newPassword
         );
     }
 

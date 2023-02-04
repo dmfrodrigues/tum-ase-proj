@@ -2,6 +2,7 @@ package com.asedelivery.backend.controller;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -72,6 +74,30 @@ public class BoxController {
     ){
         Box ret = boxRepo.save(new Box(username, address));
         authService.putPrincipal(jwt, ret.getId(), ret.getRole(), username, password);
+        return ret;
+    }
+
+    @Operation(summary="Modify box")
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
+    public Box patchBox(
+        @CookieValue("jwt") @Parameter(description="JWT token") String jwt,
+        @PathVariable @Parameter(description="Box ID") String boxId,
+        @RequestParam(value = "username") @Parameter(description="Box username") Optional<String> username,
+        @RequestParam(value = "password") @Parameter(description="Box password") Optional<String> password,
+        @RequestParam(value = "address") @Parameter(description="Box address") Optional<String> address
+    ){
+        Box ret = boxRepo.findByIdAndClass(boxId, Box.class.getName())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        boolean modified = false;
+        if(username.isPresent()){ ret.username = username.get(); modified = true; }
+        if(address .isPresent()){ ret.address  = address .get(); modified = true; }
+        if(modified) ret = boxRepo.save(ret);
+
+        if(password.isPresent())
+            authService.putPrincipal(jwt, ret.getId(), ret.getRole(), ret.username, password.get());
+
         return ret;
     }
 

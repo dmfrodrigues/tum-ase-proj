@@ -18,17 +18,16 @@
 <body>
   <p>Hello <span th:text="${name}"></span>,</p>
 
-  <p>You have been registered to our platform. Your sign-in information is:</p>
+  <p>Your user information has been modified:</p>
 
   <ul>
+    <li>Name: <span th:text="${name}"></span></li>
     <li>Email address: <span th:text="${email}"></span></li>
     <li>Username: <span th:text="${username}"></span></li>
-    <li>Password: <span th:text="${password}"></span></li>
+    <li>New password: <span th:text="${password}"></span></li>
   </ul>
 
   <p>Please save the password</p>
-
-  <p>You can sign in at <a th:text="${loginURL}"></a></p>
 
   <p>
     Kind regards, <br />
