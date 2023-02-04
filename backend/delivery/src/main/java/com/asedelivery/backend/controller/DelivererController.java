@@ -39,7 +39,7 @@ public class DelivererController {
     @GetMapping("")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public List<Deliverer> getDeliverer() {
-        return delivererRepo.findAll();
+        return delivererRepo.findByClass(Deliverer.class.getName());
     }
 
     @Operation(summary="Create deliverer")

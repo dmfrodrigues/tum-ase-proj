@@ -39,7 +39,7 @@ public class DispatcherController {
     @GetMapping("")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public List<Dispatcher> getDispatcher() {
-        return dispatcherRepo.findAll();
+        return dispatcherRepo.findByClass(Dispatcher.class.getName());
     }
 
     @Operation(summary="Create dispatcher")

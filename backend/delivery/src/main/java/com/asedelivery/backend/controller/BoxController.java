@@ -58,7 +58,7 @@ public class BoxController {
     @GetMapping("")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public List<Box> getBoxes() {
-        return boxRepo.findAll();
+        return boxRepo.findByClass(Box.class.getName());
     }
 
     @Operation(summary="Create box")

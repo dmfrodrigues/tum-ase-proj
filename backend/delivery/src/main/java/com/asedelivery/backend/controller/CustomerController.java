@@ -39,7 +39,7 @@ public class CustomerController {
     @GetMapping("")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public List<Customer> getCustomer() {
-        return customerRepo.findAll();
+        return customerRepo.findByClass(Customer.class.getName());
     }
 
     @Operation(summary="Create customer")
