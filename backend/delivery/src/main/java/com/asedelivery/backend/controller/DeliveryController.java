@@ -72,6 +72,11 @@ public class DeliveryController {
 
     @Operation(summary="Get all deliveries")
     @GetMapping("")
+    @PreAuthorize(
+        "hasRole('" + Role.DISPATCHER_STR + "') or " +
+        "hasRole('" + Role.DELIVERER_STR  + "') or " +
+        "hasRole('" + Role.CUSTOMER_STR   + "')"
+    )
     public List<Delivery> getDeliveries() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String id = auth.getName();
@@ -140,7 +145,7 @@ public class DeliveryController {
         if(box.customer == null){
             box.customer = customer;
             box = boxRepo.save(box);
-        } else if(!box.customer.equals(customer)){
+        } else if(!customer.equals(box.customer)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Box is already taken by another customer");
         }
 

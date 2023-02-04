@@ -15,12 +15,19 @@ variables:
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
 ## Build images and push to CR
-build-router:
+build-api-gateway:
   stage: build
   extends: .login-cr
   script:
-    - docker build -t $CI_REPO/router:$CI_COMMIT_SHA router
-    - docker push $CI_REPO/router:$CI_COMMIT_SHA
+    - docker build -t $CI_REPO/api-gateway:$CI_COMMIT_SHA backend --target api-gateway-prod
+    - docker push $CI_REPO/api-gateway:$CI_COMMIT_SHA
+
+build-service-registry:
+  stage: build
+  extends: .login-cr
+  script:
+    - docker build -t $CI_REPO/service-registry:$CI_COMMIT_SHA backend --target service-registry-prod
+    - docker push $CI_REPO/service-registry:$CI_COMMIT_SHA
 
 build-frontend:
   stage: build
@@ -33,14 +40,14 @@ build-auth:
   stage: build
   extends: .login-cr
   script:
-    - docker build -t $CI_REPO/auth:$CI_COMMIT_SHA backend --target auth
+    - docker build -t $CI_REPO/auth:$CI_COMMIT_SHA backend --target auth-prod
     - docker push $CI_REPO/auth:$CI_COMMIT_SHA
 
 build-delivery:
   stage: build
   extends: .login-cr
   script:
-    - docker build -t $CI_REPO/delivery:$CI_COMMIT_SHA backend --target delivery
+    - docker build -t $CI_REPO/delivery:$CI_COMMIT_SHA backend --target delivery-prod
     - docker push $CI_REPO/delivery:$CI_COMMIT_SHA
 
 ## Deploy
