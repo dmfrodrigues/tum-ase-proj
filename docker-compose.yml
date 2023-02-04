@@ -1,18 +1,40 @@
 version: "3.9"
 
 services:
-  router:
-    build: router
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: backend
+      target: api-gateway
+    depends_on:
+      service-registry:
+        condition: service_healthy
+    environment:
+      PORT: 10789
     ports:
-      - 8000:80
+      - 8000:10789
+    volumes:
+      - ./backend/api-gateway/src:/app/api-gateway/src
+      - ./backend/api-gateway/build.gradle:/app/api-gateway/build.gradle
 
   service-registry:
     container_name: service-registry
     build:
       context: backend
       target: service-registry
+    healthcheck:
+      test: curl localhost:8761
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 60
+    environment:
+      PORT: 8761
     ports:
       - 8761:8761
+    volumes:
+      - ./backend/service-registry/src:/app/service-registry/src
+      - ./backend/service-registry/build.gradle:/app/service-registry/build.gradle
 
   frontend:
     build: frontend
@@ -32,6 +54,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      service-registry:
+        condition: service_healthy
     ports:
       - 8002:80
     environment:
@@ -47,7 +71,6 @@ services:
       - ./backend/delivery/build.gradle:/app/delivery/build.gradle
       - ./backend/library/src:/app/library/src
       - ./backend/library/build.gradle:/app/library/build.gradle
-    command: ["/run.dev.sh", "delivery"]
   
   auth:
     build:
@@ -55,6 +78,8 @@ services:
       target: auth
     depends_on:
       db:
+        condition: service_healthy
+      service-registry:
         condition: service_healthy
     ports:
       - 8003:80
@@ -66,8 +91,6 @@ services:
       - ./backend/auth/build.gradle:/app/auth/build.gradle
       - ./backend/library/src:/app/library/src
       - ./backend/library/build.gradle:/app/library/build.gradle
-    command: ["/run.dev.sh", "auth"]
-
 
   db:
     container_name: db
@@ -79,9 +102,10 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     healthcheck:
       test: test -f healthcheck.txt || (echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet && touch healthcheck.txt)
-      interval: 10s
-      timeout: 10s
-      retries: 5
+      start_period: 5s
+      interval: 1s
+      timeout: 1s
+      retries: 50
     logging:
       driver: none
   
@@ -108,6 +132,7 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
       ME_CONFIG_MONGODB_URL: mongodb://root:password@db:27017/
+      ME_CONFIG_SITE_BASEURL: /db-admin
     logging:
       driver: none
 

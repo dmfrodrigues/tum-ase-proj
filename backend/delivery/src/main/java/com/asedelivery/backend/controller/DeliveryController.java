@@ -6,6 +6,7 @@ import java.util.SortedSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -72,6 +73,11 @@ public class DeliveryController {
 
     @Operation(summary="Get all deliveries")
     @GetMapping("")
+    @PreAuthorize(
+        "hasRole('" + Role.DISPATCHER_STR + "') or " +
+        "hasRole('" + Role.DELIVERER_STR  + "') or " +
+        "hasRole('" + Role.CUSTOMER_STR   + "')"
+    )
     public List<Delivery> getDeliveries() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String id = auth.getName();
@@ -140,7 +146,7 @@ public class DeliveryController {
         if(box.customer == null){
             box.customer = customer;
             box = boxRepo.save(box);
-        } else if(!box.customer.equals(customer)){
+        } else if(!customer.equals(box.customer)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Box is already taken by another customer");
         }
 
