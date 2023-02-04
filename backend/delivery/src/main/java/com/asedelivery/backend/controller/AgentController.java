@@ -3,7 +3,6 @@ package com.asedelivery.backend.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +29,7 @@ public class AgentController {
 
     @Operation(summary="Get all agents")
     @GetMapping("")
-    @Secured("ROLE_" + Role.DISPATCHER_STR)
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public List<Agent> getAgent() {
         return agentRepo.findAll();
     }
