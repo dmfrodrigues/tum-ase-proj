@@ -22,23 +22,23 @@ public interface DeliveryRepository extends MongoRepository<Delivery, String> {
 
     @Aggregation(pipeline={
         "{ $addFields: { lastEvent: { $last: '$events'}}}",
-        "{ $match: { 'box': ObjectId(:#{#boxId}), 'deliverer': ObjectId(:#{#delivererId}), 'lastEvent.state': :#{#state}}}",
+        "{ $match: { 'box': :#{#box}, 'deliverer': :#{#deliverer}, 'lastEvent.state': :#{#state}}}",
         "{ $project: { 'lastEvent': 0 } }"
     })
-    List<Delivery> findByBoxIdAndDelivererIdAndState(
-        @Param("boxId") String boxId,
-        @Param("delivererId") String delivererId,
+    List<Delivery> findByBoxAndDelivererAndState(
+        @Param("box") Box box,
+        @Param("deliverer") Deliverer deliverer,
         @Param("state") State state
     );
 
     @Aggregation(pipeline={
         "{ $addFields: { lastEvent: { $last: '$events'}}}",
-        "{ $match: { 'box': ObjectId(:#{#boxId}), 'customer': ObjectId(:#{#customerId}), 'lastEvent.state': :#{#state}}}",
+        "{ $match: { 'box': :#{#box}, 'customer': :#{#customer}, 'lastEvent.state': :#{#state}}}",
         "{ $project: { 'lastEvent': 0 } }"
     })
-    List<Delivery> findByBoxIdAndCustomerIdAndState(
-        @Param("boxId") String boxId,
-        @Param("customerId") String customerId,
+    List<Delivery> findByBoxAndCustomerAndState(
+        @Param("box") Box box,
+        @Param("customer") Customer customer,
         @Param("state") State state
     );
 }
