@@ -26,6 +26,7 @@ import com.asedelivery.backend.model.Delivery;
 import com.asedelivery.backend.model.repo.BoxRepository;
 import com.asedelivery.backend.model.repo.DeliveryRepository;
 import com.asedelivery.backend.service.AuthServiceDelivery;
+import com.asedelivery.backend.service.BoxService;
 import com.asedelivery.backend.service.EmailService;
 import com.asedelivery.common.auth.jwt.JwtUtil;
 import com.asedelivery.common.model.Role;
@@ -49,6 +50,9 @@ public class BoxController {
 
     @Autowired
     AuthServiceDelivery authService;
+
+    @Autowired
+    BoxService boxService;
 
     @Autowired
     JwtUtil jwtUtil;
@@ -149,7 +153,7 @@ public class BoxController {
                     /* If all deliveries of the client in that box have been
                      * delivered, this box no longer belongs to this user.
                      */
-                    if(allDeliveriesCompleted(box)){
+                    if(boxService.allDeliveriesCompleted(box)){
                         box.customer = null;
                         box = boxRepo.save(box);
                     }
@@ -169,12 +173,5 @@ public class BoxController {
             default:
                 return false;
         }
-    }
-
-    private boolean allDeliveriesCompleted(Box box){
-        List<Delivery> boxDeliveries = deliveryRepo
-            .findByBoxAndCustomer(box, box.customer);
-        return boxDeliveries.stream()
-            .anyMatch((delivery) -> delivery.getState() == Delivery.State.COMPLETED);
     }
 }
