@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-alpine
+FROM openjdk:17-jdk-alpine AS base
 
 RUN apk add \
     curl \
@@ -13,14 +13,23 @@ WORKDIR /app
 COPY run.dev.sh watch_changes.sh /
 RUN chmod 755 /*.sh
 
-# Copy
 COPY gradle gradle
-COPY library library
-COPY delivery delivery
 COPY gradlew gradlew.bat run.dev.sh settings.gradle watch_changes.sh ./
 
 RUN mv gradle/wrapper/gradle-wrapper.docker.properties \
        gradle/wrapper/gradle-wrapper.properties
 RUN chmod +x gradlew
+
+FROM base AS auth
+
+COPY library library
+COPY auth auth
+
+CMD ["./gradlew", "auth:bootRun"]
+
+FROM base AS delivery
+
+COPY library library
+COPY delivery delivery
 
 CMD ["./gradlew", "delivery:bootRun"]

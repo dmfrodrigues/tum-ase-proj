@@ -10,12 +10,14 @@ services:
     build: frontend
     ports:
       - 8001:3000
+    volumes:
+      - ./frontend/ase-t15-frontend:./ase-t15-frontend
 
   delivery:
     container_name: delivery
     build:
       context: backend
-      dockerfile: delivery.Dockerfile
+      target: delivery
     depends_on:
       db:
         condition: service_healthy
@@ -40,7 +42,7 @@ services:
     container_name: auth
     build:
       context: backend
-      dockerfile: auth.Dockerfile
+      target: auth
     depends_on:
       db:
         condition: service_healthy

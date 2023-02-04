@@ -23,6 +23,8 @@ public class JwtUtil {
     @Autowired
     private KeyStoreManager keyStoreManager;
 
+    public static final long EXPIRATION_MILLIS = 1000 * 60 * 60 * 5; // Expires after 5 hours
+
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("authorities", userDetails.getAuthorities());
@@ -37,7 +39,7 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuer("asedelivery")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 5)) // Expires after 5 hours
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MILLIS))
                 .signWith(keyStoreManager.getPrivateKey(), SignatureAlgorithm.RS256)
                 .compact();
         return jwt;

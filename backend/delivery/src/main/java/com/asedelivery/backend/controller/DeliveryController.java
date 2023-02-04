@@ -33,6 +33,7 @@ import com.asedelivery.backend.model.repo.CustomerRepository;
 import com.asedelivery.backend.model.repo.DelivererRepository;
 import com.asedelivery.backend.model.repo.DeliveryRepository;
 import com.asedelivery.backend.model.repo.DispatcherRepository;
+import com.asedelivery.backend.service.BoxService;
 import com.asedelivery.backend.service.EmailService;
 import com.asedelivery.common.model.Role;
 
@@ -65,6 +66,9 @@ public class DeliveryController {
 
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    BoxService boxService;
 
     @Operation(summary="Get all deliveries")
     @GetMapping("")
@@ -193,6 +197,7 @@ public class DeliveryController {
         )
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
+        Box oldBox = delivery.box;
         try {
             if(customerId.isPresent()){
                 if(!authority.equals("ROLE_" + Role.DISPATCHER_STR))
@@ -274,6 +279,17 @@ public class DeliveryController {
         } catch(MessagingException e){
             System.err.println("Failed to send delivered delivery email to " + delivery.customer.email);
             e.printStackTrace();
+        }
+
+        Box box = delivery.box;
+        if(!oldBox.equals(box)){
+            /* If all deliveries of the client in that box have been
+             * delivered, this box no longer belongs to this user.
+             */
+            if(boxService.allDeliveriesCompleted(box)){
+                box.customer = null;
+                box = boxRepo.save(box);
+            }
         }
 
         return delivery;
