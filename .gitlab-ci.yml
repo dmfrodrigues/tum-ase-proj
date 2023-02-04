@@ -42,7 +42,7 @@ build-frontend:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
-    - docker build -t $CI_REPO/frontend:$CI_COMMIT_SHA frontend
+    - docker build -t $CI_REPO/frontend:$CI_COMMIT_SHA frontend --target frontend-prod
     - docker push $CI_REPO/frontend:$CI_COMMIT_SHA
 
 build-auth:
