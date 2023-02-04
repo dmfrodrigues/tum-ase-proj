@@ -48,7 +48,6 @@ services:
       - ./frontend/ase-t15-frontend/package.json:/package.json
       - ./frontend/ase-t15-frontend/package-lock.json:/package-lock.json
       - ./frontend/ase-t15-frontend/node_modules:/node_modules
-    command: ["npm", "start"]
 
   delivery:
     build:
