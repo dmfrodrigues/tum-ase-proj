@@ -28,6 +28,11 @@ function EditUser({ user }) {
                             <Form.Control type="text" value={user.name} />
                         </Form.Group>
 
+                        <Form.Group className="mb-3" controlId="formBasicUsername">
+                            <Form.Label>Insert Username</Form.Label>
+                            <Form.Control type="text" value={user.username} />
+                        </Form.Group>
+
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Insert Email</Form.Label>
                             <Form.Control type="email" value={user.email} />
@@ -35,15 +40,12 @@ function EditUser({ user }) {
 
                         <Form.Group className="mb-3" controlId="formBasicDeliverer">
                             <Form.Label>Select Type</Form.Label>
-                            <Form.Select aria-label="Type select" size="sm">
-                                <option value="dispatcher" key="dispatcher"
-                                    selected={user.type === "dispatcher" ? "true" : ""}>
+                            <Form.Select aria-label="Type select" size="sm" defaultValue={user.role}>
+                                <option value="DISPATCHER" key="DISPATCHER">
                                     Dispatcher</option>
-                                <option value="customer" key="customer"
-                                    selected={user.type === "customer" ? "true" : ""}>
+                                <option value="CUSTOMER" key="CUSTOMER">
                                     Customer</option>
-                                <option value="deliverer" key="deliverer"
-                                    selected={user.type === "deliverer" ? "true" : ""}>
+                                <option value="DELIVERER" key="DELIVERER">
                                     Deliverer</option>
                             </Form.Select>
                         </Form.Group>

@@ -1,9 +1,14 @@
 import {
+    GET_USERS,
     GET_CUSTOMERS,
     GET_DELIVERERS
 } from "../actions/types";
 
-const initialState = [];
+const initialState = {
+    users: [],
+    customers: [],
+    deliverers: [],
+};
 
 function userReducer(users = initialState, action) {
     const { type, payload } = action;
@@ -14,6 +19,9 @@ function userReducer(users = initialState, action) {
 
         case GET_DELIVERERS:
             return { ...users, deliverers: [payload] };
+
+        case GET_USERS:
+            return { ...users, users: payload };
 
         default:
             return users;

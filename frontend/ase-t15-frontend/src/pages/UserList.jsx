@@ -3,15 +3,23 @@ import '../css/page/userList.css'
 import { DataGrid } from '@mui/x-data-grid';
 import { orderRows } from "../dummyData";
 import { dispatcherRows, customerRows, boxRows } from "../dummyData";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EditOrder from '../components/EditOrder';
 import DeleteModal from '../components/DeleteModal';
 import { Person } from '@mui/icons-material';
 import NewUser from '../components/NewUser';
 import EditUser from '../components/EditUser';
+import { getUsers } from '../actions/users';
+import { useSelector, useDispatch } from 'react-redux'
 
 function UserList() {
   const [data, setData] = useState(customerRows);
+  const dispatch = useDispatch();
+  const users = useSelector(state => state.users.users);
+
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [])
 
   const columns = [
     {
@@ -41,14 +49,14 @@ function UserList() {
       headerName: "Email",
     },
     {
-      field: "type",
+      field: "role",
       width: 150,
       flex: 1,
-      headerName: "Type",
+      headerName: "Role",
       renderCell: (params) => {
         return (
           <span className="userType">
-            {params.row.type[0].toUpperCase() + params.row.type.slice(1)}
+            {params.row.role[0] + params.row.role.slice(1).toLowerCase()}
           </span>
         );
       }
@@ -78,7 +86,7 @@ function UserList() {
     <div className="userList">
       <DataGrid
         className='userListTable'
-        rows={data}
+        rows={users}
         disableSelectionOnClick
         columns={columns}
         pageSize={8}

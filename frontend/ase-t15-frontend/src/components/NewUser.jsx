@@ -28,9 +28,14 @@ function NewUser() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Group className="mb-3" controlId="formBasicName">
                             <Form.Label>Insert Name</Form.Label>
                             <Form.Control type="text" placeholder="Enter name" />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicUsername">
+                            <Form.Label>Insert Username</Form.Label>
+                            <Form.Control type="text" placeholder="Enter username" />
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -43,9 +48,9 @@ function NewUser() {
                             <Form.Control type="password" placeholder="Enter password" />
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicDeliverer">
+                        <Form.Group className="mb-3" controlId="formBasicType">
                             <Form.Label>Select Type</Form.Label>
-                            <Form.Select aria-label="Type select" size="sm">
+                            <Form.Select aria-label="Type select" size="sm" defaultValue="dispatcher">
                                 <option key="dispatcher" value="dispatcher">Dispatcher</option>
                                 <option key="customer" value="customer">Customer</option>
                                 <option key="deliverer" value="deliverer">Deliverer</option>
