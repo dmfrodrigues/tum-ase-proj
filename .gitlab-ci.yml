@@ -33,14 +33,14 @@ build-auth:
   stage: build
   extends: .login-cr
   script:
-    - docker build -t $CI_REPO/auth:$CI_COMMIT_SHA backend -f auth.Dockerfile
+    - docker build -t $CI_REPO/auth:$CI_COMMIT_SHA backend -f backend/auth.Dockerfile
     - docker push $CI_REPO/auth:$CI_COMMIT_SHA
 
 build-delivery:
   stage: build
   extends: .login-cr
   script:
-    - docker build -t $CI_REPO/delivery:$CI_COMMIT_SHA backend -f delivery.Dockerfile
+    - docker build -t $CI_REPO/delivery:$CI_COMMIT_SHA backend -f backend/delivery.Dockerfile
     - docker push $CI_REPO/delivery:$CI_COMMIT_SHA
 
 ## Deploy
