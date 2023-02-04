@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.asedelivery.common.model.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Document("principal")
 public class Principal {
@@ -17,6 +18,7 @@ public class Principal {
     @Indexed(unique = true)
     private String username;
 
+    @JsonIgnore
     public String password;
 
     public Principal(String id, Role role, String username, String password) {

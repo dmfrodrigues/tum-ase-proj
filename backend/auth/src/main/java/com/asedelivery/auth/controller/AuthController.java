@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.asedelivery.auth.model.Principal;
+import com.asedelivery.auth.model.repo.PrincipalRepository;
 import com.asedelivery.auth.service.AuthServiceAuth;
 import com.asedelivery.common.auth.AuthService;
 import com.asedelivery.common.auth.jwt.JwtUtil;
@@ -24,10 +27,16 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthController {
 
     @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
     private AuthServiceAuth authService;
 
+    @Autowired
+    private PrincipalRepository principalRepo;
+
     @PostMapping
-    public ResponseEntity<String> login(
+    public ResponseEntity<Object> login(
         @RequestHeader("Authorization") Optional<String> authorization,
         @RequestHeader(AuthService.API_TOKEN_HEADER) Optional<String> apiToken,
         HttpServletRequest request,
@@ -43,6 +52,11 @@ public class AuthController {
             
             if(responseEntity.getStatusCode().equals(HttpStatus.OK)){
                 String jwt = responseEntity.getBody();
+
+                String id = jwtUtil.extractUsername(jwt);
+                Principal principal = principalRepo.findById(id)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Authenticated, but could not find principal; contact admin"));
+
                 Cookie jwtCookie = new Cookie("jwt", jwt);
                 // Configure the cookie to be HttpOnly and expires after a period
                 // Then include the cookie into the response
@@ -52,7 +66,7 @@ public class AuthController {
                 jwtCookie.setMaxAge((int)(JwtUtil.EXPIRATION_MILLIS / 1000));
                 response.addCookie(jwtCookie);
 
-                return new ResponseEntity<>(HttpStatus.OK);
+                return new ResponseEntity<>(principal, HttpStatus.OK);
             }
             
         } catch (UsernameNotFoundException e) {}
