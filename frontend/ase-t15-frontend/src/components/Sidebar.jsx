@@ -17,8 +17,6 @@ import { useState } from 'react';
 
 
 function Sidebar() {
-  const [activeIndex, setActiveIndex] = useState(false);
-  const selectSidebar = () => selectSidebar(activeIndex);
   const location = useLocation();
 
 
@@ -26,7 +24,7 @@ function Sidebar() {
     <div className="sidebar">
       <div className="sidebarWrapper">
         <div className="sidebarMenu">
-          <ul className="sidebarList" onClick={selectSidebar}>
+          <ul className="sidebarList">
             <Link to="/orders" className="link">
               <li className={`sidebarListItem ${location.pathname == "/orders" ? "active" : ""}`}>
                 <LocalShippingOutlined className="sidebarIcon" />

@@ -15,7 +15,6 @@ function NewUser() {
         <div className="userListNew">
             <Button
                 variant="outline-success"
-                startIcon={<AddCircle />}
                 onClick={handleShow}
                 className="userListNewButton"
             >
@@ -47,9 +46,9 @@ function NewUser() {
                         <Form.Group className="mb-3" controlId="formBasicDeliverer">
                             <Form.Label>Select Type</Form.Label>
                             <Form.Select aria-label="Type select" size="sm">
-                                <option value="dispatcher">Dispatcher</option>
-                                <option value="customer">Customer</option>
-                                <option value="deliverer">Deliverer</option>
+                                <option key="dispatcher" value="dispatcher">Dispatcher</option>
+                                <option key="customer" value="customer">Customer</option>
+                                <option key="deliverer" value="deliverer">Deliverer</option>
                             </Form.Select>
                         </Form.Group>
                     </Form>

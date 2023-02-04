@@ -36,13 +36,13 @@ function EditUser({ user }) {
                         <Form.Group className="mb-3" controlId="formBasicDeliverer">
                             <Form.Label>Select Type</Form.Label>
                             <Form.Select aria-label="Type select" size="sm">
-                                <option value="dispatcher"
+                                <option value="dispatcher" key="dispatcher"
                                     selected={user.type === "dispatcher" ? "true" : ""}>
                                     Dispatcher</option>
-                                <option value="customer"
+                                <option value="customer" key="customer"
                                     selected={user.type === "customer" ? "true" : ""}>
                                     Customer</option>
-                                <option value="deliverer"
+                                <option value="deliverer" key="deliverer"
                                     selected={user.type === "deliverer" ? "true" : ""}>
                                     Deliverer</option>
                             </Form.Select>

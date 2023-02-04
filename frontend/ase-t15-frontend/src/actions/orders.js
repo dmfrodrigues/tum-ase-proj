@@ -6,11 +6,11 @@ import {
     DELETE_ORDER
 } from "./types";
 
-import OrderDataService from "../services/order.service";
+import DeliveryDataService from "../api/delivery.service";
 
 export const createOrder = (customerId, createdById, delivererId, pickupAddress, boxId) => async (dispatch) => {
     try {
-        const res = await OrderDataService.create({ customerId, createdById, delivererId, pickupAddress, boxId });
+        const res = await DeliveryDataService.create({ customerId, createdById, delivererId, pickupAddress, boxId });
 
         dispatch({
             type: CREATE_ORDER,
@@ -25,7 +25,7 @@ export const createOrder = (customerId, createdById, delivererId, pickupAddress,
 
 export const retrieveOrders = () => async (dispatch) => {
     try {
-        const res = await OrderDataService.getAll();
+        const res = await DeliveryDataService.getAll();
 
         dispatch({
             type: RETRIEVE_ORDERS,
@@ -38,7 +38,7 @@ export const retrieveOrders = () => async (dispatch) => {
 
 export const retrieveOrder = (id) => async (dispatch) => {
     try {
-        const res = await OrderDataService.get(id);
+        const res = await DeliveryDataService.get(id);
 
         dispatch({
             type: RETRIEVE_ORDER,
@@ -51,7 +51,7 @@ export const retrieveOrder = (id) => async (dispatch) => {
 
 export const updateOrder = (id, data) => async (dispatch) => {
     try {
-        const res = await OrderDataService.update(id, data);
+        const res = await DeliveryDataService.update(id, data);
 
         dispatch({
             type: UPDATE_ORDER,
@@ -66,7 +66,7 @@ export const updateOrder = (id, data) => async (dispatch) => {
 
 export const deleteOrder = (id) => async (dispatch) => {
     try {
-        await OrderDataService.delete(id);
+        await DeliveryDataService.delete(id);
 
         dispatch({
             type: DELETE_ORDER,

@@ -71,6 +71,7 @@ function BoxList() {
       flex: 1,
       sortable: false,
       filterable: false,
+      field: "action",
       renderCell: (params) => {
         return (
           <div className="orderListEdit">

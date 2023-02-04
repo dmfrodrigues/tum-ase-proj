@@ -2,20 +2,29 @@ import '../css/page/orderList.css'
 import { DataGrid } from '@mui/x-data-grid';
 import { orderRows } from "../dummyData";
 import { dispatcherRows, customerRows, boxRows } from "../dummyData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OrderIcon from '../components/OrderIcon';
 import EditOrder from '../components/EditOrder';
 import DeleteModal from '../components/DeleteModal';
 import NewOrder from '../components/NewOrder';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment } from '../app/counterSlice'
+import { retrieveOrders } from '../actions/orders';
 
 function OrderList() {
-  const [data, setData] = useState(orderRows);
-
-  const count = useSelector((state) => state.counter.value)
   const dispatch = useDispatch()
+
+  const [data, setData] = useState(orderRows);
+  const [orders, setOrders] = useSelector(state => state.orders)
+
+  useEffect(() => {
+    dispatch(retrieveOrders())
+  }, [])
+
+  useEffect(() => {
+    console.log("HE" + orders)
+  }, [orders])
+
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
@@ -58,8 +67,6 @@ function OrderList() {
         return (
           <div className={status}>
             {params.row.status[0].toUpperCase() + params.row.status.slice(1)}
-            {count}
-
           </div >
         );
       }
@@ -71,6 +78,7 @@ function OrderList() {
         );
       },
       flex: 1,
+      field: "action",
       sortable: false,
       filterable: false,
       renderCell: (params) => {
@@ -78,8 +86,6 @@ function OrderList() {
           <div className="orderListEdit">
             <EditOrder customers={customerRows} dispatchers={dispatcherRows} boxes={boxRows} order={params.row} />
             <DeleteModal text="Confirm Order Deletion" />
-            <button onClick={() => dispatch(increment())}>+</button>
-            <button onClick={() => dispatch(decrement())}>-</button>
           </div>
         );
       },

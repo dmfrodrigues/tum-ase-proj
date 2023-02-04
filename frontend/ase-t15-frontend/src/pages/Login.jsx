@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { login } from "../actions/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function Login() {
 
@@ -13,20 +13,14 @@ function Login() {
 
     const dispatch = useDispatch();
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-    const state = useSelector((state) => state);
 
     const navigate = useNavigate();
-
-    const onStart = useEffect(() => {
-        console.log(state);
-    }, []);
 
     const handleLogin = (e) => {
         e.preventDefault();
         dispatch(login(username, password)).then((response) => {
-            console.log("Nice");
-            //navigate("/users");
-            //window.location.reload();
+            navigate("/users");
+            window.location.reload();
         }
         ).catch(() => {
             alert("Login failed");
@@ -40,7 +34,7 @@ function Login() {
     return (
         <div className="login">
             <div className="loginWrapper">
-                {isLoggedIn ? <h1>Logged in</h1> : <h1>Not logged in</h1>}
+                <h1>Welcome! Please Log In</h1>
                 <form id="loginform" onSubmit={handleLogin}>
                     <div className="form-group p-2">
                         <label>Username</label>

@@ -15,7 +15,6 @@ function NewBox() {
         <div className="userListNew">
             <Button
                 variant="outline-success"
-                startIcon={<AddCircle />}
                 onClick={handleShow}
                 className="userListNewButton"
             >

@@ -35,40 +35,40 @@ function EditOrder({ customers, dispatchers, boxes, order }) {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="formBasicCustomer">
+                        <Form.Group className="mb-3" controlId={`customerId${order.id}`}>
                             <Form.Label>Select Customer</Form.Label>
                             <Form.Select aria-label="Customer select" size="sm">
                                 {
                                     customers.map((customer) => {
-                                        return <option value={customer.id}>{customer.username}</option>
+                                        return <option key={customer.id} value={customer.id}>{customer.username}</option>
                                     })
                                 }
                             </Form.Select>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicDeliverer">
+                        <Form.Group className="mb-3" controlId={`dispatcherId${order.id}`}>
                             <Form.Label>Select Deliverer</Form.Label>
                             <Form.Select aria-label="Deliverer select" size="sm">
                                 {
                                     dispatchers.map((dispatcher) => {
-                                        return <option value={dispatcher.id}>{dispatcher.username}</option>
+                                        return <option key={dispatcher.id} value={dispatcher.id}>{dispatcher.username}</option>
                                     })
                                 }
                             </Form.Select>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicBox">
+                        <Form.Group className="mb-3" controlId={`boxId${order.id}`}>
                             <Form.Label>Select Pick-up Box</Form.Label>
                             <Form.Select aria-label="Pick-up Box select" size="sm">
                                 {
                                     boxes.map((box) => {
-                                        return <option value={box.id}>{box.name}</option>
+                                        return <option key={box.id} value={box.id}>{box.name}</option>
                                     })
                                 }
                             </Form.Select>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId={`formBasicStatus${order.id}`}>
+                        <Form.Group className="mb-3" controlId={`status${order.id}`}>
                             <Form.Label>Select Status</Form.Label>
                             <Form.Check
                                 defaultChecked={order.status === "pending" ? "checked" : ""}
