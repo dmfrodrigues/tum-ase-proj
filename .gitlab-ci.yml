@@ -18,6 +18,9 @@ variables:
 build-api-gateway:
   stage: build
   extends: .login-cr
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
     - docker build -t $CI_REPO/api-gateway:$CI_COMMIT_SHA backend --target api-gateway-prod
     - docker push $CI_REPO/api-gateway:$CI_COMMIT_SHA
@@ -25,6 +28,9 @@ build-api-gateway:
 build-service-registry:
   stage: build
   extends: .login-cr
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
     - docker build -t $CI_REPO/service-registry:$CI_COMMIT_SHA backend --target service-registry-prod
     - docker push $CI_REPO/service-registry:$CI_COMMIT_SHA
@@ -32,6 +38,9 @@ build-service-registry:
 build-frontend:
   stage: build
   extends: .login-cr
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
     - docker build -t $CI_REPO/frontend:$CI_COMMIT_SHA frontend
     - docker push $CI_REPO/frontend:$CI_COMMIT_SHA
@@ -39,6 +48,9 @@ build-frontend:
 build-auth:
   stage: build
   extends: .login-cr
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
     - docker build -t $CI_REPO/auth:$CI_COMMIT_SHA backend --target auth-prod
     - docker push $CI_REPO/auth:$CI_COMMIT_SHA
@@ -46,6 +58,9 @@ build-auth:
 build-delivery:
   stage: build
   extends: .login-cr
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
     - docker build -t $CI_REPO/delivery:$CI_COMMIT_SHA backend --target delivery-prod
     - docker push $CI_REPO/delivery:$CI_COMMIT_SHA
