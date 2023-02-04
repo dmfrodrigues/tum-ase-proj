@@ -12,8 +12,7 @@ const initialState = user
 
 export default function (state = initialState, action) {
     const { type, payload } = action;
-
-    console.log("type" + type + ", payload: " + payload);
+    console.log("Auth reducer: " + type + " " + state.user)
 
     switch (type) {
         case LOGIN_SUCCESS:

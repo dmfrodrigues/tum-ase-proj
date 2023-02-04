@@ -10,7 +10,6 @@ const initialState = [];
 
 function orderReducer(orders = initialState, action) {
     const { type, payload } = action;
-    console.log("orderReducer: type: " + type + ", payload: " + payload);
 
     switch (type) {
         case CREATE_ORDER:

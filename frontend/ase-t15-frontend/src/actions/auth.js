@@ -15,7 +15,6 @@ export const login = (username, password) => (dispatch) => {
             });
 
 
-
             return Promise.resolve();
         },
         (error) => {

@@ -4,13 +4,15 @@ import axios from "axios";
 class AuthService {
     login(username, password) {
         return axios
-            .post(API_URL + "/auth", { username, password })
+            .post(API_URL + "/auth", {},
+                { auth: { username, password } }
+            )
             .then((response) => {
                 if (response.data.accessToken) {
                     localStorage.setItem("user", JSON.stringify(response.data));
                 }
 
-                return response.data;
+                return username;
             });
     }
 

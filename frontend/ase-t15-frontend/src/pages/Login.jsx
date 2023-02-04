@@ -1,51 +1,57 @@
 import "../css/page/login.css"
 
+import { useNavigate } from 'react-router-dom';
+
 import { login } from "../actions/auth";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 function Login() {
 
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const dispatch = useDispatch();
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+    const state = useSelector((state) => state);
+
+    const navigate = useNavigate();
+
+    const onStart = useEffect(() => {
+        console.log(state);
+    }, []);
 
     const handleLogin = (e) => {
-        axios.post("http://localhost:8000/api/auth", {}, {
-            auth: {
-                username: email,
-                password: password
-
-            }
+        e.preventDefault();
+        dispatch(login(username, password)).then((response) => {
+            console.log("Nice");
+            //navigate("/users");
+            //window.location.reload();
         }
-        ).then((response) => {
-            console.log(response);
-            dispatch(login(response.data));
-        }
-        ).catch((error) => {
-            console.log(error);
+        ).catch(() => {
+            alert("Login failed");
         }
         );
+
+        console.log(state);
 
     };
 
     return (
         <div className="login">
             <div className="loginWrapper">
-
+                {isLoggedIn ? <h1>Logged in</h1> : <h1>Not logged in</h1>}
                 <form id="loginform" onSubmit={handleLogin}>
                     <div className="form-group p-2">
-                        <label>Email address</label>
+                        <label>Username</label>
                         <input
-                            type="email"
+                            type="text"
                             className="form-control"
-                            id="EmailInput"
-                            name="EmailInput"
-                            aria-describedby="emailHelp"
-                            placeholder="Enter email"
-                            onChange={(event) => setEmail(event.target.value)}
+                            id="userInput"
+                            name="userInput"
+                            aria-describedby="userHelp"
+                            placeholder="Enter username"
+                            onChange={(event) => setUsername(event.target.value)}
                         />
                     </div>
                     <div className="form-group p-2">

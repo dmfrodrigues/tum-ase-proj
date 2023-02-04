@@ -15,8 +15,6 @@ import { Inventory2Outlined, InventoryOutlined } from '@mui/icons-material';
 function BoxList() {
   const [data, setData] = useState(boxRows);
 
-  console.log(data)
-
   const columns = [
     {
       field: "id",
