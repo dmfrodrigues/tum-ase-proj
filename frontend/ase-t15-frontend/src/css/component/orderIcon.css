@@ -1,13 +1,17 @@
-.orderIconDelivered {
+.orderIconORDERED {
+    color: #f39c12;
+}
+
+.orderIconPICKED_UP {
+    color: #c2cf04;
+}
+
+.orderIconDELIVERED {
     color: #00a65a;
 }
 
-.orderIconCanceled {
-    color: #dd4b39;
-}
-
-.orderIconPending {
-    color: #f39c12;
+.orderIconCOMPLETED {
+    color: #00a65a;
 }
 
 .shippingIcon {

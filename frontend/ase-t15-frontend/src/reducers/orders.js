@@ -16,7 +16,7 @@ function orderReducer(orders = initialState, action) {
             return [...orders, payload];
 
         case RETRIEVE_ORDERS:
-            return [...orders, ...payload];
+            return [payload];
 
         case RETRIEVE_ORDER:
             return payload;

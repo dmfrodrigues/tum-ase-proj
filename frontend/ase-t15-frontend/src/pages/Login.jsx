@@ -19,16 +19,13 @@ function Login() {
     const handleLogin = (e) => {
         e.preventDefault();
         dispatch(login(username, password)).then((response) => {
-            navigate("/users");
+            navigate("/orders");
             window.location.reload();
         }
         ).catch(() => {
-            alert("Login failed");
+            alert("Incorrect username or password");
         }
         );
-
-        console.log(state);
-
     };
 
     return (

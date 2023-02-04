@@ -10,6 +10,7 @@ import NewOrder from '../components/NewOrder';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { retrieveOrders } from '../actions/orders';
+import { OrderStatus } from './Order';
 
 function OrderList() {
   const dispatch = useDispatch()
@@ -21,27 +22,32 @@ function OrderList() {
     dispatch(retrieveOrders())
   }, [])
 
-  useEffect(() => {
-    console.log("HE" + orders)
-  }, [orders])
-
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
 
+  const getStatus = (order) => {
+    return order.events[order.events.length - 1].state;
+  }
+
   const columns = [
-    { field: "id", headerName: "ID" },
+    {
+      field: "id",
+      headerName: "ID",
+      width: 100,
+      flex: 1,
+    },
     {
       field: "order",
       headerName: "Order",
-      flex: 1,
       width: 150,
+      flex: 1,
       renderCell: (params) => {
         return (
           <Link to={"/orders/" + params.row.id}>
             <div className="orderListItem">
-              <OrderIcon status={params.row.status} />
+              <OrderIcon status={getStatus(params.row)} />
             </div>
           </Link >
         );
@@ -49,11 +55,17 @@ function OrderList() {
     },
     {
       field: "customer",
+      valueGetter: (params) => {
+        return params.row.customer.name;
+      },
       headerName: "Customer",
       flex: 1,
     },
     {
-      field: "dispatcher",
+      field: "Dispatcher",
+      valueGetter: (params) => {
+        return params.row.createdBy.name;
+      },
       headerName: "Dispatcher",
       flex: 1,
     },
@@ -63,10 +75,11 @@ function OrderList() {
       width: 150,
       flex: 1,
       renderCell: (params) => {
-        var status = "orderStatus" + params.row.status[0].toUpperCase() + params.row.status.slice(1);
+        var status = getStatus(params.row);
+        var statusClass = "orderList" + status;
         return (
-          <div className={status}>
-            {params.row.status[0].toUpperCase() + params.row.status.slice(1)}
+          <div className={statusClass}>
+            {OrderStatus[status]}
           </div >
         );
       }
@@ -96,7 +109,7 @@ function OrderList() {
     <div className="orderList">
       <DataGrid
         className='orderListTable'
-        rows={data}
+        rows={orders}
         disableSelectionOnClick
         columns={columns}
         pageSize={8}

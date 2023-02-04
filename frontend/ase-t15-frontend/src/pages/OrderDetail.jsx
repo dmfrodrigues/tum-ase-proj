@@ -92,7 +92,6 @@ function OrderDetail() {
 
 
 			// update list
-			console.log(order_history.status)
 			removeAllChildNodes(history_list);
 			for (let i = order_history.status; i > 0; i--) {
 				history_list.appendChild(history_status[i - 1]);
