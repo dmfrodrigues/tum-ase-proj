@@ -37,7 +37,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 
-@Tag(name="Box")
+@Tag(name="6. Box")
 @RestController
 @RequestMapping("/api/box")
 public class BoxController {

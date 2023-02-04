@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 
-@Tag(name="Customer")
+@Tag(name="3. Customer")
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerController {

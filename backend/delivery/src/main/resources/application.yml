@@ -31,3 +31,6 @@ spring:
           starttls:
             enable: true
 
+springdoc:
+  swagger-ui:
+    tagsSorter: alpha

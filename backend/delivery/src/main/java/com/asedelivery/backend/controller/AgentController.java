@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name="Agent")
+@Tag(name="1. Agent")
 @RestController
 @RequestMapping("/api/agent")
 public class AgentController {
