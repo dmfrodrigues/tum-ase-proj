@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.query.Param;
 
+import com.asedelivery.backend.model.Box;
 import com.asedelivery.backend.model.Customer;
 import com.asedelivery.backend.model.Deliverer;
 import com.asedelivery.backend.model.Delivery;
@@ -17,7 +18,7 @@ public interface DeliveryRepository extends MongoRepository<Delivery, String> {
 
     List<Delivery> findByCustomer(Customer customer);
 
-    List<Delivery> findByBoxIdAndCustomerId(String boxId, String userId);
+    List<Delivery> findByBoxAndCustomer(Box box, Customer customer);
 
     @Aggregation(pipeline={
         "{ $addFields: { lastEvent: { $last: '$events'}}}",

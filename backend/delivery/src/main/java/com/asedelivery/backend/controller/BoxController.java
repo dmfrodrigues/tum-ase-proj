@@ -123,11 +123,7 @@ public class BoxController {
                     /* If all deliveries of the client in that box have been
                      * delivered, this box no longer belongs to this user.
                      */
-                    List<Delivery> boxDeliveries = deliveryRepo
-                        .findByBoxIdAndCustomerId(boxId, userId);
-                    boolean allDeliveriesCompleted = boxDeliveries.stream()
-                        .anyMatch((delivery) -> delivery.getState() == Delivery.State.COMPLETED);
-                    if(allDeliveriesCompleted){
+                    if(allDeliveriesCompleted(box)){
                         box.customer = null;
                         box = boxRepo.save(box);
                     }
@@ -147,5 +143,12 @@ public class BoxController {
             default:
                 return false;
         }
+    }
+
+    private boolean allDeliveriesCompleted(Box box){
+        List<Delivery> boxDeliveries = deliveryRepo
+            .findByBoxAndCustomer(box, box.customer);
+        return boxDeliveries.stream()
+            .anyMatch((delivery) -> delivery.getState() == Delivery.State.COMPLETED);
     }
 }
