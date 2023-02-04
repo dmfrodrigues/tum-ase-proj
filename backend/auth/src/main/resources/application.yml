@@ -6,6 +6,8 @@ frontend:
   address: ${FRONTEND_ADDRESS}
 
 spring:
+  application:
+    name: auth
   data:
     mongodb:
       host: db
@@ -17,3 +19,8 @@ spring:
   keys:
     keystore:
       path: src/main/resources/ase_project.keystore
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://service-registry:8761/eureka
