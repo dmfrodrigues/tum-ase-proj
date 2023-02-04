@@ -24,4 +24,14 @@ public abstract class Agent {
     }
 
     abstract public Role getRole();
+
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj instanceof Agent) {
+            Agent agent = (Agent) obj;
+            return agent.getId().equals(getId());
+        } else
+            return false;
+    }
 }

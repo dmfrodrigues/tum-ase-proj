@@ -10,16 +10,6 @@ public class Customer extends Person {
         super(username, name, email);
     }
 
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        } else if (obj instanceof Customer) {
-            Customer customer = (Customer) obj;
-            return customer.getId().equals(getId());
-        } else
-            return false;
-    }
-
     public Role getRole() {
         return Role.CUSTOMER;
     }
