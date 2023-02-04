@@ -20,6 +20,12 @@ RUN mv gradle/wrapper/gradle-wrapper.docker.properties \
        gradle/wrapper/gradle-wrapper.properties
 RUN chmod +x gradlew
 
+FROM base AS service-registry
+
+COPY service-registry service-registry
+
+CMD ["./gradlew", "service-registry:bootRun"]
+
 FROM base AS auth
 
 COPY library library

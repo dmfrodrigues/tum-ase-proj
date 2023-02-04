@@ -1,7 +1,12 @@
 package com.asedelivery.backend.service;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,6 +23,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.asedelivery.common.auth.AuthService;
 import com.asedelivery.common.model.Role;
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
 
 /**
  * The AuthService and AuthService thing is actually a workaround to avoid
@@ -25,6 +32,16 @@ import com.asedelivery.common.model.Role;
  */
 @RestController
 public class AuthServiceDelivery implements AuthService {
+
+    private static final String AUTH_SERVICE_NAME = "auth";
+
+    @Autowired
+    private EurekaClient discoveryClient;
+
+    public String authServiceUrl() {
+        InstanceInfo instance = discoveryClient.getNextServerFromEureka(AUTH_SERVICE_NAME, false);
+        return instance.getHomePageUrl();
+    }
 
     public void setAuthentication(String username, Collection<? extends GrantedAuthority> authorities) {
         PreAuthenticatedAuthenticationToken token =
@@ -44,13 +61,29 @@ public class AuthServiceDelivery implements AuthService {
         
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
+        String authUrl = authServiceUrl();
+
         ResponseEntity<String> response = restTemplate.postForEntity(
-            "http://auth/auth",
+            authUrl + "/api/auth",
             entity,
             String.class
         );
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
+        }
 
-        return response;
+        HttpHeaders responseHeaders = response.getHeaders();
+        List<String> setCookies = responseHeaders.getOrEmpty(HttpHeaders.SET_COOKIE);
+        Map<String, String> setCookiesMap = setCookies
+            .stream()
+            .map((s) -> s.split(";")[0])
+            .collect(Collectors.toMap(
+                (s) -> s.split("=")[0], 
+                (s) -> s.split("=")[1]
+        ));
+        String jwt = setCookiesMap.get("jwt");
+
+        return new ResponseEntity<>(jwt, HttpStatus.OK);
     }
 
     public void putPrincipal(String jwt, String id, Role role, String username, String password) {
@@ -69,7 +102,7 @@ public class AuthServiceDelivery implements AuthService {
             new HttpEntity<MultiValueMap<String, String>>(data, headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-            "http://auth/principal",
+            authServiceUrl() + "/api/principal",
             HttpMethod.PUT,
             request,
             String.class

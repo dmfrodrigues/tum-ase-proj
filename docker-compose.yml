@@ -6,6 +6,14 @@ services:
     ports:
       - 8000:80
 
+  service-registry:
+    container_name: service-registry
+    build:
+      context: backend
+      target: service-registry
+    ports:
+      - 8761:8761
+
   frontend:
     build: frontend
     ports:
@@ -18,7 +26,6 @@ services:
       - ./frontend/ase-t15-frontend/node_modules:/node_modules
 
   delivery:
-    container_name: delivery
     build:
       context: backend
       target: delivery
@@ -43,7 +50,6 @@ services:
     command: ["/run.dev.sh", "delivery"]
   
   auth:
-    container_name: auth
     build:
       context: backend
       target: auth
@@ -64,6 +70,7 @@ services:
 
 
   db:
+    container_name: db
     image: mongo:6.0
     ports:
       - 8004:27017

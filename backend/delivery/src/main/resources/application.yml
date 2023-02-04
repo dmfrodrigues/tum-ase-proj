@@ -5,6 +5,8 @@ frontend:
   address: ${FRONTEND_ADDRESS}
 
 spring:
+  application:
+    name: delivery
   data:
     mongodb:
       host: db
@@ -30,6 +32,11 @@ spring:
           auth: true
           starttls:
             enable: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://service-registry:8761/eureka
 
 springdoc:
   swagger-ui:

@@ -38,7 +38,7 @@ public class TokenController {
     @GetMapping("/{id}")
     @PostAuthorize(
         "hasRole('" + Role.DISPATCHER_STR + "') or " +
-        "principal.username == returnObject.principal.getId()"
+        "principal == returnObject.principal.getId()"
     )
     public Token getToken(@PathVariable String id) {
         return tokenRepo.findById(id)
