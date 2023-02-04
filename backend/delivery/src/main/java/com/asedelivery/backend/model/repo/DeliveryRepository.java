@@ -21,7 +21,7 @@ public interface DeliveryRepository extends MongoRepository<Delivery, String> {
 
     @Aggregation(pipeline={
         "{ $addFields: { lastEvent: { $last: '$events'}}}",
-        "{ $match: { 'box': ObjectId(?0), 'customer': ObjectId(?1), 'lastEvent.state': ?2}}",
+        "{ $match: { 'box': ObjectId(:#{#boxId}), 'customer': ObjectId(:#{#customerId}), 'lastEvent.state': :#{#state}}}",
         "{ $project: { 'lastEvent': 0 } }"
     })
     List<Delivery> findByBoxIdAndCustomerIdAndState(
