@@ -1,8 +1,12 @@
 import { combineReducers } from "redux";
-import orders from "./orders";
 import auth from "./auth";
+import orders from "./orders";
+import users from "./users";
+import boxes from "./boxes";
 
 export default combineReducers({
-    orders,
-    auth
+    'auth': auth,
+    'users': users,
+    'orders': orders,
+    'boxes': boxes,
 });

@@ -9,22 +9,30 @@ import DeleteModal from '../components/DeleteModal';
 import NewOrder from '../components/NewOrder';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
-import { retrieveOrders } from '../actions/orders';
 import { OrderStatus } from './Order';
+import { getOrders } from '../actions/orders';
+import { getCustomers, getDeliverers } from '../actions/users';
+import { getBoxes } from '../actions/boxes';
 
 function OrderList() {
   const dispatch = useDispatch()
 
   const [data, setData] = useState(orderRows);
   const [orders, setOrders] = useSelector(state => state.orders)
+  const [customers, setUsers] = useSelector(state => state.users.customers);
+  const [deliverers, setDeliverers] = useSelector(state => state.users.deliverers);
+  const [boxes, setBoxes] = useSelector(state => state.boxes);
 
   useEffect(() => {
-    dispatch(retrieveOrders())
+    dispatch(getOrders())
+    dispatch(getCustomers())
+    dispatch(getDeliverers())
+    dispatch(getBoxes())
   }, [])
-
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
+    // TODO
   };
 
   const getStatus = (order) => {
@@ -87,7 +95,7 @@ function OrderList() {
     {
       renderHeader: () => {
         return (
-          <NewOrder customers={customerRows} dispatchers={dispatcherRows} boxes={boxRows} />
+          <NewOrder customers={customers} dispatchers={deliverers} boxes={boxes} />
         );
       },
       flex: 1,
@@ -97,7 +105,7 @@ function OrderList() {
       renderCell: (params) => {
         return (
           <div className="orderListEdit">
-            <EditOrder customers={customerRows} dispatchers={dispatcherRows} boxes={boxRows} order={params.row} />
+            <EditOrder customers={customers} dispatchers={deliverers} boxes={boxes} order={params.row} />
             <DeleteModal text="Confirm Order Deletion" />
           </div>
         );

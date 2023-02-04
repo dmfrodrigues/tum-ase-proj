@@ -23,7 +23,7 @@ export const createOrder = (customerId, createdById, delivererId, pickupAddress,
     }
 }
 
-export const retrieveOrders = () => async (dispatch) => {
+export const getOrders = () => async (dispatch) => {
     try {
         const res = await DeliveryDataService.getAll();
 

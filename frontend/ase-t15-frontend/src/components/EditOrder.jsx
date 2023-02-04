@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
 import { useState } from "react";
+import { OrderStatus } from '../pages/Order';
 
 function moveToFirst(arr, id) {
     arr = [...arr];
@@ -40,7 +41,7 @@ function EditOrder({ customers, dispatchers, boxes, order }) {
                             <Form.Select aria-label="Customer select" size="sm">
                                 {
                                     customers.map((customer) => {
-                                        return <option key={customer.id} value={customer.id}>{customer.username}</option>
+                                        return <option key={customer.id} value={customer.id}>{customer.name}</option>
                                     })
                                 }
                             </Form.Select>
@@ -51,7 +52,7 @@ function EditOrder({ customers, dispatchers, boxes, order }) {
                             <Form.Select aria-label="Deliverer select" size="sm">
                                 {
                                     dispatchers.map((dispatcher) => {
-                                        return <option key={dispatcher.id} value={dispatcher.id}>{dispatcher.username}</option>
+                                        return <option key={dispatcher.id} value={dispatcher.id}>{dispatcher.name}</option>
                                     })
                                 }
                             </Form.Select>
@@ -62,7 +63,7 @@ function EditOrder({ customers, dispatchers, boxes, order }) {
                             <Form.Select aria-label="Pick-up Box select" size="sm">
                                 {
                                     boxes.map((box) => {
-                                        return <option key={box.id} value={box.id}>{box.name}</option>
+                                        return <option key={box.id} value={box.id}>{box.username}</option>
                                     })
                                 }
                             </Form.Select>
@@ -70,31 +71,23 @@ function EditOrder({ customers, dispatchers, boxes, order }) {
 
                         <Form.Group className="mb-3" controlId={`status${order.id}`}>
                             <Form.Label>Select Status</Form.Label>
-                            <Form.Check
-                                defaultChecked={order.status === "pending" ? "checked" : ""}
-                                type="radio"
-                                id={`radio-1${order.id}`}
-                                value="pending"
-                                name={`formBasicStatus${order.id}`}
-                                label={`Pending`}
-                            />
-                            <Form.Check
-                                defaultChecked={order.status === "canceled" ? "checked" : ""}
-                                type="radio"
-                                id={`radio-2${order.id}`}
-                                value="canceled"
-                                name={`formBasicStatus${order.id}`}
-                                label={`Canceled`}
-                            />
-                            <Form.Check
-                                defaultChecked={order.status === "delivered" ? "checked" : ""}
-                                type="radio"
-                                id={`radio-3${order.id}`}
-                                value="delivered"
-                                name={`formBasicStatus${order.id}`}
-                                label={`Delivered`}
-                            />
 
+
+                            {
+                                Object.keys(OrderStatus).map((key) => {
+                                    let status = OrderStatus[key];
+                                    let orderStatus = order.events[order.events.length - 1].state;
+                                    return <Form.Check
+                                        defaultChecked={orderStatus === key ? "checked" : ""}
+                                        key={key}
+                                        type="radio"
+                                        id={`radio-${key}${order.id}`}
+                                        value={status}
+                                        name={`formBasicStatus${order.id}`}
+                                        label={status}
+                                    />
+                                })
+                            }
                         </Form.Group>
                     </Form>
 
