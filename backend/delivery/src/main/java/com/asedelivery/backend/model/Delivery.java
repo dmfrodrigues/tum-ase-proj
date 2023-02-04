@@ -77,7 +77,7 @@ public class Delivery {
     private TreeSet<Event> events;
 
     public Delivery(Customer customer, Dispatcher createdBy, Deliverer deliverer, String pickupAddress, Box box) {
-        assert box.customer.equals(customer);
+        assert customer.equals(box.customer);
 
         this.customer = customer;
         this.createdBy = createdBy;

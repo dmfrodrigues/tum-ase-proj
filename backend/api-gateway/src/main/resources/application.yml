@@ -1,0 +1,47 @@
+server:
+  port: ${PORT}
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+      - id: auth
+        uri: lb://AUTH
+        predicates:
+        - Path=/api/auth/**
+
+      - id: delivery
+        uri: lb://DELIVERY
+        predicates:
+        - Path=/api/**
+      - id: delivery-swagger
+        uri: lb://DELIVERY
+        predicates:
+        - Path=/swagger-ui/**
+      - id: delivery-swagger-2
+        uri: lb://DELIVERY
+        predicates:
+        - Path=/v3/**
+
+
+      - id: db-admin
+        uri: http://db-admin:8081
+        predicates:
+        - Path=/db-admin/**
+
+      - id: frontend
+        uri: http://frontend:3000
+        predicates:
+        - Path=/**
+
+eureka:
+  instance:
+    hostname: service-registry
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka

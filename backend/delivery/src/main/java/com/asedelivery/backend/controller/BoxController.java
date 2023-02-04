@@ -152,7 +152,7 @@ public class BoxController {
                 }
             case "ROLE_" + Role.CUSTOMER_STR:
                 Customer customer = (Customer)agent;
-                if(!box.customer.equals(customer)) return false;
+                if(!customer.equals(box.customer)) return false;
                 {
                     List<Delivery> deliveries = deliveryRepo
                         .findByBoxAndCustomerAndState(box, customer, Delivery.State.DELIVERED);
