@@ -7,11 +7,15 @@ import OrderIcon from '../components/OrderIcon';
 import EditOrder from '../components/EditOrder';
 import DeleteModal from '../components/DeleteModal';
 import NewOrder from '../components/NewOrder';
-import Order from './Order';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
+import { decrement, increment } from '../app/counterSlice'
 
 function OrderList() {
   const [data, setData] = useState(orderRows);
+
+  const count = useSelector((state) => state.counter.value)
+  const dispatch = useDispatch()
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
@@ -54,6 +58,8 @@ function OrderList() {
         return (
           <div className={status}>
             {params.row.status[0].toUpperCase() + params.row.status.slice(1)}
+            {count}
+
           </div >
         );
       }
@@ -72,6 +78,8 @@ function OrderList() {
           <div className="orderListEdit">
             <EditOrder customers={customerRows} dispatchers={dispatcherRows} boxes={boxRows} order={params.row} />
             <DeleteModal text="Confirm Order Deletion" />
+            <button onClick={() => dispatch(increment())}>+</button>
+            <button onClick={() => dispatch(decrement())}>-</button>
           </div>
         );
       },
