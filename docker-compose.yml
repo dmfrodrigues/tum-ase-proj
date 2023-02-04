@@ -11,7 +11,11 @@ services:
     ports:
       - 8001:3000
     volumes:
-      - ./frontend/ase-t15-frontend:./ase-t15-frontend
+      - ./frontend/ase-t15-frontend/public:/public
+      - ./frontend/ase-t15-frontend/src:/src
+      - ./frontend/ase-t15-frontend/package.json:/package.json
+      - ./frontend/ase-t15-frontend/package-lock.json:/package-lock.json
+      - ./frontend/ase-t15-frontend/node_modules:/node_modules
 
   delivery:
     container_name: delivery
