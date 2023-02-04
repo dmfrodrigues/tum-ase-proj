@@ -21,8 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.asedelivery.backend.email.Email;
+import com.asedelivery.backend.model.Agent;
 import com.asedelivery.backend.model.Box;
+import com.asedelivery.backend.model.Customer;
+import com.asedelivery.backend.model.Deliverer;
 import com.asedelivery.backend.model.Delivery;
+import com.asedelivery.backend.model.Dispatcher;
+import com.asedelivery.backend.model.repo.AgentRepository;
 import com.asedelivery.backend.model.repo.BoxRepository;
 import com.asedelivery.backend.model.repo.DeliveryRepository;
 import com.asedelivery.backend.service.AuthServiceDelivery;
@@ -47,6 +52,9 @@ public class BoxController {
 
     @Autowired
     DeliveryRepository deliveryRepo;
+
+    @Autowired
+    AgentRepository agentRepo;
 
     @Autowired
     AuthServiceDelivery authService;
@@ -112,10 +120,10 @@ public class BoxController {
             description = "Boolean, indicating if the box can be opened or not"
         )
     })
-    @PostMapping("/{id}/open")
+    @PostMapping("/{boxId}/open")
     @PreAuthorize(
-        "hasRole('" + Role.BOX_STR + "') and" +
-        "principal.username == #boxId"
+        "hasRole('" + Role.BOX_STR + "') and " +
+        "principal == #boxId"
     )
     public Boolean canOpenBox(
         @PathVariable @Parameter(description="Box ID") String boxId,
@@ -129,21 +137,27 @@ public class BoxController {
 
         String jwt = response.getBody();
         String userId = jwtUtil.extractUsername(jwt);
+        Agent agent = agentRepo.findById(userId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Agent does not exist"));
+
         Collection<? extends GrantedAuthority> authorities = jwtUtil.extractUserRoles(jwt);
         String authority = authorities.iterator().next().getAuthority();
         switch(authority){
             case "ROLE_" + Role.DELIVERER_STR:
+                Deliverer deliverer = (Deliverer)agent;
                 {
                     List<Delivery> deliveries = deliveryRepo
-                        .findByBoxIdAndDelivererIdAndState(boxId, userId, Delivery.State.PICKED_UP);
+                        .findByBoxAndDelivererAndState(box, deliverer, Delivery.State.PICKED_UP);
                     if(deliveries.size() <= 0) return false;
                     return true;
                 }
             case "ROLE_" + Role.CUSTOMER_STR:
-                if(!box.customer.getId().equals(userId)) return false;
+                Customer customer = (Customer)agent;
+                if(!box.customer.equals(customer)) return false;
                 {
                     List<Delivery> deliveries = deliveryRepo
-                        .findByBoxIdAndCustomerIdAndState(boxId, userId, Delivery.State.DELIVERED);
+                        .findByBoxAndCustomerAndState(box, customer, Delivery.State.DELIVERED);
+                    
                     if(deliveries.size() <= 0) return false;
                     for(Delivery delivery: deliveries){
                         delivery.advanceState();

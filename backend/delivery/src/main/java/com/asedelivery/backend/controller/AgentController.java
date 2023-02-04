@@ -38,7 +38,7 @@ public class AgentController {
     @GetMapping("/{id}")
     @PreAuthorize(
         "hasRole('" + Role.DISPATCHER_STR + "') or " +
-        "principal.username == #id"
+        "principal == #id"
     )
     public Agent getAgentByID(
         @PathVariable @Parameter(description="Agent ID") String id

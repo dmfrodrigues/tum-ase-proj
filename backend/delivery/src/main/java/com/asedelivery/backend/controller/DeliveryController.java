@@ -101,10 +101,10 @@ public class DeliveryController {
         "hasRole('" + Role.DISPATCHER_STR + "') or " +
         "(" + 
             "hasRole('" + Role.DELIVERER_STR + "') and " +
-            "principal.username == returnObject.deliverer.getId()" +
+            "principal == returnObject.deliverer.getId()" +
         ") or (" +
             "hasRole('" + Role.CUSTOMER_STR + "') and " +
-            "principal.username == returnObject.customer.getId()" +
+            "principal == returnObject.customer.getId()" +
         ")"
     )
     public Delivery getDeliveryById(
@@ -119,7 +119,7 @@ public class DeliveryController {
     @PutMapping("")
     @PreAuthorize(
         "hasRole('" + Role.DISPATCHER_STR + "') and " +
-        "principal.username == #createdById"
+        "principal == #createdById"
     )
     public Delivery putDelivery(
         @RequestParam(value = "customerId") @Parameter(description="Customer that ordered the delivery") String customerId,

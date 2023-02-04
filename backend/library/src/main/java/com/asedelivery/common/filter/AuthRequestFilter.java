@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -34,6 +35,8 @@ public class AuthRequestFilter extends OncePerRequestFilter {
         HttpServletResponse response,
         FilterChain filterChain
     ) throws ServletException, IOException {
+        System.out.println("L37");
+
         String username = null;
         Collection<? extends GrantedAuthority> authorities = null;
         String jwt = null;
@@ -61,15 +64,15 @@ public class AuthRequestFilter extends OncePerRequestFilter {
             // Load a user from the database that has the same username
             // as in the JWT token.
             authService.setAuthentication(username, authorities);
-            // Authentication authContext = SecurityContextHolder.getContext().getAuthentication();
-            // System.out.println(String.format("Authenticate Token Set:\n"
-            //     + "Username: %s\n"
-            //     + "Password: %s\n"
-            //     + "Authority: %s\n",
-            //     authContext.getPrincipal(),
-            //     authContext.getCredentials(),
-            //     authContext.getAuthorities().toString())
-            // );
+            Authentication authContext = SecurityContextHolder.getContext().getAuthentication();
+            System.out.println(String.format("Authenticate Token Set:\n"
+                + "Username: %s\n"
+                + "Password: %s\n"
+                + "Authority: %s\n",
+                authContext.getPrincipal(),
+                authContext.getCredentials(),
+                authContext.getAuthorities().toString())
+            );
         }
         filterChain.doFilter(request, response);
     }
