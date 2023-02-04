@@ -3,17 +3,32 @@ import '../css/page/boxList.css'
 import { DataGrid } from '@mui/x-data-grid';
 import { orderRows } from "../dummyData";
 import { dispatcherRows, customerRows, boxRows } from "../dummyData";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EditOrder from '../components/EditOrder';
 import DeleteModal from '../components/DeleteModal';
 import EditUser from '../components/EditUser';
 import { Box } from '@mui/material';
 import NewBox from '../components/NewBox';
 import EditBox from '../components/EditBox';
-import { Inventory2Outlined, InventoryOutlined } from '@mui/icons-material';
+import { useSelector, useDispatch } from 'react-redux'
+import { Inventory2Outlined } from '@mui/icons-material';
+import { getCustomers } from '../actions/users';
+import { getBoxes } from '../actions/boxes';
 
 function BoxList() {
   const [data, setData] = useState(boxRows);
+  const dispatch = useDispatch();
+  const [customers, setCustomers] = useSelector(state => state.users.customers);
+  const [boxes, setBoxes] = useSelector(state => state.boxes);
+
+  useEffect(() => {
+    dispatch(getBoxes())
+    dispatch(getCustomers())
+  }, [])
+
+  const getStatus = (order) => {
+    return order.events[order.events.length - 1].state;
+  }
 
   const columns = [
     {
@@ -23,49 +38,38 @@ function BoxList() {
       headerName: "ID",
     },
     {
-      field: "location",
+      field: "name",
       width: 150,
       flex: 1,
-      headerName: "Location",
+      headerName: "Name",
       renderCell: (params) => {
         return (
           <div className="userListItem">
             <Inventory2Outlined />
-            {"  " + params.row.location}
+            {"  " + params.row.username}
           </div>
         );
       }
     },
     {
-      field: "active",
+      field: "address",
       width: 150,
-      flex: 1,
-      headerName: "Is Active",
-      renderCell: (params) => {
-        return (
-          <span className="boxActive">
-            {params.row.active ? "Yes" : "No"}
-          </span>
-        );
-      }
+      flex: 2,
+      headerName: "Address",
     },
     {
-      field: "status",
+      field: "customer",
       width: 150,
       flex: 1,
-      headerName: "Status",
-      renderCell: (params) => {
-        return (
-          <span className="boxStatus">
-            {params.row.status[0].toUpperCase() + params.row.status.slice(1)}
-          </span>
-        );
-      }
+      headerName: "Customer",
+      valueGetter: (params) => {
+        return params.row.customer.name;
+      },
     },
     {
       renderHeader: () => {
         return (
-          <NewBox />
+          <NewBox customers={customers} />
         );
       },
       flex: 1,
@@ -75,7 +79,7 @@ function BoxList() {
       renderCell: (params) => {
         return (
           <div className="orderListEdit">
-            <EditBox box={params.row} />
+            <EditBox box={params.row} customers={customers} />
             <DeleteModal text="Confirm Box Deletion" />
           </div>
         );
@@ -87,7 +91,7 @@ function BoxList() {
     <div className="boxList">
       <DataGrid
         className='boxListTable'
-        rows={data}
+        rows={boxes}
         disableSelectionOnClick
         columns={columns}
         pageSize={8}

@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import { useState } from "react";
 import { AddCircle, AddCircleOutline } from '@mui/icons-material';
 
-function NewBox() {
+function NewBox({ customers }) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -28,16 +28,25 @@ function NewBox() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="formBasicLocation">
-                            <Form.Label>Insert Location</Form.Label>
-                            <Form.Control type="text" placeholder="Enter location" />
+                        <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Label>Insert Name</Form.Label>
+                            <Form.Control type="text" placeholder="Enter Name" />
                         </Form.Group>
-                    </Form>
 
-                    <Form>
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Insert Password</Form.Label>
-                            <Form.Control type="password" placeholder="Enter password" />
+                        <Form.Group className="mb-3" controlId="formBasicAddress">
+                            <Form.Label>Insert Address</Form.Label>
+                            <Form.Control type="text" placeholder="Enter address" />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicCustomer">
+                            <Form.Label>Select Customer</Form.Label>
+                            <Form.Select aria-label="Customer select" size="sm">
+                                {
+                                    customers.map((customer) => {
+                                        return <option key={customer.id} value={customer.id}>{customer.name}</option>
+                                    })
+                                }
+                            </Form.Select>
                         </Form.Group>
                     </Form>
 

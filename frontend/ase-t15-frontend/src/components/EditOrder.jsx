@@ -71,8 +71,6 @@ function EditOrder({ customers, dispatchers, boxes, order }) {
 
                         <Form.Group className="mb-3" controlId={`status${order.id}`}>
                             <Form.Label>Select Status</Form.Label>
-
-
                             {
                                 Object.keys(OrderStatus).map((key) => {
                                     let status = OrderStatus[key];

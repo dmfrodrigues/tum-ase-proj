@@ -1,7 +1,6 @@
 import '../css/page/orderList.css'
 import { DataGrid } from '@mui/x-data-grid';
 import { orderRows } from "../dummyData";
-import { dispatcherRows, customerRows, boxRows } from "../dummyData";
 import { useEffect, useState } from "react";
 import OrderIcon from '../components/OrderIcon';
 import EditOrder from '../components/EditOrder';
@@ -19,7 +18,7 @@ function OrderList() {
 
   const [data, setData] = useState(orderRows);
   const [orders, setOrders] = useSelector(state => state.orders)
-  const [customers, setUsers] = useSelector(state => state.users.customers);
+  const [customers, setCustomers] = useSelector(state => state.users.customers);
   const [deliverers, setDeliverers] = useSelector(state => state.users.deliverers);
   const [boxes, setBoxes] = useSelector(state => state.boxes);
 

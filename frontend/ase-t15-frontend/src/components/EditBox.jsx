@@ -5,11 +5,21 @@ import Form from 'react-bootstrap/Form';
 
 import { useState } from "react";
 
-function EditBox({ box }) {
+function moveToFirst(arr, id) {
+    arr = [...arr];
+    const index = arr.findIndex((el) => el.id === id);
+    const first = arr[index];
+    arr.sort(function (x, y) { return x == first ? -1 : y == first ? 1 : x < y; });
+    return arr;
+}
+
+function EditBox({ box, customers }) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    customers = moveToFirst(customers, box.customer.id);
 
     return (
         <div>
@@ -23,14 +33,25 @@ function EditBox({ box }) {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="formBasicLocation">
-                            <Form.Label>Insert Location</Form.Label>
-                            <Form.Control type="text" value={box.location} />
+                        <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Label>Insert Name</Form.Label>
+                            <Form.Control type="text" value={box.username} />
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Insert Password</Form.Label>
-                            <Form.Control type="password" value={box.password} />
+                        <Form.Group className="mb-3" controlId="formBasicAddress">
+                            <Form.Label>Insert Address</Form.Label>
+                            <Form.Control type="text" value={box.address} />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicCustomer">
+                            <Form.Label>Select Customer</Form.Label>
+                            <Form.Select aria-label="Customer select" size="sm">
+                                {
+                                    customers.map((customer) => {
+                                        return <option key={customer.id} value={customer.id}>{customer.name}</option>
+                                    })
+                                }
+                            </Form.Select>
                         </Form.Group>
                     </Form>
 
