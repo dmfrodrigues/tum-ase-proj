@@ -26,7 +26,6 @@ import com.asedelivery.backend.model.Box;
 import com.asedelivery.backend.model.Customer;
 import com.asedelivery.backend.model.Deliverer;
 import com.asedelivery.backend.model.Delivery;
-import com.asedelivery.backend.model.Dispatcher;
 import com.asedelivery.backend.model.repo.AgentRepository;
 import com.asedelivery.backend.model.repo.BoxRepository;
 import com.asedelivery.backend.model.repo.DeliveryRepository;
@@ -157,7 +156,6 @@ public class BoxController {
                 {
                     List<Delivery> deliveries = deliveryRepo
                         .findByBoxAndCustomerAndState(box, customer, Delivery.State.DELIVERED);
-                    
                     if(deliveries.size() <= 0) return false;
                     for(Delivery delivery: deliveries){
                         delivery.advanceState();
