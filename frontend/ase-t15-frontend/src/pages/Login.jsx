@@ -19,8 +19,8 @@ function Login() {
     const handleLogin = (e) => {
         e.preventDefault();
         dispatch(login(username, password)).then((response) => {
-            //navigate("/orders");
-            //window.location.reload();
+            navigate("/orders");
+            window.location.reload();
         }
         ).catch(() => {
             alert("Incorrect username or password");
@@ -60,10 +60,6 @@ function Login() {
                     </button>
                 </form>
             </div>
-
-            <button className="btn btn-primary p-2 loginSubmit" onClick={handleLogin}>
-                Login
-            </button>
         </div>
     );
 }
