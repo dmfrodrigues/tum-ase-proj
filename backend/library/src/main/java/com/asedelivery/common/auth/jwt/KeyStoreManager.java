@@ -1,5 +1,8 @@
 package com.asedelivery.common.auth.jwt;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.Key;
@@ -12,6 +15,7 @@ import java.security.cert.Certificate;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
 @Component
 public class KeyStoreManager {
@@ -29,8 +33,15 @@ public class KeyStoreManager {
 
         try {
             // Get the path to the keystore file in the resources folder
-            InputStreamSource iss = new ClassPathResource("classpath:ase_project.keystore");
-            is = iss.getInputStream();
+            try {
+                InputStreamSource iss = new ClassPathResource("classpath:ase_project.keystore");
+                is = iss.getInputStream();
+            } catch(FileNotFoundException e){
+                System.err.println("Failed to load with ClassPathResource; using ResourceUtils.getFile");
+
+                File keystoreFile = ResourceUtils.getFile("classpath:ase_project.keystore");
+                is = new FileInputStream(keystoreFile);
+            }
             keyStore.load(is, password);
             keyAlias = keyStore.aliases().nextElement();
         } catch (Exception e) {
