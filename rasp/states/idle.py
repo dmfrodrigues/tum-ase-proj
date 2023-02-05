@@ -12,7 +12,7 @@ class Idle(state.State):
     def update(self) -> None:
         tag, _ = None, None
         while tag == None:
-            tag, _ = self.rasp.read_tag()
+            _, tag = self.rasp.read_tag()
         self.rasp.current_tag = tag
         self.rasp.change_state(req.RequestAuth())
 
