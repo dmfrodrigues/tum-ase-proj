@@ -1,0 +1,247 @@
+.orderDetailContainer {
+	flex: 5;
+}
+
+.orderDetailCaptionContainer {
+	text-align: center;
+	font-weight: bolder;
+	font-size: 1.3em;
+}
+
+.orderDetailStatusContainer {
+	padding: 1em;
+	padding-top: 4em;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.orderDetailStatusImgStatusContainer {
+	display: flex;
+	justify-content: space-between;
+	padding-left: 20%;
+	padding-right: 20%;
+	position: relative;
+	padding-bottom: 15px;
+}
+
+.orderDetailStatusImgStatus {
+	justify-content: center;
+}
+
+.orderDetailStatusImg {
+	width: 5em;
+}
+
+.orderDetailStatusStatus {
+	text-align: center;
+}
+
+
+/* Progress bar design: https://w3collective.com/responsive-step-progress-bar */
+#progress {
+	position: relative;
+}
+
+#progress-bar {
+	position: absolute;
+	background: green;
+	height: 5px;
+	width: 0%;
+	top: calc(50% - 2.5px);
+	left: 22%;
+	right: 88%;
+}
+
+#progress-num {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
+	padding-left: 22%;
+	padding-right: 22%;
+}
+
+#progress-num::before {
+	content: "";
+	background-color: lightgray;
+	position: absolute;
+	height: 5px;
+	width: 0%;
+	top: calc(50% - 2.5px);
+	left: 22%;
+	right: 88%;
+	width: 55%;
+	z-index: -1;
+}
+
+#progress-num .step {
+	position: relative;
+	top: 50%;
+	border: 3px solid lightgray;
+	border-radius: 50%;
+	width: 2em;
+	height: 2em;
+	line-height: 1.5em;
+	text-align: center;
+	background-color: #fff;
+	position: relative;
+	z-index: 1;
+}
+
+#progress-num .active {
+	background-color: green;
+	border: 3px solid green;
+	color: white;
+}
+
+
+
+
+
+
+.bottomContainer {
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	align-items: flex-start;
+}
+
+
+.orderDetailTextContainer {
+	display: inline-block;
+	padding: 1em;
+
+}
+
+.orderDetailTextCaption {
+	text-align: center;
+	font-weight: bold;
+	padding-bottom: 1em;
+	font-size: 1.1em;
+}
+
+.orderDetailTextParagraph {
+	margin: 0;
+	font-size: 1em;
+}
+
+.orderDetailHistoryContainer {}
+
+
+
+
+
+
+
+
+.historyList {
+	margin: 0 auto;
+	list-style-type: none;
+	counter-reset: steps;
+	margin: 0;
+	font-family: sans-serif;
+}
+
+.historyList li {
+	position: relative;
+	margin: 0;
+}
+
+.historyList li:before {
+	position: absolute;
+	left: calc(1em + 8px + 32px);
+	top: 72px;
+	content: "";
+	height: 6em;
+	width: 0;
+	border-left: 3px dashed #000;
+}
+
+.historyList li:last-of-type:before {
+	height: 3em;
+}
+
+.historyList li:first-of-type:before {
+	top: 100%;
+	left: calc(1em + 8px + 32px - 1.5px);
+}
+
+
+.historyList {
+	list-style: none;
+	padding: 0;
+	width: 30vw;
+}
+
+.historyList>li {
+	padding: 0 1em 1em 1em;
+	border-radius: 1em;
+	margin: 0;
+	border: none;
+}
+
+.historyList>li:first-of-type {
+	padding: 1em;
+	border: 3px solid green;
+	border-radius: 15px;
+	margin: 1em 0 3em 0;
+}
+
+.historyItemContainer {
+	display: flex;
+	justify-content: start;
+	position: relative;
+	padding: 8px 8px 8px 0;
+}
+
+.historyItemImage {
+	width: 64px;
+	height: 64px;
+	position: relative;
+	margin: auto;
+	margin: 8px;
+
+}
+
+.historyItemTextContainer {
+	width: calc(100% - 64px - 8em);
+	margin: 8px;
+}
+
+.historyItemTextCaption {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+.historyItemTextDescription {}
+
+.historyItemDateTime {
+	width: 8em;
+}
+
+.orderContainer {
+	display: inline-block;
+	text-align: center;
+	padding: 20px;
+	margin: 20px;
+	-webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+	box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.orderDetailsTitle {
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.orderDetail {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+.orderDetailTitle {
+	font-weight: bold;
+}

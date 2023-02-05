@@ -1,0 +1,97 @@
+.orderList {
+    display: flex;
+    flex: 5;
+    flex-direction: row;
+}
+
+.orderList * {
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.orderListTable {
+    flex: 10 !important;
+}
+
+.orderListAdd {
+    flex: 1;
+    color: #00a65a;
+    font-size: xx-large;
+    cursor: pointer;
+    text-align: center;
+}
+
+.orderListItem {
+    display: flex;
+    align-items: center;
+    font-size: xx-large;
+}
+
+.orderListImg {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.orderListEdit {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.orderListEditBtn {
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.orderListStatus {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    text-decoration: none;
+}
+
+.orderListORDERED {
+    color: #f39c12;
+}
+
+.orderListPICKED_UP {
+    color: #c2cf04;
+}
+
+.orderListDELIVERED {
+    color: #00a65a;
+}
+
+.orderListCOMPLETED {
+    color: #00a65a;
+}
+
+.orderListNew {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.orderListNewButton {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.orderListNewButtonSpan {
+    padding: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: normal;
+}

@@ -1,0 +1,26 @@
+server:
+  port: 80
+  forward-headers-strategy: framework
+
+frontend:
+  address: ${FRONTEND_ADDRESS}
+
+spring:
+  application:
+    name: auth
+  data:
+    mongodb:
+      host: db
+      authentication-database: admin
+      database: asedelivery
+      username: root
+      password: ${MONGO_INITDB_ROOT_PASSWORD}
+
+  keys:
+    keystore:
+      path: src/main/resources/ase_project.keystore
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://service-registry:8761/eureka

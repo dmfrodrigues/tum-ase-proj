@@ -1,0 +1,32 @@
+.orderIconORDERED {
+    color: #f39c12;
+}
+
+.orderIconPICKED_UP {
+    color: #c2cf04;
+}
+
+.orderIconDELIVERED {
+    color: #00a65a;
+}
+
+.orderIconCOMPLETED {
+    color: #00a65a;
+}
+
+.shippingIcon {
+    position: relative;
+    color: rgb(48, 47, 47);
+}
+
+.statusIcon {
+    font-size: medium;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    cursor: pointer;
+    position: relative;
+    left: -2px;
+    top: 7px;
+}

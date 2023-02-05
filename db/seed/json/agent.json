@@ -1,0 +1,58 @@
+[
+    {
+        "_id": {
+            "$oid": "63dd3d452bda2b1a5055a54c"
+        },
+        "name": "Diogo Rodrigues",
+        "email": "dmfr@gmail.com",
+        "username": "dmfr",
+        "_class": "com.asedelivery.backend.model.Dispatcher"
+    },
+    {
+        "_id": {
+            "$oid": "63dd3d452bda2b1a5055a54d"
+        },
+        "name": "João Lucas Martins",
+        "email": "lucas@gmail.com",
+        "username": "lucas",
+        "_class": "com.asedelivery.backend.model.Deliverer"
+    },
+    {
+        "_id": {
+            "$oid": "63dd3d452bda2b1a5055a54e"
+        },
+        "name": "Martin Mõhle",
+        "email": "martin@gmail.com",
+        "username": "martin",
+        "_class": "com.asedelivery.backend.model.Deliverer"
+    },
+    {
+        "_id": {
+            "$oid": "63dd3d462bda2b1a5055a54f"
+        },
+        "name": "Tiago Silva",
+        "email": "mocho@gmail.com",
+        "username": "mocho",
+        "_class": "com.asedelivery.backend.model.Customer"
+    },
+    {
+        "_id": {
+            "$oid": "63dd3d462bda2b1a5055a550"
+        },
+        "address": "Boltzmannstr. 3\n85748 Garching bei München",
+        "customer": {
+            "$oid": "63dd3d462bda2b1a5055a54f"
+        },
+        "username": "garching1",
+        "_class": "com.asedelivery.backend.model.Box"
+    },
+    {
+        "_id": {
+            "$oid": "63dd3d462bda2b1a5055a553"
+        },
+        "name": "Admin",
+        "email": "asedelivery@gmail.com",
+        "username": "admin",
+        "_class": "com.asedelivery.backend.model.Dispatcher"
+    }
+]

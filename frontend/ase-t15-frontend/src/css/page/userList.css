@@ -1,0 +1,55 @@
+.userList {
+  display: flex;
+  flex: 5;
+  flex-direction: row;
+}
+
+.userList * {
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.userListTable {
+  display: flex;
+  flex: 10 !important;
+}
+
+.userListEdit {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.userListEditBtn {
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.userListDelete {
+  color: red;
+  cursor: pointer;
+}
+
+.userListNewButton {
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.userListNewButtonSpan {
+  padding: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  vertical-align: middle;
+  display: inline-block;
+  line-height: normal;
+}
+
+.addToken {
+  height: min-content;
+  align-self: center;
+  margin-left: 10px;
+}
