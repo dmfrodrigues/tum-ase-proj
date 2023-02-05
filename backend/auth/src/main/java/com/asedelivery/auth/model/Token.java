@@ -40,8 +40,12 @@ public class Token {
         return new Token(type, principal, generateTokenId(tokenSize));
     }
 
-    static public Token generateToken(Type type, Principal principal){
-        return generateToken(type, principal, DEFAULT_SIZE);
+    public static Token generateToken(Type type, String string) {
+        return generateToken(type, null, DEFAULT_SIZE);
+    }
+
+    public static Token generateToken(Type type) {
+        return generateToken(type, null, DEFAULT_SIZE);
     }
 
     public String getId(){
