@@ -7,6 +7,8 @@ import RPi.GPIO as GPIO
 
 import state
 import states.idle as idle
+from raspconfig import RaspConf
+from api import BoxApi
 
 class Rasp:
 
@@ -15,17 +17,20 @@ class Rasp:
 
     SENSOR_PIN = 26
 
-    def __init__(self) -> None:
+    def __init__(self, configFile: str = ".conf") -> None:
         self.state = None
         self.last_change = None
         self.current_tag = None
+
+        self.config = RaspConf.fromFile(configFile)
+        self.api = BoxApi(self.config)
 
         # Hardware init
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(True)
         GPIO.setup(self.GREEN_PIN, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.RED_PIN, GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(self.SENSOR_PIN, GPIO.IN)
+        GPIO.setup(self.SENSOR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
         self.reader = SimpleMFRC522()
 

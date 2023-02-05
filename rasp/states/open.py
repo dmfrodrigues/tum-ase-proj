@@ -10,6 +10,9 @@ class Open(state.State):
 
     TIME_TO_CLOSE = 10  # Time until LED starts blinking
 
+    def on_state_enter(self) -> None:
+        self.rasp.disable_led()
+
     def update(self) -> None:
         if self.rasp.is_open():
             if time.monotonic() - self.rasp.last_change >= self.TIME_TO_CLOSE:

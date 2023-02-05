@@ -9,10 +9,8 @@ import states.unlocked as unl
 class RequestAuth(state.State):
 
     def update(self) -> None:
-        time.sleep(2)
-        if self.rasp.current_tag == 594722564577: # TODO: Implement actual request
+        if self.rasp.api.canRfidOpenBox(self.rasp.current_tag):
             self.rasp.change_state(unl.Unlocked())
         else:
             self.rasp.change_state(rej.RfidRejected())
-
 
