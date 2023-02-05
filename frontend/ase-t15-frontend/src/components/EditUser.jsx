@@ -61,7 +61,7 @@ function EditUser({ user }) {
                         Close
                     </Button>
                     <Button variant="success" size="sm" onClick={handleSubmit}>
-                        Save Changes
+                        Edit
                     </Button>
                 </Modal.Footer>
             </Modal>

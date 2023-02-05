@@ -56,7 +56,7 @@ function EditBox({ box }) {
                         Close
                     </Button>
                     <Button variant="success" size="sm" onClick={handleSubmit}>
-                        Create
+                        Edit
                     </Button>
                 </Modal.Footer>
             </Modal>
