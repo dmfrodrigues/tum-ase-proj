@@ -4,104 +4,54 @@ import packing_image from '../assets/packing.png'
 import delivery_image from '../assets/delivery.png'
 import arrived_image from '../assets/arrived.png'
 import collected_image from '../assets/collected.png'
+import { useDispatch, useSelector } from "react-redux";
+import { getOrder } from "../actions/orders";
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { width } from '@mui/system';
 
 
 function OrderDetail() {
 	const { id } = useParams();
 
-	// following should be connected to backend
-	const customer_name = "John Smith";
-	const order = "Fundamentals of Software Architecture";
-	const vendor = "Software Architecture Guide";
-	const order_date = "12th January 2023";
-	let order_id_is_valid = true;
-	let order_history = {
-		status: 3,  // 1: packing, 2: delivery, 3: arrived, 4: collected
-		pick_up_location: "Garching",
-		time_of_status: {
-			1: "Today, 8:34 am​​",
-			2: "Today, 10:12 am​​",
-			3: "Today, 3:15 pm​",
-			4: null
-		},
-	};
+	const dispatch = useDispatch()
+	const order = useSelector(state => state.orders.order)
+	const [customer_name, setCustomerName] = useState("");
+	const [box_name, setBoxName] = useState("");
+	const [pickupAddress, setPickupAddress] = useState("");
+	const [order_date, setOrderDate] = useState("");
+	const [order_history, setOrderHistory] = useState({
+		status: 1,
+		time_of_status: [],
+	});
+	const [order_id_is_valid, setOrderIdIsValid] = useState(false);
 
+	useEffect(() => {
+		dispatch(getOrder(id))
+	}, [])
 
-	// when window loads:
-	// DOM elements are assigened to vars
-	// buttons update "order_history.status" -> should be requested from backend
-	// after every update, call "updateProgress"
-	window.onload = () => {
-
-		const progressBar = document.getElementById("progress-bar");
-		const progressNext = document.getElementById("progress-next");
-		const progressPrev = document.getElementById("progress-prev");
-		const steps = document.querySelectorAll(".step");
-
-		const history_list = document.getElementById("history_list");
-		const history_status_1 = document.getElementById("history_status_1");
-		const history_status_2 = document.getElementById("history_status_2");
-		const history_status_3 = document.getElementById("history_status_3");
-		const history_status_4 = document.getElementById("history_status_4");
-		let history_status = [history_status_1, history_status_2, history_status_3, history_status_4]
-
-		progressNext.addEventListener("click", () => {
-			order_history.status++;
-			if (order_history.status > steps.length) {
-				order_history.status = steps.length;
+	useEffect(() => {
+		if (order) {
+			setCustomerName(order.customer.name);
+			setBoxName(order.box.username);
+			setPickupAddress(order.pickupAddress);
+			setOrderDate(order.events.length > 0 ? new Date(order.events[0].date).toDateString() : null);
+			let state_to_status = {
+				"ORDERED": 1,
+				"PICKED_UP": 2,
+				"DELIVERED": 3,
+				"COMPLETE": 4,
 			}
-			updateProgress();
-		});
-
-		progressPrev.addEventListener("click", () => {
-			order_history.status--;
-			if (order_history.status < 1) {
-				order_history.status = 1;
-			}
-			updateProgress();
-		});
-
-
-		let removeAllChildNodes = parent => {
-			while (parent.firstChild) {
-				parent.removeChild(parent.firstChild);
-			}
-		}
-
-		const updateProgress = () => {
-			// toggle active class on list items
-			steps.forEach((step, i) => {
-				if (i < order_history.status) {
-					step.classList.add("active");
-				} else {
-					step.classList.remove("active");
-				}
+			setOrderHistory({
+				status: state_to_status[order.events.length > 0 ? order.events[order.events.length - 1].state : "ORDERED"],
+				time_of_status: order.events.length > 0 ?
+					order.events.map(event => new Date(event.date).toDateString())
+					: [],
 			});
-			// set progress bar width  
-			progressBar.style.width =
-				((order_history.status - 1) / (steps.length - 1)) * 55 + "%";
-			// enable disable prev and next buttons
-			if (order_history.status === 1) {
-				progressPrev.disabled = true;
-			} else if (order_history.status === steps.length) {
-				progressNext.disabled = true;
-			} else {
-				progressPrev.disabled = false;
-				progressNext.disabled = false;
-			}
+			setOrderIdIsValid(true);
+		}
+	}, [order])
 
-
-			// update list
-			removeAllChildNodes(history_list);
-			for (let i = order_history.status; i > 0; i--) {
-				history_list.appendChild(history_status[i - 1]);
-			}
-
-		};
-
-		updateProgress();
-
-	};
 
 
 	return order_id_is_valid ? (
@@ -115,28 +65,29 @@ function OrderDetail() {
 				<div className="orderDetailStatusImgStatusContainer">
 					<div className="orderDetailStatusImgStatus">
 						<img className="orderDetailStatusImg" src={packing_image}></img>
-						<div className="orderDetailStatusStatus">Packing</div>
+						<div className="orderDetailStatusStatus">Ordered</div>
 					</div>
 					<div className="orderDetailStatusImgStatus">
 						<img className="orderDetailStatusImg" src={delivery_image}></img>
-						<div className="orderDetailStatusStatus">Delivery</div>
+						<div className="orderDetailStatusStatus">Picked up</div>
 					</div>
 					<div className="orderDetailStatusImgStatus">
 						<img className="orderDetailStatusImg" src={arrived_image}></img>
-						<div className="orderDetailStatusStatus">Arrived</div>
+						<div className="orderDetailStatusStatus">Delivered</div>
 					</div>
 					<div className="orderDetailStatusImgStatus">
 						<img className="orderDetailStatusImg" src={collected_image}></img>
-						<div className="orderDetailStatusStatus">Collected</div>
+						<div className="orderDetailStatusStatus">Completed</div>
 					</div>
 				</div>
 				<div id="progress">
-					<div id="progress-bar"></div>
+					<div id="progress-bar" style={{ width: ((order_history.status - 1) / (4 - 1)) * 55 + "%" }}></div>
+
 					<ul id="progress-num">
-						<li className="step">1</li>
-						<li className="step">2</li>
-						<li className="step">3</li>
-						<li className="step">4</li>
+						<li className={`step ${order_history.status >= 1 ? "active" : ""}`}>1</li>
+						<li className={`step ${order_history.status >= 2 ? "active" : ""}`}>2</li>
+						<li className={`step ${order_history.status >= 3 ? "active" : ""}`}>3</li>
+						<li className={`step ${order_history.status >= 4 ? "active" : ""}`}>4</li>
 					</ul>
 				</div>
 			</div>
@@ -150,54 +101,70 @@ function OrderDetail() {
 					<div className="orderDetail p-4">
 						<div>
 							<span className="orderDetailTitle">Customer:</span>
-							<span className="orderDetailContent pb-4 mx-2">Customer</span>
+							<span className="orderDetailContent pb-4 mx-2"> {customer_name} </span>
+						</div>
+
+						<div>
+							<span className="orderDetailTitle">Box Name:</span>
+							<span className="orderDetailContent pb-4 mx-2"> {box_name} </span>
+						</div>
+
+						<div>
+							<span className="orderDetailTitle">Pickup Address:</span>
+							<span className="orderDetailContent pb-4 mx-2"> {pickupAddress} </span>
 						</div>
 
 						<div>
 							<span className="orderDetailTitle">Date:</span>
-							<span className="orderDetailContent pb-4 mx-2">12th of January 2023</span>
+							<span className="orderDetailContent pb-4 mx-2"> {order_date} </span>
 						</div>
 					</div>
 				</div>
 
 				<div className="orderContainer">
 					<ul className="historyList" id="history_list">
-						<li id="history_status_4">
-							<div className="historyItemContainer">
-								<img className="historyItemImage" src={collected_image}></img>
-								<div className="historyItemTextContainer">
-									<div className="historyItemTextCaption">Package was collected</div>
-									<div className="historyItemTextDescription">The package was collected</div>
+						{order_history.status >= 4 &&
+							<li id="history_status_4">
+								<div className="historyItemContainer">
+									<img className="historyItemImage" src={collected_image}></img>
+									<div className="historyItemTextContainer">
+										<div className="historyItemTextCaption">Delivery Complete</div>
+										<div className="historyItemTextDescription">The delivery was marked as complete</div>
+									</div>
+									<div className="historyItemDateTime">{order_history.time_of_status["4"]}​</div>
 								</div>
-								<div className="historyItemDateTime">{order_history.time_of_status["4"]}​</div>
-							</div>
-						</li>
-						<li id="history_status_3">
-							<div className="historyItemContainer">
-								<img className="historyItemImage" src={arrived_image}></img>
-								<div className="historyItemTextContainer">
-									<div className="historyItemTextCaption">Package was delivered</div>
-									<div className="historyItemTextDescription">The package can be collected at {order_history.pick_up_location} pick-up station</div>
+							</li>
+						}
+						{order_history.status >= 3 &&
+							<li id="history_status_3">
+								<div className="historyItemContainer">
+									<img className="historyItemImage" src={arrived_image}></img>
+									<div className="historyItemTextContainer">
+										<div className="historyItemTextCaption">Package was delivered</div>
+										<div className="historyItemTextDescription">The package can be collected at {pickupAddress}</div>
+									</div>
+									<div className="historyItemDateTime">{order_history.time_of_status["3"]}​</div>
 								</div>
-								<div className="historyItemDateTime">{order_history.time_of_status["3"]}​</div>
-							</div>
-						</li>
-						<li id="history_status_2">
-							<div className="historyItemContainer">
-								<img className="historyItemImage" src={delivery_image}></img>
-								<div className="historyItemTextContainer">
-									<div className="historyItemTextCaption">Arriving today</div>
-									<div className="historyItemTextDescription">Your Delivery package is arriving today</div>
+							</li>
+						}
+						{order_history.status >= 2 &&
+							<li id="history_status_2">
+								<div className="historyItemContainer">
+									<img className="historyItemImage" src={delivery_image}></img>
+									<div className="historyItemTextContainer">
+										<div className="historyItemTextCaption">Picked up</div>
+										<div className="historyItemTextDescription">Your delivery package was picked up and is on the way</div>
+									</div>
+									<div className="historyItemDateTime">{order_history.time_of_status["2"]}</div>
 								</div>
-								<div className="historyItemDateTime">{order_history.time_of_status["2"]}</div>
-							</div>
-						</li>
+							</li>
+						}
 						<li id="history_status_1">
 							<div className="historyItemContainer">
 								<img className="historyItemImage" src={packing_image}></img>
 								<div className="historyItemTextContainer">
-									<div className="historyItemTextCaption">Picked up by Dispatcher​</div>
-									<div className="historyItemTextDescription">You package has been picked up by the dispatcher​</div>
+									<div className="historyItemTextCaption">Package is ordered</div>
+									<div className="historyItemTextDescription">Your package has been ordered successfully</div>
 								</div>
 								<div className="historyItemDateTime">{order_history.time_of_status["1"]}</div>
 							</div>
@@ -206,13 +173,7 @@ function OrderDetail() {
 					</ul>
 				</div>
 			</div>
-
-
-			<div className="debugButtons">
-				<button id="progress-prev" className="btn" disabled>Prev</button>
-				<button id="progress-next" className="btn">Next</button>
-			</div>
-		</div>
+		</div >
 	) : (
 		<div className="orderDetailContainer" scroll="no" style={{
 			fontWeight: "bolder",

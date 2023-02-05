@@ -18,7 +18,7 @@ function OrderList() {
   const dispatch = useDispatch()
 
   const [data, setData] = useState(orderRows);
-  const orders = useSelector(state => state.orders)
+  const orders = useSelector(state => state.orders.orders)
   const auth = useSelector(state => state.auth)
   const customers = useSelector(state => state.users.customers);
   const deliverers = useSelector(state => state.users.deliverers);
