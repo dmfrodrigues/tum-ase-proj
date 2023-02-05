@@ -109,8 +109,6 @@ services:
       interval: 1s
       timeout: 1s
       retries: 50
-    logging:
-      driver: none
 
   db-seed:
     build: db/seed
