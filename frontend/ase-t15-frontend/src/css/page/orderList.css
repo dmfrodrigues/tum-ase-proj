@@ -48,6 +48,14 @@
     margin-right: 20px;
 }
 
+.orderListStatus {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    text-decoration: none;
+}
+
 .orderListORDERED {
     color: #f39c12;
 }

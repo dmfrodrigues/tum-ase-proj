@@ -19,8 +19,8 @@ function Login() {
     const handleLogin = (e) => {
         e.preventDefault();
         dispatch(login(username, password)).then((response) => {
-            navigate("/orders");
-            window.location.reload();
+            //navigate("/orders");
+            //window.location.reload();
         }
         ).catch(() => {
             alert("Incorrect username or password");

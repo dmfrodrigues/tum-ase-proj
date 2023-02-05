@@ -34,7 +34,9 @@ function OrderList() {
     // TODO
   };
 
-  const getStatus = (order) => {
+  const getStatusOrder = (order) => {
+    if (order.events.length === 0)
+      return OrderStatus.ORDERED;
     return order.events[order.events.length - 1].state;
   }
 
@@ -46,16 +48,21 @@ function OrderList() {
       flex: 1,
     },
     {
-      field: "order",
-      headerName: "Order",
+      field: "status",
+      headerName: "Status",
       width: 150,
       flex: 1,
       renderCell: (params) => {
+        var status = getStatusOrder(params.row);
+        var statusClass = "orderList" + status;
         return (
-          <Link to={"/orders/" + params.row.id}>
+          <Link to={"/orders/" + params.row.id} className="orderListStatus">
             <div className="orderListItem">
-              <OrderIcon status={getStatus(params.row)} />
+              <OrderIcon status={getStatusOrder(params.row)} />
             </div>
+            <div className={statusClass}>
+              {OrderStatus[status]}
+            </div >
           </Link >
         );
       },
@@ -77,24 +84,9 @@ function OrderList() {
       flex: 1,
     },
     {
-      field: "status",
-      headerName: "Status",
-      width: 150,
-      flex: 1,
-      renderCell: (params) => {
-        var status = getStatus(params.row);
-        var statusClass = "orderList" + status;
-        return (
-          <div className={statusClass}>
-            {OrderStatus[status]}
-          </div >
-        );
-      }
-    },
-    {
       renderHeader: () => {
         return (
-          <NewOrder customers={customers} dispatchers={deliverers} boxes={boxes} />
+          <NewOrder customers={customers} deliverers={deliverers} boxes={boxes} />
         );
       },
       flex: 1,

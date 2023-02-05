@@ -10,6 +10,7 @@ import { logout } from "../actions/auth";
 function Topbar() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -24,7 +25,7 @@ function Topbar() {
         </div>
         <div className="topRight">
           {isLoggedIn ? <span className="logInMsg">Logged in as:</span> : <span className="logInMsg">Not logged in</span>}
-          {isLoggedIn && <span className="logInUser">Dispatcher</span>}
+          {isLoggedIn && <span className="logInUser">{user.username}</span>}
         </div>
         {isLoggedIn ?
           <Button variant="contained" color="error" className="logOut" onClick={handleLogout}>Log Out</Button>

@@ -74,7 +74,11 @@ function EditOrder({ customers, dispatchers, boxes, order }) {
                             {
                                 Object.keys(OrderStatus).map((key) => {
                                     let status = OrderStatus[key];
-                                    let orderStatus = order.events[order.events.length - 1].state;
+                                    let orderStatus;
+                                    if (order.events.length === 0)
+                                        orderStatus = OrderStatus.ORDERED;
+                                    else
+                                        orderStatus = order.events[order.events.length - 1].state;
                                     return <Form.Check
                                         defaultChecked={orderStatus === key ? "checked" : ""}
                                         key={key}

@@ -12,11 +12,17 @@ class DeliveryDataService {
     }
 
     create(data) {
-        return axios.post(API_URL + "/delivery", data, { headers: authHeader() });
+        const form = new FormData();
+        form.append("customerId", data.customerId);
+        form.append("createdById", data.createdById);
+        form.append("delivererId", data.delivererId);
+        form.append("pickupAddress", data.pickupAddress);
+        form.append("boxId", data.boxId);
+        return axios.put(API_URL + "/delivery", form, { headers: authHeader() });
     }
 
     update(id, data) {
-        return axios.put(API_URL + "/delivery/" + id, data, { headers: authHeader() });
+        return axios.patch(API_URL + "/delivery/" + id, data, { headers: authHeader() });
     }
 
     delete(id) {

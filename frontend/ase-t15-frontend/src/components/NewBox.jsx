@@ -7,9 +7,19 @@ import { AddCircle, AddCircleOutline } from '@mui/icons-material';
 
 function NewBox({ customers }) {
     const [show, setShow] = useState(false);
+    const [name, setName] = useState("");
+    const [password, setPassword] = useState("");
+    const [address, setAddress] = useState("");
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const handleSubmit = () => {
+        console.log("Submitting new box")
+        console.log(name);
+        console.log(password);
+        console.log(address);
+        handleClose();
+    }
 
     return (
         <div className="userListNew">
@@ -28,25 +38,19 @@ function NewBox({ customers }) {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Group className="mb-3" controlId="formBasicName" onChange={(e) => setName(e.target.value)}>
                             <Form.Label>Insert Name</Form.Label>
                             <Form.Control type="text" placeholder="Enter Name" />
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicAddress">
-                            <Form.Label>Insert Address</Form.Label>
-                            <Form.Control type="text" placeholder="Enter address" />
+                        <Form.Group className="mb-3" controlId="formBasicPassword" onChange={(e) => setPassword(e.target.value)}>
+                            <Form.Label>Insert Password</Form.Label>
+                            <Form.Control type="password" placeholder="Enter Password" />
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicCustomer">
-                            <Form.Label>Select Customer</Form.Label>
-                            <Form.Select aria-label="Customer select" size="sm">
-                                {
-                                    customers.map((customer) => {
-                                        return <option key={customer.id} value={customer.id}>{customer.name}</option>
-                                    })
-                                }
-                            </Form.Select>
+                        <Form.Group className="mb-3" controlId="formBasicAddress" onChange={(e) => setAddress(e.target.value)}>
+                            <Form.Label>Insert Address</Form.Label>
+                            <Form.Control type="text" placeholder="Enter address" />
                         </Form.Group>
                     </Form>
 
@@ -55,7 +59,7 @@ function NewBox({ customers }) {
                     <Button variant="danger" size="sm" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="success" size="sm" onClick={handleClose}>
+                    <Button variant="success" size="sm" onClick={handleSubmit}>
                         Create
                     </Button>
                 </Modal.Footer>
