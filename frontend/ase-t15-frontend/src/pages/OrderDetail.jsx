@@ -53,7 +53,6 @@ function OrderDetail() {
 	}, [order])
 
 
-
 	return order_id_is_valid ? (
 		<div className="orderDetailContainer" scroll="no">
 

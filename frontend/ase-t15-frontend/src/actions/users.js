@@ -49,7 +49,8 @@ export const getUsers = () => async (dispatch) => {
 
 export const createUser = (data) => async (dispatch) => {
     try {
-        const res = await UserDataService.create(data);
+        let res = await UserDataService.create(data);
+        res = await UserDataService.editToken({ id: data.token, principalId: res.data.id });
 
         dispatch({
             type: GET_USERS,

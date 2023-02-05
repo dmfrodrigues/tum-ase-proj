@@ -29,7 +29,7 @@ function NewUser({ allTokens }) {
         // console.log(email);
         // console.log(password);
         // console.log(role);
-        dispatch(createUser({ name, username, email, password, role }));
+        dispatch(createUser({ name, username, email, password, role, token }));
         handleClose();
     }
 
