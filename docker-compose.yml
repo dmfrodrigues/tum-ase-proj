@@ -44,6 +44,8 @@ services:
       target: frontend
     ports:
       - 8001:3000
+    environment:
+      WDS_SOCKET_PORT: 0
     volumes:
       - ./frontend/ase-t15-frontend/public:/public
       - ./frontend/ase-t15-frontend/src:/src
