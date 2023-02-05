@@ -39,7 +39,8 @@ function GenQRCodeButton() {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="d-flex justify-content-center">
-                        <QRCode value="http://localhost:8000/orders/63dd3d462bda2b1a5055a551" size="250" />
+                        <QRCode value={`http://138.246.237.201/orders/${orderId}`}
+                            size="250" />
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

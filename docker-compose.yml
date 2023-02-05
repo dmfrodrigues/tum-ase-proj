@@ -16,7 +16,7 @@ services:
     volumes:
       - ./backend/api-gateway/src:/app/api-gateway/src
       - ./backend/api-gateway/build.gradle:/app/api-gateway/build.gradle
-    command: ["/run.dev.sh", "api-gateway"]
+    command: [ "/run.dev.sh", "api-gateway" ]
 
   service-registry:
     container_name: service-registry
@@ -36,7 +36,7 @@ services:
     volumes:
       - ./backend/service-registry/src:/app/service-registry/src
       - ./backend/service-registry/build.gradle:/app/service-registry/build.gradle
-    command: ["/run.dev.sh", "service-registry"]
+    command: [ "/run.dev.sh", "service-registry" ]
 
   frontend:
     build:
@@ -78,8 +78,8 @@ services:
       - ./backend/library/src:/app/library/src
       - ./backend/library/build.gradle:/app/library/build.gradle
 
-    command: ["/run.dev.sh", "delivery"]
-  
+    command: [ "/run.dev.sh", "delivery" ]
+
   auth:
     build:
       context: backend
@@ -99,7 +99,7 @@ services:
       - ./backend/auth/build.gradle:/app/auth/build.gradle
       - ./backend/library/src:/app/library/src
       - ./backend/library/build.gradle:/app/library/build.gradle
-    command: ["/run.dev.sh", "auth"]
+    command: [ "/run.dev.sh", "auth" ]
 
   db:
     container_name: db
@@ -116,8 +116,6 @@ services:
       interval: 1s
       timeout: 1s
       retries: 50
-    logging:
-      driver: none
 
   db-seed:
     build: db/seed
