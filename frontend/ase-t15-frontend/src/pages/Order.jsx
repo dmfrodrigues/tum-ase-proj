@@ -3,8 +3,17 @@ import '../css/page/order.css'
 import Chart from '../components/Chart';
 import { orderData } from "../dummyData";
 import { Inventory2Outlined, LocalShippingOutlined, MarkEmailReadOutlined, Publish, PublishedWithChanges, RadioButtonUnchecked, TaskAlt } from '@mui/icons-material';
+import { useDispatch, useSelector } from "react-redux";
 
-function Order() {
+function Order({ id }) {
+    const dispatch = useDispatch()
+    const orders = useSelector(state => state.orders)
+
+    useEffect(() => {
+        dispatch(getOrder(id))
+    }, [])
+
+
     return (
         <div className="order">
             <div className="orderTop">

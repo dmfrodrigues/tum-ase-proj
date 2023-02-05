@@ -18,10 +18,10 @@ function EditUser({ user }) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleSubmit = () => {
-        console.log("Submitting new user")
-        console.log(name);
-        console.log(username);
-        console.log(email);
+        // console.log("Submitting new user")
+        // console.log(name);
+        // console.log(username);
+        // console.log(email);
         let id = user.id;
         dispatch(editUser({ id, name, username, email }));
         handleClose();

@@ -27,7 +27,6 @@ function Sidebar() {
       </div>
     )
   }
-  console.log(auth)
 
   let bar = () => {
     return < div className="sidebar" >
