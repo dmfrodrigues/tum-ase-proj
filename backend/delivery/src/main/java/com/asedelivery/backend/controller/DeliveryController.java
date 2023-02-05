@@ -104,16 +104,6 @@ public class DeliveryController {
 
     @Operation(summary="Get delivery")
     @GetMapping("/{id}")
-    @PostAuthorize(
-        "hasRole('" + Role.DISPATCHER_STR + "') or " +
-        "(" + 
-            "hasRole('" + Role.DELIVERER_STR + "') and " +
-            "principal == returnObject.deliverer.getId()" +
-        ") or (" +
-            "hasRole('" + Role.CUSTOMER_STR + "') and " +
-            "principal == returnObject.customer.getId()" +
-        ")"
-    )
     public Delivery getDeliveryById(
         @PathVariable @Parameter(description="Delivery ID") String id
     ) {
