@@ -44,3 +44,29 @@ export const getUsers = () => async (dispatch) => {
         console.log(err);
     }
 }
+
+export const createUser = (data) => async (dispatch) => {
+    try {
+        const res = await UserDataService.create(data);
+
+        dispatch({
+            type: GET_USERS,
+            payload: res.data,
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const editUser = (data) => async (dispatch) => {
+    try {
+        const res = await UserDataService.edit(data);
+
+        dispatch({
+            type: GET_USERS,
+            payload: res.data,
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}

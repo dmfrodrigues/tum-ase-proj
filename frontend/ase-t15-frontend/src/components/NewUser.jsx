@@ -3,26 +3,30 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
 import { useState } from "react";
+import { useDispatch } from 'react-redux'
 import { AddCircleOutline } from '@mui/icons-material';
+import { createUser } from '../actions/users';
 
 function NewUser() {
+    const dispatch = useDispatch();
     const [show, setShow] = useState(false);
 
-    const [user, setUser] = useState("");
+    const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [type, setType] = useState("dispatcher");
+    const [role, setRole] = useState("dispatcher");
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleSubmit = () => {
-        console.log("Submitting new user")
-        console.log(user);
-        console.log(username);
-        console.log(email);
-        console.log(password);
-        console.log(type);
+        // console.log("Submitting new user")
+        // console.log(user);
+        // console.log(username);
+        // console.log(email);
+        // console.log(password);
+        // console.log(role);
+        dispatch(createUser({ name, username, email, password, role }));
         handleClose();
     }
 
@@ -43,7 +47,7 @@ function NewUser() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="formBasicName" onChange={(e) => setUser(e.target.value)}>
+                        <Form.Group className="mb-3" controlId="formBasicName" onChange={(e) => setName(e.target.value)}>
                             <Form.Label>Insert Name</Form.Label>
                             <Form.Control type="text" placeholder="Enter name" />
                         </Form.Group>
@@ -65,7 +69,7 @@ function NewUser() {
 
                         <Form.Group className="mb-3" controlId="formBasicType">
                             <Form.Label>Select Type</Form.Label>
-                            <Form.Select aria-label="Type select" size="sm" value="dispatcher" onChange={(e) => setType(e.target.value)}>
+                            <Form.Select aria-label="Type select" size="sm" value="dispatcher" onChange={(e) => setRole(e.target.value)}>
                                 <option key="dispatcher" value="dispatcher">Dispatcher</option>
                                 <option key="customer" value="customer">Customer</option>
                                 <option key="deliverer" value="deliverer">Deliverer</option>

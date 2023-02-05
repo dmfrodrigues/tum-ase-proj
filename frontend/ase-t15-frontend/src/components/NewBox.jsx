@@ -3,9 +3,9 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
 import { useState } from "react";
-import { AddCircle, AddCircleOutline } from '@mui/icons-material';
+import { AddCircleOutline } from '@mui/icons-material';
 
-function NewBox({ customers }) {
+function NewBox() {
     const [show, setShow] = useState(false);
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
