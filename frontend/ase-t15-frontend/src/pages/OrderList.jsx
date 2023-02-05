@@ -76,12 +76,25 @@ function OrderList() {
       flex: 1,
     },
     {
-      field: "Dispatcher",
+      field: "dispatcher",
       valueGetter: (params) => {
         return params.row.createdBy.name;
       },
       headerName: "Dispatcher",
       flex: 1,
+    },
+    {
+      field: "deliverer",
+      valueGetter: (params) => {
+        return params.row.deliverer.name;
+      },
+      headerName: "Deliverer",
+      flex: 1,
+    },
+    {
+      field: "pickupAddress",
+      headerName: "Pickup Address",
+      flex: 2,
     },
     {
       renderHeader: () => {
@@ -96,7 +109,7 @@ function OrderList() {
       renderCell: (params) => {
         return (
           <div className="orderListEdit">
-            <EditOrder customers={customers} dispatchers={deliverers} boxes={boxes} order={params.row} />
+            <EditOrder customers={customers} deliverers={deliverers} boxes={boxes} order={params.row} />
             <DeleteModal text="Confirm Order Deletion" />
           </div>
         );

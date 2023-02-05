@@ -49,7 +49,7 @@ export const retrieveOrder = (id) => async (dispatch) => {
     }
 }
 
-export const updateOrder = (id, data) => async (dispatch) => {
+export const editOrder = (id, data) => async (dispatch) => {
     try {
         const res = await DeliveryDataService.update(id, data);
 

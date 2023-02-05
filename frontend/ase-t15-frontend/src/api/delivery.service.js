@@ -22,7 +22,19 @@ class DeliveryDataService {
     }
 
     update(id, data) {
-        return axios.patch(API_URL + "/delivery/" + id, data, { headers: authHeader() });
+        const form = new FormData();
+        form.append("customerId", data.customerId);
+        if (data.createdById)
+            form.append("createdById", data.createdById);
+        if (data.delivererId)
+            form.append("delivererId", data.delivererId);
+        if (data.pickupAddress)
+            form.append("pickupAddress", data.pickupAddress);
+        if (data.boxId)
+            form.append("boxId", data.boxId);
+        if (data.state)
+            form.append("state", data.state);
+        return axios.patch(API_URL + "/delivery/" + id, form, { headers: authHeader() });
     }
 
     delete(id) {

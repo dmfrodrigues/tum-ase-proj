@@ -1,6 +1,6 @@
 import '../css/component/orderIcon.css'
 
-import { Cancel, CancelOutlined, CheckCircle, CheckCircleOutline, LocalPostOfficeOutlined, LocalShippingOutlined, Timer, Timer10Outlined, Timer3Outlined, TimerOutlined } from "@mui/icons-material";
+import { CheckCircleOutline, LocalPostOfficeOutlined, LocalShippingOutlined, Timer, Timer10Outlined, Timer3Outlined, TimerOutlined } from "@mui/icons-material";
 
 function OrderIcon({ status }) {
 
@@ -11,7 +11,7 @@ function OrderIcon({ status }) {
             {status === "ORDERED" && <TimerOutlined fontSize="small" className='statusIcon' />}
             {status === "PICKED_UP" && <LocalPostOfficeOutlined fontSize="small" className='statusIcon' />}
             {status === "DELIVERED" && <CheckCircleOutline fontSize="small" className='statusIcon' />}
-            {status === "COMPLETED" && <CancelOutlined fontSize="small" className='statusIcon' />}
+            {status === "COMPLETED" && <CheckCircleOutline fontSize="small" className='statusIcon' />}
         </div >
     );
 }
