@@ -93,12 +93,12 @@ public class BoxController {
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public Box patchBox(
         @CookieValue("jwt") @Parameter(description="JWT token") String jwt,
-        @PathVariable @Parameter(description="Box ID") String boxId,
+        @PathVariable @Parameter(description="Box ID") String id,
         @RequestParam(value = "username") @Parameter(description="Box username") Optional<String> username,
         @RequestParam(value = "password") @Parameter(description="Box password") Optional<String> password,
         @RequestParam(value = "address") @Parameter(description="Box address") Optional<String> address
     ){
-        Box ret = boxRepo.findByIdAndClass(boxId, Box.class.getName())
+        Box ret = boxRepo.findByIdAndClass(id, Box.class.getName())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         boolean modified = false;
