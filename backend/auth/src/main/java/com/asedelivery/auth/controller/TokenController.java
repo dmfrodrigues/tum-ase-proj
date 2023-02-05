@@ -1,6 +1,8 @@
 package com.asedelivery.auth.controller;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -21,7 +23,6 @@ import com.asedelivery.auth.model.Token.Type;
 import com.asedelivery.auth.model.repo.PrincipalRepository;
 import com.asedelivery.auth.model.repo.TokenRepository;
 import com.asedelivery.common.model.Role;
-import com.google.common.base.Optional;
 
 @RestController
 @RequestMapping("/api/auth/token")

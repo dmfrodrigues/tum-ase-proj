@@ -22,7 +22,7 @@ build-api-gateway:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
-    - docker build -t $CI_REPO/api-gateway:$CI_COMMIT_SHA backend --target api-gateway-prod
+    - docker build -t $CI_REPO/api-gateway:$CI_COMMIT_SHA backend --build-arg TARGET=api-gateway
     - docker push $CI_REPO/api-gateway:$CI_COMMIT_SHA
 
 build-service-registry:
@@ -32,7 +32,7 @@ build-service-registry:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
-    - docker build -t $CI_REPO/service-registry:$CI_COMMIT_SHA backend --target service-registry-prod
+    - docker build -t $CI_REPO/service-registry:$CI_COMMIT_SHA backend --build-arg TARGET=service-registry
     - docker push $CI_REPO/service-registry:$CI_COMMIT_SHA
 
 .build-frontend:
@@ -52,7 +52,7 @@ build-auth:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
-    - docker build -t $CI_REPO/auth:$CI_COMMIT_SHA backend --target auth-prod
+    - docker build -t $CI_REPO/auth:$CI_COMMIT_SHA backend --build-arg TARGET=auth
     - docker push $CI_REPO/auth:$CI_COMMIT_SHA
 
 build-delivery:
@@ -62,7 +62,7 @@ build-delivery:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
-    - docker build -t $CI_REPO/delivery:$CI_COMMIT_SHA backend --target delivery-prod
+    - docker build -t $CI_REPO/delivery:$CI_COMMIT_SHA backend --build-arg TARGET=delivery
     - docker push $CI_REPO/delivery:$CI_COMMIT_SHA
 
 build-db-seed:

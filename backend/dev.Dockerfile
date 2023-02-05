@@ -13,8 +13,6 @@ WORKDIR /app
 COPY run.dev.sh watch_changes.sh /
 RUN chmod 755 /*.sh
 
-COPY . .
-
 COPY gradle gradle
 COPY gradlew gradlew.bat run.dev.sh settings.gradle watch_changes.sh ./
 
@@ -22,15 +20,4 @@ RUN mv gradle/wrapper/gradle-wrapper.docker.properties \
        gradle/wrapper/gradle-wrapper.properties
 RUN chmod +x gradlew
 
-ARG TARGET
-
-RUN ./gradlew ${TARGET}:assemble
-
-FROM openjdk:17-jdk-alpine
-ARG TARGET
-
-RUN apk add \
-    curl
-
-COPY --from=0 /app/${TARGET}/build/libs/${TARGET}-0.0.1-SNAPSHOT.jar /app.jar
-CMD ["java", "-jar", "/app.jar"]
+# COPY api-gateway service-registry delivery auth library ./

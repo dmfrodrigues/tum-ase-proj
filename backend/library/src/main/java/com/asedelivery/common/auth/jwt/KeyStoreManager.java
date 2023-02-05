@@ -1,13 +1,17 @@
 package com.asedelivery.common.auth.jwt;
 
-import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.*;
+import java.io.InputStream;
+import java.security.Key;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.cert.Certificate;
+
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamSource;
+import org.springframework.stereotype.Component;
 
 @Component
 public class KeyStoreManager {
@@ -21,20 +25,20 @@ public class KeyStoreManager {
 
     public void loadKeyStore() throws KeyStoreException, IOException {
         keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-        FileInputStream fis = null;
+        InputStream is = null;
 
         try {
             // Get the path to the keystore file in the resources folder
-            File keystoreFile = ResourceUtils.getFile("classpath:ase_project.keystore");
-            fis = new FileInputStream(keystoreFile);
-            keyStore.load(fis, password);
+            InputStreamSource iss = new ClassPathResource("classpath:ase_project.keystore");
+            is = iss.getInputStream();
+            keyStore.load(is, password);
             keyAlias = keyStore.aliases().nextElement();
         } catch (Exception e) {
             System.err.println("Error when loading KeyStore");
             e.printStackTrace();
         } finally {
-            if (fis != null) {
-                fis.close();
+            if (is != null) {
+                is.close();
             }
         }
     }
