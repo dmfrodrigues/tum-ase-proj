@@ -76,7 +76,7 @@ services:
       MONGO_HOST: db
       MONGO_DB: asedelivery
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: ${ME_CONFIG_MONGODB_ADMINPASSWORD}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
 
   db-admin:
     image: mongo-express:latest

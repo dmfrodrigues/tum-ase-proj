@@ -145,9 +145,12 @@ public class Delivery {
             PropertyWriter writer
         ) throws Exception {
             if (include(writer)) {
+                Delivery delivery = (Delivery)pojo;
+
                 boolean write = false;
 
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                String userId = auth.getName();
                 String authority = auth.getAuthorities().iterator().next().getAuthority();
 
                 if(authority.equals("ROLE_" + Role.DISPATCHER_STR)){
@@ -155,10 +158,14 @@ public class Delivery {
                 } else {
                     switch(writer.getName()){
                         case "customer":
-                            write = authority.equals("ROLE_" + Role.CUSTOMER_STR);
+                            write =
+                                authority.equals("ROLE_" + Role.CUSTOMER_STR) &&
+                                delivery.customer.getId().equals(userId);
                             break;
                         case "deliverer":
-                            write = authority.equals("ROLE_" + Role.DELIVERER_STR);
+                            write =
+                                authority.equals("ROLE_" + Role.DELIVERER_STR) &&
+                                delivery.deliverer.getId().equals(userId);
                             break;
                         case "createdBy":
                             break;

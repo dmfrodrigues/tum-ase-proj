@@ -104,16 +104,6 @@ public class DeliveryController {
 
     @Operation(summary="Get delivery")
     @GetMapping("/{id}")
-    @PostAuthorize(
-        "hasRole('" + Role.DISPATCHER_STR + "') or " +
-        "(" + 
-            "hasRole('" + Role.DELIVERER_STR + "') and " +
-            "principal == returnObject.deliverer.getId()" +
-        ") or (" +
-            "hasRole('" + Role.CUSTOMER_STR + "') and " +
-            "principal == returnObject.customer.getId()" +
-        ")"
-    )
     public Delivery getDeliveryById(
         @PathVariable @Parameter(description="Delivery ID") String id
     ) {
@@ -311,6 +301,21 @@ public class DeliveryController {
     public void delDelivery(
         @PathVariable @Parameter(description="Delivery ID") String id
     ) {
-        deliveryRepo.deleteById(id);
+        Delivery delivery = deliveryRepo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        Box box = delivery.box;
+
+        Delivery.State state = delivery.getState();
+
+        deliveryRepo.delete(delivery);
+
+        if(
+            state != Delivery.State.COMPLETED &&
+            boxService.allDeliveriesCompleted(box)
+        ){
+            box.customer = null;
+            box = boxRepo.save(box);
+        }
     }
 }

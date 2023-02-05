@@ -13,6 +13,6 @@ public interface MyMongoRepository<T, ID> extends MongoRepository<T, ID> {
     @Query("{ '_class' : :#{#class} }")
     <S extends T> List<T> findByClass(@Param("class") String className);
 
-    @Query("{ '_id': ObjectId(:#{#id}), '_class': :#{#class} }")
+    @Query("{ '_id': :#{#id}, '_class': :#{#class} }")
     <S extends T> Optional<T> findByIdAndClass(@Param("id") String id, @Param("class") String className);
 }

@@ -92,7 +92,7 @@ public class PersonController {
             !ret.email   .equals(oldEmail   ) ||
             password.isPresent()
         ){
-            // ret = personRepo.save(ret);
+            ret = personRepo.save(ret);
 
             try {
                 Email mail = emailService.createModifiedPersonEmail(
