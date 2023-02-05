@@ -1,5 +1,0 @@
-server:
-  port: 80
-
-frontend:
-  address: ${FRONTEND_ADDRESS:http://localhost}

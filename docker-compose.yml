@@ -1,28 +1,134 @@
 version: "3.9"
 
 services:
-  router:
-    build: router
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: backend
+      dockerfile: dev.Dockerfile
+    depends_on:
+      service-registry:
+        condition: service_healthy
+    environment:
+      PORT: 10789
     ports:
-      - 8000:80
+      - 8000:10789
+    volumes:
+      - ./backend/api-gateway/src:/app/api-gateway/src
+      - ./backend/api-gateway/build.gradle:/app/api-gateway/build.gradle
+    command: ["/run.dev.sh", "api-gateway"]
+
+  service-registry:
+    container_name: service-registry
+    build:
+      context: backend
+      dockerfile: dev.Dockerfile
+    healthcheck:
+      test: curl localhost:8761
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 60
+    environment:
+      PORT: 8761
+    ports:
+      - 8761:8761
+    volumes:
+      - ./backend/service-registry/src:/app/service-registry/src
+      - ./backend/service-registry/build.gradle:/app/service-registry/build.gradle
+    command: ["/run.dev.sh", "service-registry"]
 
   frontend:
-    build: frontend
+    build:
+      context: frontend
+      target: frontend
     ports:
       - 8001:3000
+    environment:
+      WDS_SOCKET_PORT: 0
+    volumes:
+      - ./frontend/ase-t15-frontend/public:/public
+      - ./frontend/ase-t15-frontend/src:/src
+      - ./frontend/ase-t15-frontend/package.json:/package.json
+      - ./frontend/ase-t15-frontend/package-lock.json:/package-lock.json
+      - ./frontend/ase-t15-frontend/node_modules:/node_modules
+
+  delivery:
+    build:
+      context: backend
+      dockerfile: dev.Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+    ports:
+      - 8002:80
+    environment:
+      FRONTEND_ADDRESS: http://localhost
+      MONGO_INITDB_ROOT_PASSWORD: password
+      EMAIL_HOST: mailhog
+      EMAIL_PORT: 1025
+      EMAIL_ADDRESS: asedelivery@mailhog.com
+      EMAIL_USERNAME: user123
+      EMAIL_PASSWORD: 1234
+    volumes:
+      - ./backend/delivery/src:/app/delivery/src
+      - ./backend/delivery/build.gradle:/app/delivery/build.gradle
+      - ./backend/library/src:/app/library/src
+      - ./backend/library/build.gradle:/app/library/build.gradle
+
+    command: ["/run.dev.sh", "delivery"]
+  
+  auth:
+    build:
+      context: backend
+      dockerfile: dev.Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+    ports:
+      - 8003:80
+    environment:
+      FRONTEND_ADDRESS: http://localhost
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./backend/auth/src:/app/auth/src
+      - ./backend/auth/build.gradle:/app/auth/build.gradle
+      - ./backend/library/src:/app/library/src
+      - ./backend/library/build.gradle:/app/library/build.gradle
+    command: ["/run.dev.sh", "auth"]
 
   db:
+    container_name: db
     image: mongo:6.0
     ports:
-      - 8003:27017
+      - 8004:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: asedelivery
     healthcheck:
       test: test -f healthcheck.txt || (echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet && touch healthcheck.txt)
-      interval: 10s
-      timeout: 10s
-      retries: 5
+      start_period: 5s
+      interval: 1s
+      timeout: 1s
+      retries: 50
+    logging:
+      driver: none
+
+  db-seed:
+    build: db/seed
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      MONGO_HOST: db
+      MONGO_DB: asedelivery
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
 
   db-admin:
     image: mongo-express:latest
@@ -31,21 +137,18 @@ services:
       db:
         condition: service_healthy
     ports:
-      - 8004:8081
+      - 8005:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
       ME_CONFIG_MONGODB_URL: mongodb://root:password@db:27017/
+      ME_CONFIG_SITE_BASEURL: /db-admin
+    logging:
+      driver: none
 
-  backend:
-    build: backend
-    depends_on:
-      db:
-        condition: service_healthy
+  mailhog:
+    build: mailhog
     ports:
-      - 8002:80
-    environment:
-      ADMIN_PASSWORD: 1234
-    volumes:
-      - ./backend:/app
-    command: "/run.dev.sh"
+      - 8025:8025
+    logging:
+      driver: none

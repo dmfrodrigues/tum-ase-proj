@@ -48,22 +48,28 @@
     margin-right: 20px;
 }
 
-
-.orderListDelete {
-    color: #dd4b39;
-    cursor: pointer;
+.orderListStatus {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    text-decoration: none;
 }
 
-.orderStatusDelivered {
-    color: #00a65a;
-}
-
-.orderStatusPending {
+.orderListORDERED {
     color: #f39c12;
 }
 
-.orderStatusCanceled {
-    color: #dd4b39;
+.orderListPICKED_UP {
+    color: #c2cf04;
+}
+
+.orderListDELIVERED {
+    color: #00a65a;
+}
+
+.orderListCOMPLETED {
+    color: #00a65a;
 }
 
 .orderListNew {

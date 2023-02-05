@@ -15,30 +15,71 @@ variables:
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
 ## Build images and push to CR
-build-router:
+build-api-gateway:
   stage: build
   extends: .login-cr
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
-    - docker build -t $CI_REPO/router:$CI_COMMIT_SHA router
-    - docker push $CI_REPO/router:$CI_COMMIT_SHA
+    - docker system prune --all --volumes
+    - docker build -t $CI_REPO/api-gateway:$CI_COMMIT_SHA backend --build-arg TARGET=api-gateway --no-cache
+    - docker push $CI_REPO/api-gateway:$CI_COMMIT_SHA
 
-build-frontend:
+build-service-registry:
   stage: build
   extends: .login-cr
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
-    - docker build -t $CI_REPO/frontend:$CI_COMMIT_SHA frontend
+    - docker system prune -f --all --volumes
+    - docker build -t $CI_REPO/service-registry:$CI_COMMIT_SHA backend --build-arg TARGET=service-registry --no-cache
+    - docker push $CI_REPO/service-registry:$CI_COMMIT_SHA
+
+.build-frontend:
+  stage: build
+  extends: .login-cr
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  script:
+    - docker system prune -f --all --volumes
+    - docker build -t $CI_REPO/frontend:$CI_COMMIT_SHA frontend --target frontend-prod --no-cache
     - docker push $CI_REPO/frontend:$CI_COMMIT_SHA
 
-build-backend:
+build-auth:
   stage: build
   extends: .login-cr
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
-    - cd backend
-    - chmod 755 gradlew
-    - ./gradlew build
-    - cd ..
-    - docker build -t $CI_REPO/backend:$CI_COMMIT_SHA backend
-    - docker push $CI_REPO/backend:$CI_COMMIT_SHA
+    - docker system prune -f --all --volumes
+    - docker build -t $CI_REPO/auth:$CI_COMMIT_SHA backend --build-arg TARGET=auth --no-cache
+    - docker push $CI_REPO/auth:$CI_COMMIT_SHA
+
+build-delivery:
+  stage: build
+  extends: .login-cr
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  script:
+    - docker system prune -f --all --volumes
+    - docker build -t $CI_REPO/delivery:$CI_COMMIT_SHA backend --build-arg TARGET=delivery --no-cache
+    - docker push $CI_REPO/delivery:$CI_COMMIT_SHA
+
+build-db-seed:
+  stage: build
+  extends: .login-cr
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  script:
+    - docker system prune -f --all --volumes
+    - docker build -t $CI_REPO/db-seed:$CI_COMMIT_SHA db/seed --no-cache
+    - docker push $CI_REPO/db-seed:$CI_COMMIT_SHA
 
 ## Deploy
 .deploy:
@@ -52,14 +93,15 @@ build-backend:
         rm .env &&
         echo "TAG=$CI_COMMIT_SHA" >> .env &&
         cat .env.prod >> .env &&
-        docker-compose pull &&
         docker-compose down --remove-orphans &&
-        docker-compose up -d &&
+        docker system prune -f --all --volumes &&
+        docker-compose pull &&
+        docker-compose up -d --scale db-seed=0 &&
         echo \"Last updated: $(date --utc +'%Y-%m-%d %T') UTC<br>Commit SHA: $CI_COMMIT_SHA\" | sudo tee /var/www/html/info.html
       "
 
 ## Deploy to staging
-deploy-stag:
+.deploy-stag:
   stage: deploy
   when: manual
   extends: .deploy
@@ -84,3 +126,47 @@ deploy-prod:
     DEPLOYMENT_PATH: /deployments/prod
   script:
     - !reference [.deploy, script]
+
+## Seed
+.seed:
+  stage: deploy
+  extends: .login-deploy
+  script:
+    - scp docker-compose.prod.yml $USER@$HOST:$DEPLOYMENT_PATH/docker-compose.yml
+    - |
+      ssh $USER@$HOST "
+        cd $DEPLOYMENT_PATH &&
+        rm .env &&
+        echo "TAG=$CI_COMMIT_SHA" >> .env &&
+        cat .env.prod >> .env &&
+        docker-compose pull &&
+        docker-compose up -d --scale db-seed=1
+      "
+
+## Seed staging
+.seed-stag:
+  stage: deploy
+  when: manual
+  extends: .seed
+  variables:
+    SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY_STAG
+    USER: ubuntu
+    HOST: 138.246.237.201
+    DEPLOYMENT_PATH: /deployments/stag
+  script:
+    - !reference [.seed, script]
+
+## Seed production
+seed-prod:
+  stage: deploy
+  when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+  extends: .seed
+  variables:
+    SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY_PROD
+    USER: ubuntu
+    HOST: 138.246.237.201
+    DEPLOYMENT_PATH: /deployments/prod
+  script:
+    - !reference [.seed, script]

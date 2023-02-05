@@ -18,12 +18,19 @@
 .logo {
   font-weight: bold;
   font-size: 30px;
-  color: darkblue;
-  cursor: pointer;
+  color: #555;
   font-family: Josefin Sans, sans-serif;
 }
 
-.logIn {
+.logInMsg {
+  font-weight: lighter;
+  font-size: 15px;
+  font-family: Josefin Sans, sans-serif;
+  font-weight: bold;
+  margin-right: 9px;
+}
+
+.logInUser {
   font-weight: lighter;
   font-size: 15px;
   font-family: Josefin Sans, sans-serif;
@@ -61,4 +68,8 @@
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.logOut {
+  display: none;
 }
