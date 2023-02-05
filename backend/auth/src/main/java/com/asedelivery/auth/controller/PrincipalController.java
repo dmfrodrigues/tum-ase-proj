@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.asedelivery.auth.model.Principal;
+import com.asedelivery.auth.model.Token;
 import com.asedelivery.auth.model.repo.PrincipalRepository;
+import com.asedelivery.auth.model.repo.TokenRepository;
 import com.asedelivery.common.model.Role;
 
 @RestController
@@ -27,6 +29,9 @@ public class PrincipalController {
 
     @Autowired
     PrincipalRepository principalRepo;
+
+    @Autowired
+    TokenRepository tokenRepo;
 
     @GetMapping("")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
@@ -83,9 +88,14 @@ public class PrincipalController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public void delPrincipal(@PathVariable String id) {
-        if (!principalRepo.existsById(id))
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        else
+        Principal principal = principalRepo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        
+        List<Token> tokens = tokenRepo.findByPrincipal(principal);
+        for(Token token: tokens)
+            token.principal = null;
+        tokens = tokenRepo.saveAll(tokens);
+
         principalRepo.deleteById(id);
     }
 

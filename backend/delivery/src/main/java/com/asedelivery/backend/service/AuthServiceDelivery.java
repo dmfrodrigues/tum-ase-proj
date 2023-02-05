@@ -107,4 +107,23 @@ public class AuthServiceDelivery implements AuthService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, response.getBody());
         }
     }
+
+    public void deletePrincipal(String jwt, String id) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, "jwt=" + jwt);
+        
+        HttpEntity<String> request = new HttpEntity<String>("", headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+            authServiceUrl() + "api/auth/principal/" + id,
+            HttpMethod.DELETE,
+            request,
+            String.class
+        );
+        if(response.getStatusCode() != HttpStatus.OK){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, response.getBody());
+        }
+    }
 }
