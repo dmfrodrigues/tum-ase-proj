@@ -96,7 +96,7 @@ function UserList() {
         rows={users}
         disableSelectionOnClick
         columns={columns}
-        pageSize={8}
+        pageSize={20}
       />
     </div>
   );

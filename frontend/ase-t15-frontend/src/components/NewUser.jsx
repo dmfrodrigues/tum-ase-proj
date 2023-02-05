@@ -31,6 +31,7 @@ function NewUser({ allTokens }) {
         // console.log(role);
         dispatch(createUser({ name, username, email, password, role, token }));
         handleClose();
+        window.location.reload();
     }
 
     return (
@@ -41,7 +42,7 @@ function NewUser({ allTokens }) {
                 className="userListNewButton"
             >
                 <AddCircleOutline />
-                <span className="userListNewButtonSpan">New User</span>
+                <span className="userListNewButtonSpan">User</span>
             </Button>
 
             <Modal show={show} onHide={handleClose}>
@@ -90,7 +91,7 @@ function NewUser({ allTokens }) {
 
                         <Form.Group className="mb-3" controlId="formBasicType">
                             <Form.Label>Select Type</Form.Label>
-                            <Form.Select aria-label="Type select" size="sm" value="dispatcher" onChange={(e) => setRole(e.target.value)}>
+                            <Form.Select aria-label="Type select" size="sm" onChange={(e) => setRole(e.target.value)}>
                                 <option key="dispatcher" value="dispatcher">Dispatcher</option>
                                 <option key="customer" value="customer">Customer</option>
                                 <option key="deliverer" value="deliverer">Deliverer</option>

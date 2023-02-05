@@ -41,7 +41,7 @@ function NewOrder({ customers, deliverers, boxes }) {
                 className="orderListNewButton"
             >
                 <AddCircleOutline />
-                <span className="orderListNewButtonSpan">New Order</span>
+                <span className="orderListNewButtonSpan">Order</span>
             </Button>
 
             <Modal show={show} onHide={handleClose}>

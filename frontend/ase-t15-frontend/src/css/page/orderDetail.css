@@ -2,6 +2,10 @@
 	flex: 5;
 }
 
+.orderDetailContainer * {
+	font-family: 'Josefin Sans', sans-serif;
+}
+
 .orderDetailCaptionContainer {
 	text-align: center;
 	font-weight: bolder;

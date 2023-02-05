@@ -23,6 +23,7 @@ function NewBox() {
         // console.log(address);
         dispatch(createBox({ username, password, address }));
         handleClose();
+        window.location.reload();
     }
 
     return (
@@ -33,7 +34,7 @@ function NewBox() {
                 className="userListNewButton"
             >
                 <AddCircleOutline />
-                <span className="userListNewButtonSpan">New Box</span>
+                <span className="userListNewButtonSpan">Box</span>
             </Button>
 
             <Modal show={show} onHide={handleClose}>

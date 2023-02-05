@@ -31,7 +31,7 @@ function OrderDetail() {
 	}, [])
 
 	useEffect(() => {
-		if (order) {
+		if (order.customer) {
 			setCustomerName(order.customer.name);
 			setBoxName(order.box.username);
 			setPickupAddress(order.pickupAddress);
@@ -48,6 +48,7 @@ function OrderDetail() {
 					order.events.map(event => new Date(event.date).toDateString())
 					: [],
 			});
+			console.log(order_history)
 			setOrderIdIsValid(true);
 		}
 	}, [order])
@@ -130,7 +131,7 @@ function OrderDetail() {
 										<div className="historyItemTextCaption">Delivery Complete</div>
 										<div className="historyItemTextDescription">The delivery was marked as complete</div>
 									</div>
-									<div className="historyItemDateTime">{order_history.time_of_status["4"]}​</div>
+									<div className="historyItemDateTime">{order_history.time_of_status[3]}​</div>
 								</div>
 							</li>
 						}
@@ -142,7 +143,7 @@ function OrderDetail() {
 										<div className="historyItemTextCaption">Package was delivered</div>
 										<div className="historyItemTextDescription">The package can be collected at {pickupAddress}</div>
 									</div>
-									<div className="historyItemDateTime">{order_history.time_of_status["3"]}​</div>
+									<div className="historyItemDateTime">{order_history.time_of_status[2]}​</div>
 								</div>
 							</li>
 						}
@@ -154,7 +155,7 @@ function OrderDetail() {
 										<div className="historyItemTextCaption">Picked up</div>
 										<div className="historyItemTextDescription">Your delivery package was picked up and is on the way</div>
 									</div>
-									<div className="historyItemDateTime">{order_history.time_of_status["2"]}</div>
+									<div className="historyItemDateTime">{order_history.time_of_status[1]}</div>
 								</div>
 							</li>
 						}
@@ -165,7 +166,7 @@ function OrderDetail() {
 									<div className="historyItemTextCaption">Package is ordered</div>
 									<div className="historyItemTextDescription">Your package has been ordered successfully</div>
 								</div>
-								<div className="historyItemDateTime">{order_history.time_of_status["1"]}</div>
+								<div className="historyItemDateTime">{order_history.time_of_status[0]}</div>
 							</div>
 						</li>
 

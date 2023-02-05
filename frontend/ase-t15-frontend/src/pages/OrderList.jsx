@@ -49,13 +49,11 @@ function OrderList() {
     {
       field: "id",
       headerName: "ID",
-      width: 100,
       flex: 1,
     },
     {
       field: "status",
       headerName: "Status",
-      width: 150,
       flex: 1,
       renderCell: (params) => {
         var status = getStatusOrder(params.row);
@@ -156,7 +154,7 @@ function OrderList() {
         rows={orders}
         disableSelectionOnClick
         columns={columns}
-        pageSize={8}
+        pageSize={20}
       />
     </div>
   );

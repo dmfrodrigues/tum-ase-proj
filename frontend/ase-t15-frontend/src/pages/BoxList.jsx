@@ -22,7 +22,6 @@ function BoxList() {
   const boxes = useSelector(state => state.boxes);
 
   useEffect(() => {
-    console.log(boxes)
     dispatch(getBoxes())
     dispatch(getCustomers())
   }, [])
@@ -100,7 +99,7 @@ function BoxList() {
         rows={boxes}
         disableSelectionOnClick
         columns={columns}
-        pageSize={8}
+        pageSize={20}
       />
     </div>
   );
