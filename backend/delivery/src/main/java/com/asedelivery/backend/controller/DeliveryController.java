@@ -282,13 +282,13 @@ public class DeliveryController {
         }
 
         Box box = delivery.box;
-        if(!oldBox.equals(box)){
+        if(!oldBox.equals(box) || state.isPresent() || events.isPresent()){
             /* If all deliveries of the client in that box have been
              * delivered, this box no longer belongs to this user.
              */
-            if(boxService.allDeliveriesCompleted(box)){
-                box.customer = null;
-                box = boxRepo.save(box);
+            if(boxService.allDeliveriesCompleted(oldBox)){
+                oldBox.customer = null;
+                oldBox = boxRepo.save(oldBox);
             }
         }
 
