@@ -37,7 +37,9 @@ services:
       - ./backend/service-registry/build.gradle:/app/service-registry/build.gradle
 
   frontend:
-    build: frontend
+    build:
+      context: frontend
+      target: frontend
     ports:
       - 8001:3000
     volumes:
