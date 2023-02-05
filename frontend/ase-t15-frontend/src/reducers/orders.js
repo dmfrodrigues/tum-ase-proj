@@ -6,7 +6,10 @@ import {
     DELETE_ORDER
 } from "../actions/types";
 
-const initialState = [];
+const initialState = {
+    orders: [],
+    order: {},
+};
 
 function orderReducer(orders = initialState, action) {
     const { type, payload } = action;
@@ -16,11 +19,11 @@ function orderReducer(orders = initialState, action) {
             return [...orders, payload];
 
         case RETRIEVE_ORDERS:
-
-            return payload;
+            return { orders: payload, order: orders.order };
 
         case RETRIEVE_ORDER:
-            return payload;
+            console.log("orders.orders: ", payload);
+            return { orders: orders.orders, order: payload };
 
         case UPDATE_ORDER:
             return orders.map((order) => {

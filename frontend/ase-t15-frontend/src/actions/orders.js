@@ -36,7 +36,7 @@ export const getOrders = () => async (dispatch) => {
     }
 }
 
-export const retrieveOrder = (id) => async (dispatch) => {
+export const getOrder = (id) => async (dispatch) => {
     try {
         const res = await DeliveryDataService.get(id);
 
