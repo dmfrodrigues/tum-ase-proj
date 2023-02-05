@@ -23,7 +23,7 @@ function EditOrder({ customers, deliverers, boxes, order }) {
     const [delivererId, setDelivererId] = useState(order.deliverer?.id);
     const [boxId, setBoxId] = useState(order.box?.id);
     const [pickupAddress, setAddress] = useState(order.pickupAddress);
-    const [state, setStatus] = useState(
+    const [state, setState] = useState(
         order.history ? order.history[order.history.length - 1].status : OrderStatus.ORDERED
     );
 
@@ -35,8 +35,8 @@ function EditOrder({ customers, deliverers, boxes, order }) {
         // console.log("Deliverer: " + delivererId);
         // console.log("Box: " + boxId);
         // console.log("Address: " + address);
-        // console.log("Status: " + status);
-        dispatch(editOrder(order.id, { customerId, delivererId, boxId, pickupAddress, state }));
+        const st = state.toUpperCase();
+        dispatch(editOrder(order.id, { customerId, delivererId, boxId, pickupAddress, state: st }));
         handleClose();
     }
 
@@ -94,7 +94,7 @@ function EditOrder({ customers, deliverers, boxes, order }) {
                             </Form.Select>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId={`status${order.id}`} onChange={(e) => setStatus(e.target.value)}>
+                        <Form.Group className="mb-3" controlId={`status${order.id}`} onChange={(e) => setState(e.target.value)}>
                             <Form.Label>Select Status</Form.Label>
                             {
                                 Object.keys(OrderStatus).map((key) => {

@@ -34,11 +34,12 @@ class DeliveryDataService {
             form.append("boxId", data.boxId);
         if (data.state)
             form.append("state", data.state);
-        return axios.patch(API_URL + "/delivery/" + id, form, { headers: authHeader() });
+
+        return axios.patch(API_URL + "/delivery" + id, form, { headers: authHeader() });
     }
 
     delete(id) {
-        return axios.delete(API_URL + "/delivery/" + id, { headers: authHeader() });
+        return axios.delete(API_URL + "/delivery" + id, { headers: authHeader() });
     }
 }
 

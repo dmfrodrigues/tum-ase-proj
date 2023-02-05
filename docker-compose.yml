@@ -36,18 +36,18 @@ services:
       - ./backend/service-registry/src:/app/service-registry/src
       - ./backend/service-registry/build.gradle:/app/service-registry/build.gradle
 
-  # frontend:
-  #   build:
-  #     context: frontend
-  #     target: frontend
-  #   ports:
-  #     - 8001:3000
-  #   volumes:
-  #     - ./frontend/ase-t15-frontend/public:/public
-  #     - ./frontend/ase-t15-frontend/src:/src
-  #     - ./frontend/ase-t15-frontend/package.json:/package.json
-  #     - ./frontend/ase-t15-frontend/package-lock.json:/package-lock.json
-  #     - ./frontend/ase-t15-frontend/node_modules:/node_modules
+  frontend:
+    build:
+      context: frontend
+      target: frontend
+    ports:
+      - 8001:3000
+    volumes:
+      - ./frontend/ase-t15-frontend/public:/public
+      - ./frontend/ase-t15-frontend/src:/src
+      - ./frontend/ase-t15-frontend/package.json:/package.json
+      - ./frontend/ase-t15-frontend/package-lock.json:/package-lock.json
+      - ./frontend/ase-t15-frontend/node_modules:/node_modules
 
   delivery:
     build:
@@ -73,7 +73,7 @@ services:
       - ./backend/delivery/build.gradle:/app/delivery/build.gradle
       - ./backend/library/src:/app/library/src
       - ./backend/library/build.gradle:/app/library/build.gradle
-  
+
   auth:
     build:
       context: backend
@@ -111,7 +111,7 @@ services:
       retries: 50
     logging:
       driver: none
-  
+
   db-seed:
     build: db/seed
     depends_on:
