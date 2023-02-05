@@ -17,10 +17,10 @@ function userReducer(users = initialState, action) {
 
     switch (type) {
         case GET_CUSTOMERS:
-            return { ...users, customers: [payload] };
+            return { ...users, customers: payload };
 
         case GET_DELIVERERS:
-            return { ...users, deliverers: [payload] };
+            return { ...users, deliverers: payload };
 
         case GET_USERS:
             return { ...users, users: payload };

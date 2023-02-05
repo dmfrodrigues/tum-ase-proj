@@ -18,16 +18,18 @@ function OrderList() {
   const dispatch = useDispatch()
 
   const [data, setData] = useState(orderRows);
-  const [orders, setOrders] = useSelector(state => state.orders)
-  const [customers, setCustomers] = useSelector(state => state.users.customers);
-  const [deliverers, setDeliverers] = useSelector(state => state.users.deliverers);
-  const [boxes, setBoxes] = useSelector(state => state.boxes);
+  const orders = useSelector(state => state.orders)
+  const customers = useSelector(state => state.users.customers);
+  const deliverers = useSelector(state => state.users.deliverers);
+  const boxes = useSelector(state => state.boxes);
 
   useEffect(() => {
     dispatch(getOrders())
     dispatch(getCustomers())
     dispatch(getDeliverers())
     dispatch(getBoxes())
+
+    console.log("customers", customers)
   }, [])
 
   const handleDelete = (id) => {

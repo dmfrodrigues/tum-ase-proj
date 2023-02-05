@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
 import { useState } from "react";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { AddCircleOutline } from '@mui/icons-material';
 import { createUser } from '../actions/users';
 import NewToken from './NewToken';
@@ -11,14 +11,13 @@ import NewToken from './NewToken';
 function NewUser({ allTokens }) {
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
-
-    const tokens = allTokens.filter(token => !token.principal);
+    const tokens = useSelector(state => state.users.tokens);
 
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [token, setToken] = useState(tokens.length > 0 ? tokens[0].id : "");
+    const [token, setToken] = useState(tokens ? tokens.length > 0 ? tokens[0].id : "" : "");
     const [role, setRole] = useState("dispatcher");
 
     const handleClose = () => setShow(false);
@@ -75,9 +74,12 @@ function NewUser({ allTokens }) {
                             <Form.Label>Select Token</Form.Label>
                             <div className="mb-3 d-flex flex-row">
                                 <Form.Select aria-label="Token select" className='flex-fill p-2' size="sm" value={token} onChange={(e) => setToken(e.target.value)}>
-                                    {tokens.map((token) => (
-                                        <option key={token.id} value={token.id}>{token.id}</option>
-                                    ))}
+                                    {
+                                        tokens &&
+                                        tokens.filter(token => !token.principal)
+                                            .map((token) => (
+                                                <option key={token.id} value={token.id}>{token.id}</option>
+                                            ))}
                                 </Form.Select>
                                 {/* Button to add token */}
                                 <NewToken />

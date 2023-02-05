@@ -14,7 +14,7 @@ function Topbar() {
 
   const handleLogout = () => {
     dispatch(logout());
-    window.location.reload();
+    //window.location.reload();
   }
 
   return (

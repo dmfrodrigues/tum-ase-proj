@@ -18,10 +18,11 @@ import { getBoxes, deleteBox } from '../actions/boxes';
 function BoxList() {
   const [data, setData] = useState(boxRows);
   const dispatch = useDispatch();
-  const [customers, setCustomers] = useSelector(state => state.users.customers);
-  const [boxes, setBoxes] = useSelector(state => state.boxes);
+  const customers = useSelector(state => state.users.customers);
+  const boxes = useSelector(state => state.boxes);
 
   useEffect(() => {
+    console.log(boxes)
     dispatch(getBoxes())
     dispatch(getCustomers())
   }, [])

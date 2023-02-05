@@ -11,12 +11,12 @@ import BoxList from "./pages/BoxList";
 import Login from './pages/Login';
 import Order from './pages/Order';
 import OrderDetail from "./pages/OrderDetail";
+import PrivateRoute from './pages/PrivateRoute';
 
 
 function App() {
   return (
     <div>
-      <Router></Router>
       <Router>
         <Topbar />
 
@@ -24,11 +24,26 @@ function App() {
           <Sidebar />
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/users" element={<UserList />} />
-            <Route path="/orders" element={<OrderList />} />
-            <Route path="/boxes" element={<BoxList />} />
-            {/* <Route path="/orders/:id" element={<Order />} /> */}
-            <Route path="/orders/:id" element={<OrderDetail />} />
+            <Route path="/users" element={
+              <PrivateRoute>
+                <UserList />
+              </PrivateRoute>
+            } />
+            <Route path="/orders" element={
+              <PrivateRoute>
+                <OrderList />
+              </PrivateRoute>
+            } />
+            <Route path="/boxes" element={
+              <PrivateRoute>
+                <BoxList />
+              </PrivateRoute>
+            } />
+            <Route path="/orders/:id" element={
+              <PrivateRoute>
+                <OrderDetail />
+              </PrivateRoute>
+            } />
           </Routes>
         </div>
       </Router>

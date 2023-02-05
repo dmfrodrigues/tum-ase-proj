@@ -51,6 +51,14 @@ class UserDataService {
 
         return axios.put(API_URL + "/auth/token", form, { headers: authHeader() });
     }
+
+    editToken(data) {
+        const form = new FormData();
+
+        form.append("principalId", data.principalId);
+
+        return axios.patch(API_URL + "/auth/token/" + data.id, form, { headers: authHeader() });
+    }
 }
 
 export default new UserDataService();
