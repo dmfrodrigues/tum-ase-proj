@@ -33,7 +33,7 @@ build-service-registry:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
-    - docker system prune --all --volumes
+    - docker system prune -f --all --volumes
     - docker build -t $CI_REPO/service-registry:$CI_COMMIT_SHA backend --build-arg TARGET=service-registry
     - docker push $CI_REPO/service-registry:$CI_COMMIT_SHA
 
@@ -44,7 +44,7 @@ build-service-registry:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
-    - docker system prune --all --volumes
+    - docker system prune -f --all --volumes
     - docker build -t $CI_REPO/frontend:$CI_COMMIT_SHA frontend --target frontend-prod
     - docker push $CI_REPO/frontend:$CI_COMMIT_SHA
 
@@ -55,7 +55,7 @@ build-auth:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
-    - docker system prune --all --volumes
+    - docker system prune -f --all --volumes
     - docker build -t $CI_REPO/auth:$CI_COMMIT_SHA backend --build-arg TARGET=auth
     - docker push $CI_REPO/auth:$CI_COMMIT_SHA
 
@@ -66,7 +66,7 @@ build-delivery:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
-    - docker system prune --all --volumes
+    - docker system prune -f --all --volumes
     - docker build -t $CI_REPO/delivery:$CI_COMMIT_SHA backend --build-arg TARGET=delivery
     - docker push $CI_REPO/delivery:$CI_COMMIT_SHA
 
@@ -77,7 +77,7 @@ build-db-seed:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   script:
-    - docker system prune --all --volumes
+    - docker system prune -f --all --volumes
     - docker build -t $CI_REPO/db-seed:$CI_COMMIT_SHA db/seed
     - docker push $CI_REPO/db-seed:$CI_COMMIT_SHA
 
