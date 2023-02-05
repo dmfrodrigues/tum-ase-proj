@@ -101,7 +101,7 @@ export const getTokens = () => async (dispatch) => {
 
 export const createToken = (data) => async (dispatch) => {
     try {
-        //const res = await UserDataService.createToken(data);
+        const res = await UserDataService.createToken(data);
 
         dispatch({
             type: CREATE_TOKEN,
