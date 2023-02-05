@@ -311,6 +311,21 @@ public class DeliveryController {
     public void delDelivery(
         @PathVariable @Parameter(description="Delivery ID") String id
     ) {
-        deliveryRepo.deleteById(id);
+        Delivery delivery = deliveryRepo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        Box box = delivery.box;
+
+        Delivery.State state = delivery.getState();
+
+        deliveryRepo.delete(delivery);
+
+        if(
+            state != Delivery.State.COMPLETED &&
+            boxService.allDeliveriesCompleted(box)
+        ){
+            box.customer = null;
+            box = boxRepo.save(box);
+        }
     }
 }
