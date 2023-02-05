@@ -9,15 +9,19 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.asedelivery.auth.model.Principal;
 import com.asedelivery.auth.model.Token;
+import com.asedelivery.auth.model.Token.Type;
 import com.asedelivery.auth.model.repo.PrincipalRepository;
 import com.asedelivery.auth.model.repo.TokenRepository;
 import com.asedelivery.common.model.Role;
+import com.google.common.base.Optional;
 
 @RestController
 @RequestMapping("/api/auth/token")
@@ -45,8 +49,29 @@ public class TokenController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+
+    @PutMapping("")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
+    public Token putToken(
+        @RequestParam(value = "id") Optional<String> id,
+        @RequestParam(value = "principalId") String principalId
+    ){
+        Principal principal = principalRepo.findById(principalId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Principal not found"));
+
+        Token token;
+        if(id.isPresent())
+            token = new Token(Type.RFID, principal, id.get());
+        else
+            token = Token.generateToken(Type.RFID, principal);
+
+        token = tokenRepo.save(token);
+
+        return token;
+    }
+
     @PatchMapping("/{id}")
-    @PostAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
+    @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public Token patchToken(
         @PathVariable String id,
         @RequestParam(value = "principalId") String principalId
