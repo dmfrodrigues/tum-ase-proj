@@ -37,7 +37,7 @@ build-service-registry:
     - docker build -t $CI_REPO/service-registry:$CI_COMMIT_SHA backend --build-arg TARGET=service-registry --no-cache
     - docker push $CI_REPO/service-registry:$CI_COMMIT_SHA
 
-.build-frontend:
+build-frontend:
   stage: build
   extends: .login-cr
   rules:

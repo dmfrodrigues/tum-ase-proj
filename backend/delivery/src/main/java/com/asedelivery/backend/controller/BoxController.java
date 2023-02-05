@@ -148,6 +148,10 @@ public class BoxController {
                     List<Delivery> deliveries = deliveryRepo
                         .findByBoxAndDelivererAndState(box, deliverer, Delivery.State.PICKED_UP);
                     if(deliveries.size() <= 0) return false;
+                    for(Delivery delivery: deliveries){
+                        delivery.advanceState();
+                    }
+                    deliveries = deliveryRepo.saveAll(deliveries);
                     return true;
                 }
             case "ROLE_" + Role.CUSTOMER_STR:
