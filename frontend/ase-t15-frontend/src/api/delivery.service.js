@@ -23,7 +23,8 @@ class DeliveryDataService {
 
     update(id, data) {
         const form = new FormData();
-        form.append("customerId", data.customerId);
+        if (data.customerId)
+            form.append("customerId", data.customerId);
         if (data.createdById)
             form.append("createdById", data.createdById);
         if (data.delivererId)

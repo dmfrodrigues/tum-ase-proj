@@ -4,7 +4,7 @@ import Sidebar from './components/Sidebar'
 import Topbar from "./components/Topbar";
 import "./App.css";
 import Home from "./pages/Home";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import UserList from "./pages/UserList";
 import OrderList from "./pages/OrderList";
 import BoxList from "./pages/BoxList";
@@ -29,6 +29,7 @@ function App() {
                 <UserList />
               </PrivateRoute>
             } />
+            <Route exact path="/" element={<Navigate to="/login" />} />
             <Route path="/orders" element={
               <PrivateRoute>
                 <OrderList />
@@ -46,8 +47,8 @@ function App() {
             } />
           </Routes>
         </div>
-      </Router>
-    </div>
+      </Router >
+    </div >
   );
 }
 

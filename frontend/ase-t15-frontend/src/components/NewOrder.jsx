@@ -47,7 +47,6 @@ function NewOrder({ customers, deliverers, boxes }) {
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>New Order</Modal.Title>
-                    <p>Customer: {user?.id}</p>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -74,7 +73,7 @@ function NewOrder({ customers, deliverers, boxes }) {
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicAddress" onChange={(e) => setAddress(e.target.value)}>
-                            <Form.Label>Address</Form.Label>
+                            <Form.Label>Pickup Address</Form.Label>
                             <Form.Control type="text" placeholder="Enter address" />
                         </Form.Group>
 

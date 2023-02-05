@@ -23,7 +23,7 @@ function Topbar() {
     <div className="topbar">
       <div className="topbarWrapper">
         <div className="topLeft">
-          <span className="logo">Name Of App</span>
+          <span className="logo">ASEDelivery</span>
         </div>
         <div className="topRight">
           {isLoggedIn ? <span className="logInMsg">Logged in as:</span> : <span className="logInMsg">Not logged in</span>}
