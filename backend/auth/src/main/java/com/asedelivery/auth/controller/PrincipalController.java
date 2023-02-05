@@ -1,6 +1,8 @@
 package com.asedelivery.auth.controller;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -9,30 +11,27 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.asedelivery.auth.model.Token;
+import com.asedelivery.auth.model.Principal;
 import com.asedelivery.auth.model.repo.PrincipalRepository;
-import com.asedelivery.auth.model.repo.TokenRepository;
 import com.asedelivery.common.model.Role;
 
 @RestController
-@RequestMapping("/api/auth/token")
-public class TokenController {
+@RequestMapping("/api/auth/principal")
+public class PrincipalController {
 
     @Autowired
     PrincipalRepository principalRepo;
 
-    @Autowired
-    TokenRepository tokenRepo;
-
     @GetMapping("")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
-    public List<Token> getTokens() {
-        return tokenRepo.findAll();
+    public List<Principal> getPrincipals() {
+        return principalRepo.findAll();
     }
 
     @GetMapping("/{id}")
@@ -40,32 +39,54 @@ public class TokenController {
         "hasRole('" + Role.DISPATCHER_STR + "') or " +
         "principal == returnObject.principal.getId()"
     )
-    public Token getToken(@PathVariable String id) {
-        return tokenRepo.findById(id)
+    public Principal getPrincipal(@PathVariable String id) {
+        return principalRepo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/{id}")
+    @PostAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
+    public Principal putPrincipal(
+        @PathVariable String id,
+        @RequestParam(value = "username") String username,
+        @RequestParam(value = "password") String password,
+        @RequestParam(value = "role") Role role
+    ){
+        Principal principal = principalRepo.save(new Principal(
+            id,
+            role,
+            username,
+            password
+        ));
+        
+        return principal;
     }
 
     @PatchMapping("/{id}")
     @PostAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
-    public Token patchToken(
+    public Principal patchPrincipal(
         @PathVariable String id,
-        @RequestParam(value = "principalId") String principalId
+        @RequestParam(value = "password") Optional<String> password,
+        @RequestParam(value = "role") Optional<Role> role
     ){
-        Token tokenObj = tokenRepo.findById(id)
+        Principal principal = principalRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        tokenObj.principal = principalRepo.findById(principalId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Principal not found"));
+        if(password.isPresent()) principal.password = password.get();
+        if(role    .isPresent()) principal.role     = role    .get();
+
+        principal = principalRepo.save(principal);
         
-        return tokenObj;
+        return principal;
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
-    public void delToken(@PathVariable String id) {
-        if (!tokenRepo.existsById(id))
+    public void delPrincipal(@PathVariable String id) {
+        if (!principalRepo.existsById(id))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         else
-        tokenRepo.deleteById(id);
+        principalRepo.deleteById(id);
     }
+
 }

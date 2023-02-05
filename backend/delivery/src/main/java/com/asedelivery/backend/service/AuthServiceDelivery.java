@@ -60,10 +60,8 @@ public class AuthServiceDelivery implements AuthService {
         
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
-        String authUrl = authServiceUrl();
-
         ResponseEntity<String> response = restTemplate.postForEntity(
-            authUrl + "/api/auth",
+            authServiceUrl() + "api/auth",
             entity,
             String.class
         );
@@ -92,7 +90,6 @@ public class AuthServiceDelivery implements AuthService {
         headers.add(HttpHeaders.COOKIE, "jwt=" + jwt);
 
         MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
-        data.add("id", id);
         data.add("role", role.toString());
         data.add("username", username);
         data.add("password", password);
@@ -101,7 +98,7 @@ public class AuthServiceDelivery implements AuthService {
             new HttpEntity<MultiValueMap<String, String>>(data, headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-            authServiceUrl() + "/api/principal",
+            authServiceUrl() + "api/auth/principal/" + id,
             HttpMethod.PUT,
             request,
             String.class
@@ -109,6 +106,5 @@ public class AuthServiceDelivery implements AuthService {
         if(response.getStatusCode() != HttpStatus.OK){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, response.getBody());
         }
-        System.err.println("TODO: REMOVE ME. Response to putting principal is " + response.getBody());
     }
 }
