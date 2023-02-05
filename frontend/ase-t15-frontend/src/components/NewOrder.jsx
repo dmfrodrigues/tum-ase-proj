@@ -30,6 +30,7 @@ function NewOrder({ customers, deliverers, boxes }) {
         console.log("Address: " + address);
         dispatch(createOrder(customerId, user.id, delivererId, address, boxId));
         handleClose();
+        window.location.reload();
     }
 
     return (

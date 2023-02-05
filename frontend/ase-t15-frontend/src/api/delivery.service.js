@@ -32,14 +32,14 @@ class DeliveryDataService {
             form.append("pickupAddress", data.pickupAddress);
         if (data.boxId)
             form.append("boxId", data.boxId);
-        if (data.state)
+        if (data.state && (data.state != data.oldState))
             form.append("state", data.state);
 
-        return axios.patch(API_URL + "/delivery" + id, form, { headers: authHeader() });
+        return axios.patch(API_URL + "/delivery/" + id, form, { headers: authHeader() });
     }
 
     delete(id) {
-        return axios.delete(API_URL + "/delivery" + id, { headers: authHeader() });
+        return axios.delete(API_URL + "/delivery/" + id, { headers: authHeader() });
     }
 }
 

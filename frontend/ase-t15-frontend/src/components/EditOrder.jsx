@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
 import { useState } from "react";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { OrderStatus } from '../pages/Order';
 import { editOrder } from '../actions/orders';
 
@@ -19,12 +19,16 @@ function moveToFirst(arr, id) {
 function EditOrder({ customers, deliverers, boxes, order }) {
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
+    const user = useSelector((state) => state.auth.user);
     const [customerId, setCustomerId] = useState(order.customer?.id);
     const [delivererId, setDelivererId] = useState(order.deliverer?.id);
     const [boxId, setBoxId] = useState(order.box?.id);
     const [pickupAddress, setAddress] = useState(order.pickupAddress);
+    const [oldState, setOldState] = useState(
+        order.events ? order.events[order.events.length - 1].state : "ORDERED"
+    );
     const [state, setState] = useState(
-        order.history ? order.history[order.history.length - 1].status : OrderStatus.ORDERED
+        order.events ? order.events[order.events.length - 1].state : "ORDERED"
     );
 
     const handleClose = () => setShow(false);
@@ -36,8 +40,9 @@ function EditOrder({ customers, deliverers, boxes, order }) {
         // console.log("Box: " + boxId);
         // console.log("Address: " + address);
         const st = state.toUpperCase();
-        dispatch(editOrder(order.id, { customerId, delivererId, boxId, pickupAddress, state: st }));
-        handleClose();
+        dispatch(editOrder(order.id, { customerId, delivererId, createdById: user.id, boxId, pickupAddress, state: state, oldState: oldState }));
+        handleClose()
+        window.location.reload();
     }
 
     boxes = moveToFirst(boxes, boxId);
@@ -94,24 +99,21 @@ function EditOrder({ customers, deliverers, boxes, order }) {
                             </Form.Select>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId={`status${order.id}`} onChange={(e) => setState(e.target.value)}>
+                        <Form.Group className="mb-3" controlId={`status${order.id}`} onChange={(e) => setState(e.target.value.toUpperCase())}>
                             <Form.Label>Select Status</Form.Label>
                             {
                                 Object.keys(OrderStatus).map((key) => {
                                     let status = OrderStatus[key];
-                                    let orderStatus;
-                                    if (order.events.length === 0)
-                                        orderStatus = OrderStatus.ORDERED;
-                                    else
-                                        orderStatus = order.events[order.events.length - 1].state;
+                                    console.log(state)
+
                                     return <Form.Check
-                                        defaultChecked={orderStatus === key ? "checked" : ""}
                                         key={key}
                                         type="radio"
                                         id={`radio-${key}${order.id}`}
                                         value={key}
                                         name={`formBasicStatus${order.id}`}
                                         label={status}
+                                        checked={state == key}
                                     />
                                 })
                             }

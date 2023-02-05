@@ -11,7 +11,7 @@ class BoxDataService {
         const form = new FormData();
         console.log(data);
 
-        form.append("username", data.name);
+        form.append("username", data.username);
         form.append("address", data.address);
         form.append("password", data.password);
 
@@ -22,10 +22,9 @@ class BoxDataService {
         const form = new FormData();
         console.log(data);
 
-        form.append("boxId", data.id);
         if (data.password && data.password !== "")
             form.append("password", data.password);
-        form.append("username", data.name);
+        form.append("username", data.username);
         form.append("address", data.address);
 
         return axios.patch(API_URL + "/box/" + data.id, form, { headers: authHeader() });

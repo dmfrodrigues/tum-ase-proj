@@ -31,7 +31,6 @@ class UserDataService {
         const form = new FormData();
         console.log(data);
 
-        form.append("personId", data.id);
         form.append("username", data.username);
         form.append("name", data.name);
         form.append("email", data.email);
