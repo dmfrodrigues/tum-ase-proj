@@ -85,6 +85,8 @@ public class TokenController {
         tokenObj.principal = principalRepo.findById(principalId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Principal not found"));
         
+        tokenObj = tokenRepo.save(tokenObj);
+        
         return tokenObj;
     }
 
