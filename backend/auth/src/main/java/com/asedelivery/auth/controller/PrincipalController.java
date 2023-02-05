@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -32,6 +33,9 @@ public class PrincipalController {
 
     @Autowired
     TokenRepository tokenRepo;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("")
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
@@ -61,7 +65,7 @@ public class PrincipalController {
             id,
             role,
             username,
-            password
+            bCryptPasswordEncoder.encode(password)
         ));
         
         return principal;
@@ -77,7 +81,7 @@ public class PrincipalController {
         Principal principal = principalRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if(password.isPresent()) principal.password = password.get();
+        if(password.isPresent()) principal.password = bCryptPasswordEncoder.encode(password.get());
         if(role    .isPresent()) principal.role     = role    .get();
 
         principal = principalRepo.save(principal);
