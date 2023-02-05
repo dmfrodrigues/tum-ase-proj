@@ -14,7 +14,6 @@ The deployment will be available at http://localhost:8000.
 | `/api/auth`              | `auth`     | Authentication service             |
 | `/api`                   | `delivery` | Delivery service                   |
 | `/swagger-ui/index.html` | `delivery` | Delivery service API documentation |
-| `/db-admin`              | -          | DB admin                           |
 | `/`                      | `frontend` | React client                       |
 
 Some credentials:
