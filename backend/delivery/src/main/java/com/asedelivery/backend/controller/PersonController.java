@@ -70,7 +70,7 @@ public class PersonController {
         @RequestParam(value = "name") @Parameter(description="Person name") Optional<String> name,
         @RequestParam(value = "email") @Parameter(description="Person email address") Optional<String> email
     ){
-        Person ret = (Person)personRepo.findById(id)
+        Person ret = (Person)agentRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         String oldUsername = ret.username;
