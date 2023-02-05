@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import "@fontsource/josefin-sans"
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../actions/auth";
 
 function Topbar() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(logout());
