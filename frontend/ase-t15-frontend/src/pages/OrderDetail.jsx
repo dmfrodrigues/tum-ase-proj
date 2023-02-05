@@ -12,6 +12,7 @@ import { width } from '@mui/system';
 import { Modal, Button } from '@mui/material';
 import DeleteModal from '../components/DeleteModal';
 import ConfirmOrderState from '../components/ConfirmOrderState';
+import GenQRCodeButton from '../components/GenQRCodeButton';
 
 
 function OrderDetail() {
@@ -128,6 +129,10 @@ function OrderDetail() {
 						((auth.user.role == "DELIVERER" && auth.user.id == order.deliverer.id)
 							|| auth.user.role == "DISPATCHER") &&
 						<ConfirmOrderState />
+					}
+					{
+						(auth.user.role == "DISPATCHER") &&
+						<GenQRCodeButton />
 					}
 				</div>
 
