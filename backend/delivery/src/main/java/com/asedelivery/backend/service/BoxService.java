@@ -19,6 +19,6 @@ public class BoxService {
         List<Delivery> boxDeliveries = deliveryRepo
             .findByBoxAndCustomer(box, box.customer);
         return boxDeliveries.stream()
-            .anyMatch((delivery) -> delivery.getState() == Delivery.State.COMPLETED);
+            .allMatch((delivery) -> delivery.getState() == Delivery.State.COMPLETED);
     }
 }

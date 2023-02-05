@@ -15,6 +15,7 @@ spring:
       database: asedelivery
       username: root
       password: ${MONGO_INITDB_ROOT_PASSWORD}
+      auto-index-creation: true
 
   keys:
     keystore:
