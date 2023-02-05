@@ -54,16 +54,18 @@ public class TokenController {
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public Token putToken(
         @RequestParam(value = "id") Optional<String> id,
-        @RequestParam(value = "principalId") String principalId
+        @RequestParam(value = "principalId") Optional<String> principalId
     ){
-        Principal principal = principalRepo.findById(principalId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Principal not found"));
 
         Token token;
-        if(id.isPresent())
-            token = new Token(Type.RFID, principal, id.get());
-        else
-            token = Token.generateToken(Type.RFID, principal);
+        if(id.isPresent()) token = new Token(Type.RFID, null, id.get());
+        else token = Token.generateToken(Type.RFID);
+
+        if(principalId.isPresent()){
+            Principal principal = principalRepo.findById(principalId.get())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Principal not found"));
+            token.principal = principal;
+        }
 
         token = tokenRepo.save(token);
 
