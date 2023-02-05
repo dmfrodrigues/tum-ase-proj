@@ -1,8 +1,10 @@
 package com.asedelivery.backend.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -149,15 +151,18 @@ public class DeliveryController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Box is already taken by another customer");
         }
 
-        Delivery delivery = deliveryRepo.save(
-            new Delivery(
-                customer,
-                dispatcher,
-                deliverer,
-                pickupAddress,
-                box
-            )
+        Delivery delivery = new Delivery(
+            customer,
+            dispatcher,
+            deliverer,
+            pickupAddress,
+            box
         );
+        SortedSet<Delivery.Event> events = new TreeSet<>(){{
+            add(new Delivery.Event(new Date(), Delivery.State.ORDERED));
+        }};
+        delivery.setEvents(events);
+        delivery = deliveryRepo.save(delivery);
 
         try {
             Email mail = emailService.createNewDeliveryEmail(

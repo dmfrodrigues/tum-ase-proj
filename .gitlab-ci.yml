@@ -84,7 +84,7 @@ build-delivery:
       "
 
 ## Deploy to staging
-deploy-stag:
+.deploy-stag:
   stage: deploy
   when: manual
   extends: .deploy
