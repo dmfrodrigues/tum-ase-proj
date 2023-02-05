@@ -3,6 +3,7 @@ import {
     RETRIEVE_ORDERS,
     RETRIEVE_ORDER,
     UPDATE_ORDER,
+    UPDATE_ORDER_STATE,
     DELETE_ORDER
 } from "../actions/types";
 
@@ -24,6 +25,9 @@ function orderReducer(orders = initialState, action) {
         case RETRIEVE_ORDER:
             console.log("orders.orders: ", payload);
             return { orders: orders.orders, order: payload };
+
+        case UPDATE_ORDER_STATE:
+            return { orders: orders.orders, order: { ...orders.order, state: payload.state } };
 
         case UPDATE_ORDER:
             return orders.map((order) => {

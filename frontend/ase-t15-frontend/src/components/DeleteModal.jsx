@@ -16,7 +16,6 @@ function DeleteModal({ text, handleDelete }) {
 
     return (
         <div>
-
             <DeleteOutline
                 className="orderListDelete"
                 onClick={handleShow}

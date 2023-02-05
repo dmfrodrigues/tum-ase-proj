@@ -9,6 +9,9 @@ import { getOrder } from "../actions/orders";
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { width } from '@mui/system';
+import { Modal, Button } from '@mui/material';
+import DeleteModal from '../components/DeleteModal';
+import ConfirmOrderState from '../components/ConfirmOrderState';
 
 
 function OrderDetail() {
@@ -16,6 +19,7 @@ function OrderDetail() {
 
 	const dispatch = useDispatch()
 	const order = useSelector(state => state.orders.order)
+	const auth = useSelector(state => state.auth)
 	const [customer_name, setCustomerName] = useState("");
 	const [box_name, setBoxName] = useState("");
 	const [pickupAddress, setPickupAddress] = useState("");
@@ -31,8 +35,9 @@ function OrderDetail() {
 	}, [])
 
 	useEffect(() => {
-		if (order.customer) {
-			setCustomerName(order.customer.name);
+		console.log(order)
+		if (order.events) {
+			setCustomerName(order.customer?.name);
 			setBoxName(order.box.username);
 			setPickupAddress(order.pickupAddress);
 			setOrderDate(order.events.length > 0 ? new Date(order.events[0].date).toDateString() : null);
@@ -48,11 +53,9 @@ function OrderDetail() {
 					order.events.map(event => new Date(event.date).toDateString())
 					: [],
 			});
-			console.log(order_history)
 			setOrderIdIsValid(true);
 		}
 	}, [order])
-
 
 	return order_id_is_valid ? (
 		<div className="orderDetailContainer" scroll="no">
@@ -99,10 +102,12 @@ function OrderDetail() {
 						Order Details
 					</div>
 					<div className="orderDetail p-4">
-						<div>
-							<span className="orderDetailTitle">Customer:</span>
-							<span className="orderDetailContent pb-4 mx-2"> {customer_name} </span>
-						</div>
+						{(auth.user.role === "DELIVERER" && auth.user.id === order.box.id) &&
+							<div>
+								<span className="orderDetailTitle">Customer:</span>
+								<span className="orderDetailContent pb-4 mx-2"> {customer_name} </span>
+							</div>
+						}
 
 						<div>
 							<span className="orderDetailTitle">Box Name:</span>
@@ -119,6 +124,11 @@ function OrderDetail() {
 							<span className="orderDetailContent pb-4 mx-2"> {order_date} </span>
 						</div>
 					</div>
+					{
+						((auth.user.role == "DELIVERER" && auth.user.id == order.deliverer.id)
+							|| auth.user.role == "DISPATCHER") &&
+						<ConfirmOrderState />
+					}
 				</div>
 
 				<div className="orderContainer">
@@ -153,7 +163,7 @@ function OrderDetail() {
 									<img className="historyItemImage" src={delivery_image}></img>
 									<div className="historyItemTextContainer">
 										<div className="historyItemTextCaption">Picked up</div>
-										<div className="historyItemTextDescription">Your delivery package was picked up and is on the way</div>
+										<div className="historyItemTextDescription">Delivery package was picked up and is on the way</div>
 									</div>
 									<div className="historyItemDateTime">{order_history.time_of_status[1]}</div>
 								</div>
@@ -164,7 +174,7 @@ function OrderDetail() {
 								<img className="historyItemImage" src={packing_image}></img>
 								<div className="historyItemTextContainer">
 									<div className="historyItemTextCaption">Package is ordered</div>
-									<div className="historyItemTextDescription">Your package has been ordered successfully</div>
+									<div className="historyItemTextDescription">Package has been ordered successfully</div>
 								</div>
 								<div className="historyItemDateTime">{order_history.time_of_status[0]}</div>
 							</div>
@@ -181,6 +191,7 @@ function OrderDetail() {
 			textAlign: "center"
 		}}>
 			Order #{id} not found
+
 		</div>
 	);
 }

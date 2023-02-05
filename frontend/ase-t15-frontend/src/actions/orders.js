@@ -3,7 +3,8 @@ import {
     RETRIEVE_ORDERS,
     RETRIEVE_ORDER,
     UPDATE_ORDER,
-    DELETE_ORDER
+    DELETE_ORDER,
+    UPDATE_ORDER_STATE
 } from "./types";
 
 import DeliveryDataService from "../api/delivery.service";
@@ -74,5 +75,20 @@ export const deleteOrder = (id) => async (dispatch) => {
         });
     } catch (err) {
         console.log(err);
+    }
+}
+
+export const editOrderState = (id, state) => async (dispatch) => {
+    try {
+        const res = await DeliveryDataService.update(id, { state });
+
+        dispatch({
+            type: UPDATE_ORDER_STATE,
+            payload: { id, state },
+        });
+
+        return Promise.resolve(res.data);
+    } catch (err) {
+        return Promise.reject(err);
     }
 }
