@@ -19,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.asedelivery.backend.email.Email;
 import com.asedelivery.backend.model.Person;
 import com.asedelivery.backend.model.repo.AgentRepository;
-import com.asedelivery.backend.model.repo.PersonRepository;
 import com.asedelivery.backend.service.AuthServiceDelivery;
 import com.asedelivery.backend.service.EmailService;
 import com.asedelivery.common.model.Role;
@@ -36,9 +35,6 @@ public class PersonController {
 
     @Autowired
     AgentRepository agentRepo;
-
-    @Autowired
-    PersonRepository personRepo;
 
     @Autowired
     EmailService emailService;
@@ -92,7 +88,7 @@ public class PersonController {
             !ret.email   .equals(oldEmail   ) ||
             password.isPresent()
         ){
-            ret = personRepo.save(ret);
+            ret = agentRepo.save(ret);
 
             try {
                 Email mail = emailService.createModifiedPersonEmail(
