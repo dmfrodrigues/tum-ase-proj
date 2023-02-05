@@ -64,13 +64,13 @@ public class PersonController {
     @PreAuthorize("hasRole('" + Role.DISPATCHER_STR + "')")
     public Person patchPerson(
         @CookieValue("jwt") @Parameter(description="JWT token") String jwt,
-        @PathVariable @Parameter(description="Person ID") String personId,
+        @PathVariable @Parameter(description="Person ID") String id,
         @RequestParam(value = "username") @Parameter(description="Person username") Optional<String> username,
         @RequestParam(value = "password") @Parameter(description="Person password") Optional<String> password,
         @RequestParam(value = "name") @Parameter(description="Person name") Optional<String> name,
         @RequestParam(value = "email") @Parameter(description="Person email address") Optional<String> email
     ){
-        Person ret = (Person)personRepo.findById(personId)
+        Person ret = (Person)personRepo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         String oldUsername = ret.username;
