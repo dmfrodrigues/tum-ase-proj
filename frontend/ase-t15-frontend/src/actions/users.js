@@ -3,6 +3,7 @@ import {
     GET_CUSTOMERS,
     GET_DELIVERERS,
     GET_TOKENS,
+    CREATE_TOKEN
 } from "./types";
 
 import UserDataService from "../api/user.service";
@@ -100,11 +101,11 @@ export const getTokens = () => async (dispatch) => {
 
 export const createToken = (data) => async (dispatch) => {
     try {
-        const res = await UserDataService.createToken(data);
+        //const res = await UserDataService.createToken(data);
 
         dispatch({
-            type: GET_TOKENS,
-            payload: res.data,
+            type: CREATE_TOKEN,
+            payload: data,
         });
     } catch (err) {
         console.log(err);

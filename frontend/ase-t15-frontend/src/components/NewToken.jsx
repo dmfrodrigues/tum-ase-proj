@@ -8,16 +8,17 @@ import { AddCircleOutline } from '@mui/icons-material';
 import { createToken } from '../actions/users';
 
 function NewToken() {
+    const dispatch = useDispatch();
     const [show, setShow] = useState(false);
 
-    const [token, setToken] = useState("");
+    const [id, setId] = useState("");
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleSubmit = () => {
-        console.log("Submitting new token")
-        console.log(token);
-        dispatch(createToken({ token }));
+        // console.log("Submitting new token")
+        // console.log(id);
+        dispatch(createToken({ id }));
         handleClose();
     }
 
@@ -33,7 +34,7 @@ function NewToken() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="formBasicToken" onChange={(e) => setToken(e.target.value)}>
+                        <Form.Group className="mb-3" controlId="formBasicToken" onChange={(e) => setId(e.target.value)}>
                             <Form.Label>Insert Token</Form.Label>
                             <Form.Control type="text" placeholder="Enter token" />
                         </Form.Group>

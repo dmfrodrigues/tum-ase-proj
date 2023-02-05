@@ -12,10 +12,13 @@ function NewUser({ allTokens }) {
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
 
+    const tokens = allTokens.filter(token => !token.principal);
+
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [token, setToken] = useState(tokens.length > 0 ? tokens[0].id : "");
     const [role, setRole] = useState("dispatcher");
 
     const handleClose = () => setShow(false);
@@ -30,8 +33,6 @@ function NewUser({ allTokens }) {
         dispatch(createUser({ name, username, email, password, role }));
         handleClose();
     }
-
-    const tokens = allTokens.filter(token => !token.principal);
 
     return (
         <div className="userListNew">
@@ -73,7 +74,7 @@ function NewUser({ allTokens }) {
                         <Form.Group className="mb-3" controlId="formBasicToken">
                             <Form.Label>Select Token</Form.Label>
                             <div className="mb-3 d-flex flex-row">
-                                <Form.Select aria-label="Token select" className='flex-fill p-2' size="sm" value={tokens[0]?.id} onChange={(e) => console.log(e.target.value)}>
+                                <Form.Select aria-label="Token select" className='flex-fill p-2' size="sm" value={token} onChange={(e) => setToken(e.target.value)}>
                                     {tokens.map((token) => (
                                         <option key={token.id} value={token.id}>{token.id}</option>
                                     ))}
