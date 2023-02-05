@@ -19,9 +19,9 @@ function moveToFirst(arr, id) {
 function EditOrder({ customers, deliverers, boxes, order }) {
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
-    const [customerId, setCustomerId] = useState(order.customer.id);
-    const [delivererId, setDelivererId] = useState(order.deliverer.id);
-    const [boxId, setBoxId] = useState(order.box.id);
+    const [customerId, setCustomerId] = useState(order.customer?.id);
+    const [delivererId, setDelivererId] = useState(order.deliverer?.id);
+    const [boxId, setBoxId] = useState(order.box?.id);
     const [pickupAddress, setAddress] = useState(order.pickupAddress);
     const [state, setStatus] = useState(
         order.history ? order.history[order.history.length - 1].status : OrderStatus.ORDERED

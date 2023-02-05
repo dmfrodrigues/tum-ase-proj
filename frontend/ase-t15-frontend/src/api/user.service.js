@@ -38,6 +38,10 @@ class UserDataService {
 
         return axios.patch(API_URL + "/person/" + data.id, form, { headers: authHeader() });
     }
+
+    delete(id) {
+        return axios.delete(API_URL + "/agent/" + id, { headers: authHeader() });
+    }
 }
 
 export default new UserDataService();

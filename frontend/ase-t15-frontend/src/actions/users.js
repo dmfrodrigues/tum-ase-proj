@@ -70,3 +70,16 @@ export const editUser = (data) => async (dispatch) => {
         console.log(err);
     }
 }
+
+export const deleteUser = (id) => async (dispatch) => {
+    try {
+        const res = await UserDataService.delete(id);
+
+        dispatch({
+            type: GET_USERS,
+            payload: res.data,
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}

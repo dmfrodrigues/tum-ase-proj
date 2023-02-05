@@ -9,7 +9,7 @@ import DeleteModal from '../components/DeleteModal';
 import { Person } from '@mui/icons-material';
 import NewUser from '../components/NewUser';
 import EditUser from '../components/EditUser';
-import { getUsers } from '../actions/users';
+import { getUsers, deleteUser } from '../actions/users';
 import { useSelector, useDispatch } from 'react-redux'
 
 function UserList() {
@@ -72,10 +72,15 @@ function UserList() {
       filterable: false,
       field: "action",
       renderCell: (params) => {
+        const handleDelete = () => {
+          dispatch(deleteUser(params.row.id));
+          window.location.reload();
+        };
+
         return (
           <div className="userListEdit">
             <EditUser user={params.row} />
-            <DeleteModal text="Confirm User Deletion" />
+            <DeleteModal text="Confirm User Deletion" handleDelete={handleDelete} />
           </div>
         );
       },

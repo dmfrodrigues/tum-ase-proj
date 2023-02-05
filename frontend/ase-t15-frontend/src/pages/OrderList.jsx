@@ -12,6 +12,7 @@ import { OrderStatus } from './Order';
 import { getOrders } from '../actions/orders';
 import { getCustomers, getDeliverers } from '../actions/users';
 import { getBoxes } from '../actions/boxes';
+import { deleteOrder } from '../actions/orders';
 
 function OrderList() {
   const dispatch = useDispatch()
@@ -86,7 +87,7 @@ function OrderList() {
     {
       field: "deliverer",
       valueGetter: (params) => {
-        return params.row.deliverer.name;
+        return params.row.deliverer ? params.row.deliverer.name : "Not Assigned";
       },
       headerName: "Deliverer",
       flex: 1,
@@ -107,10 +108,15 @@ function OrderList() {
       sortable: false,
       filterable: false,
       renderCell: (params) => {
+        const handleDelete = () => {
+          dispatch(deleteOrder(params.row.id));
+          window.location.reload();
+        };
+
         return (
           <div className="orderListEdit">
             <EditOrder customers={customers} deliverers={deliverers} boxes={boxes} order={params.row} />
-            <DeleteModal text="Confirm Order Deletion" />
+            <DeleteModal text="Confirm Order Deletion" handleDelete={handleDelete} />
           </div>
         );
       },

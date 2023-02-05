@@ -3,11 +3,14 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { AddCircleOutline } from '@mui/icons-material';
+import { createBox } from '../actions/boxes';
 
 function NewBox() {
+    const dispatch = useDispatch();
     const [show, setShow] = useState(false);
-    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [address, setAddress] = useState("");
 
@@ -15,9 +18,10 @@ function NewBox() {
     const handleShow = () => setShow(true);
     const handleSubmit = () => {
         console.log("Submitting new box")
-        console.log(name);
+        console.log(username);
         console.log(password);
         console.log(address);
+        dispatch(createBox({ username, password, address }));
         handleClose();
     }
 
@@ -38,7 +42,7 @@ function NewBox() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="formBasicName" onChange={(e) => setName(e.target.value)}>
+                        <Form.Group className="mb-3" controlId="formBasicName" onChange={(e) => setUsername(e.target.value)}>
                             <Form.Label>Insert Name</Form.Label>
                             <Form.Control type="text" placeholder="Enter Name" />
                         </Form.Group>

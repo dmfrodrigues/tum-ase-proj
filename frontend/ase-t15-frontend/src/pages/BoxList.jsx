@@ -13,7 +13,7 @@ import EditBox from '../components/EditBox';
 import { useSelector, useDispatch } from 'react-redux'
 import { Inventory2Outlined } from '@mui/icons-material';
 import { getCustomers } from '../actions/users';
-import { getBoxes } from '../actions/boxes';
+import { getBoxes, deleteBox } from '../actions/boxes';
 
 function BoxList() {
   const [data, setData] = useState(boxRows);
@@ -63,7 +63,7 @@ function BoxList() {
       flex: 1,
       headerName: "Customer",
       valueGetter: (params) => {
-        return params.row.customer.name;
+        return params.row.customer ? params.row.customer.name : "No customer";
       },
     },
     {
@@ -77,10 +77,15 @@ function BoxList() {
       filterable: false,
       field: "action",
       renderCell: (params) => {
+        const handleDelete = () => {
+          dispatch(deleteBox(params.row.id));
+          window.location.reload();
+        };
+
         return (
           <div className="orderListEdit">
             <EditBox box={params.row} customers={customers} />
-            <DeleteModal text="Confirm Box Deletion" />
+            <DeleteModal text="Confirm Box Deletion" handleDelete={handleDelete} />
           </div>
         );
       },

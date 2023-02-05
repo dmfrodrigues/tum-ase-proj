@@ -4,22 +4,23 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { editBox } from '../actions/boxes';
 
-function moveToFirst(arr, id) {
-    arr = [...arr];
-    const index = arr.findIndex((el) => el.id === id);
-    const first = arr[index];
-    arr.sort(function (x, y) { return x == first ? -1 : y == first ? 1 : x < y; });
-    return arr;
-}
-
-function EditBox({ box, customers }) {
+function EditBox({ box }) {
+    const dispatch = useDispatch();
     const [show, setShow] = useState(false);
+    const [username, setUsername] = useState(box.username);
+    const [password, setPassword] = useState("");
+    const [address, setAddress] = useState(box.address);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
-    customers = moveToFirst(customers, box.customer.id);
+    const handleSubmit = () => {
+        console.log("Submitting new box")
+        dispatch(editBox({ id: box.id, username, password, address }));
+        handleClose();
+    }
 
     return (
         <div>
@@ -33,25 +34,19 @@ function EditBox({ box, customers }) {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Group className="mb-3" controlId="formBasicName" onChange={(e) => setUsername(e.target.value)}>
                             <Form.Label>Insert Name</Form.Label>
-                            <Form.Control type="text" value={box.username} />
+                            <Form.Control type="text" value={username} placeholder="Enter name" onChange={(e) => setUsername(e.target.value)} />
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicAddress">
+                        <Form.Group className="mb-3" controlId="formBasicPassword" onChange={(e) => setPassword(e.target.value)}>
+                            <Form.Label>Insert Password</Form.Label>
+                            <Form.Control type="password" placeholder="Enter Password" />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicAddress" onChange={(e) => setAddress(e.target.value)}>
                             <Form.Label>Insert Address</Form.Label>
-                            <Form.Control type="text" value={box.address} />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="formBasicCustomer">
-                            <Form.Label>Select Customer</Form.Label>
-                            <Form.Select aria-label="Customer select" size="sm">
-                                {
-                                    customers.map((customer) => {
-                                        return <option key={customer.id} value={customer.id}>{customer.name}</option>
-                                    })
-                                }
-                            </Form.Select>
+                            <Form.Control type="text" value={address} placeholder="Enter address" onChange={(e) => setAddress(e.target.value)} />
                         </Form.Group>
                     </Form>
 
@@ -60,7 +55,7 @@ function EditBox({ box, customers }) {
                     <Button variant="danger" size="sm" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="success" size="sm" onClick={handleClose}>
+                    <Button variant="success" size="sm" onClick={handleSubmit}>
                         Create
                     </Button>
                 </Modal.Footer>
