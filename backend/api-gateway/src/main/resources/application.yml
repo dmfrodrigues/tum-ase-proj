@@ -7,6 +7,16 @@ spring:
 
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:8001"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+
       routes:
       - id: auth
         uri: lb://AUTH
