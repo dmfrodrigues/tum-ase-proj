@@ -9,7 +9,6 @@ class BoxDataService {
 
     create(data) {
         const form = new FormData();
-        console.log(data);
 
         form.append("username", data.username);
         form.append("address", data.address);
@@ -20,7 +19,6 @@ class BoxDataService {
 
     edit(data) {
         const form = new FormData();
-        console.log(data);
 
         if (data.password && data.password !== "")
             form.append("password", data.password);

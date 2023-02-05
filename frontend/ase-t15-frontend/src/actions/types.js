@@ -9,6 +9,7 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT = "LOGOUT";
 
 export const GET_USERS = "GET_USERS";
+export const GET_TOKENS = "GET_TOKENS";
 export const GET_DELIVERERS = "GET_DELIVERERS";
 export const GET_CUSTOMERS = "GET_CUSTOMERS";
 export const GET_BOXES = "GET_BOXES";

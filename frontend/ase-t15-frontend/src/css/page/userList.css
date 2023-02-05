@@ -47,3 +47,9 @@
   display: inline-block;
   line-height: normal;
 }
+
+.addToken {
+  height: min-content;
+  align-self: center;
+  margin-left: 10px;
+}

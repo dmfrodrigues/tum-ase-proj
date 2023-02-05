@@ -1,7 +1,8 @@
 import {
     GET_USERS,
     GET_CUSTOMERS,
-    GET_DELIVERERS
+    GET_DELIVERERS,
+    GET_TOKENS,
 } from "./types";
 
 import UserDataService from "../api/user.service";
@@ -77,6 +78,32 @@ export const deleteUser = (id) => async (dispatch) => {
 
         dispatch({
             type: GET_USERS,
+            payload: res.data,
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const getTokens = () => async (dispatch) => {
+    try {
+        const res = await UserDataService.getTokens();
+
+        dispatch({
+            type: GET_TOKENS,
+            payload: res.data,
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const createToken = (data) => async (dispatch) => {
+    try {
+        const res = await UserDataService.createToken(data);
+
+        dispatch({
+            type: GET_TOKENS,
             payload: res.data,
         });
     } catch (err) {

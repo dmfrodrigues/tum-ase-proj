@@ -104,7 +104,6 @@ function EditOrder({ customers, deliverers, boxes, order }) {
                             {
                                 Object.keys(OrderStatus).map((key) => {
                                     let status = OrderStatus[key];
-                                    console.log(state)
 
                                     return <Form.Check
                                         key={key}

@@ -9,16 +9,18 @@ import DeleteModal from '../components/DeleteModal';
 import { Person } from '@mui/icons-material';
 import NewUser from '../components/NewUser';
 import EditUser from '../components/EditUser';
-import { getUsers, deleteUser } from '../actions/users';
+import { getUsers, deleteUser, getTokens } from '../actions/users';
 import { useSelector, useDispatch } from 'react-redux'
 
 function UserList() {
   const [data, setData] = useState(customerRows);
   const dispatch = useDispatch();
   const users = useSelector(state => state.users.users);
+  const tokens = useSelector(state => state.users.tokens);
 
   useEffect(() => {
     dispatch(getUsers());
+    dispatch(getTokens());
   }, [])
 
   const columns = [
@@ -64,7 +66,7 @@ function UserList() {
     {
       renderHeader: () => {
         return (
-          <NewUser />
+          <NewUser allTokens={tokens} />
         );
       },
       flex: 1,

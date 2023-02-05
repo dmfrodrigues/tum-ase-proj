@@ -22,12 +22,12 @@ function NewOrder({ customers, deliverers, boxes }) {
     const handleShow = () => setShow(true);
 
     const handleSubmit = () => {
-        console.log("Submitting new order");
-        console.log("Customer: " + customerId);
-        console.log("Deliverer: " + delivererId);
-        console.log("Dispatcher: " + user.id);
-        console.log("Box: " + boxId);
-        console.log("Address: " + address);
+        // console.log("Submitting new order");
+        // console.log("Customer: " + customerId);
+        // console.log("Deliverer: " + delivererId);
+        // console.log("Dispatcher: " + user.id);
+        // console.log("Box: " + boxId);
+        // console.log("Address: " + address);
         dispatch(createOrder(customerId, user.id, delivererId, address, boxId));
         handleClose();
         window.location.reload();

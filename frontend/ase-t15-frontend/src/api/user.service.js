@@ -17,7 +17,6 @@ class UserDataService {
 
     create(data) {
         const form = new FormData();
-        console.log(data);
 
         form.append("username", data.username);
         form.append("password", data.password);
@@ -29,7 +28,6 @@ class UserDataService {
 
     edit(data) {
         const form = new FormData();
-        console.log(data);
 
         form.append("username", data.username);
         form.append("name", data.name);
@@ -40,6 +38,18 @@ class UserDataService {
 
     delete(id) {
         return axios.delete(API_URL + "/agent/" + id, { headers: authHeader() });
+    }
+
+    getTokens() {
+        return axios.get(API_URL + "/auth/token", { headers: authHeader() });
+    }
+
+    createToken(data) {
+        const form = new FormData();
+
+        form.append("id", data.id);
+
+        return axios.put(API_URL + "/auth/token", form, { headers: authHeader() });
     }
 }
 

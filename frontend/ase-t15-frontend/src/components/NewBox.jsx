@@ -17,10 +17,10 @@ function NewBox() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleSubmit = () => {
-        console.log("Submitting new box")
-        console.log(username);
-        console.log(password);
-        console.log(address);
+        // console.log("Submitting new box")
+        // console.log(username);
+        // console.log(password);
+        // console.log(address);
         dispatch(createBox({ username, password, address }));
         handleClose();
     }

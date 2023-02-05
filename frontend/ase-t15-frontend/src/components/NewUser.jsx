@@ -6,8 +6,9 @@ import { useState } from "react";
 import { useDispatch } from 'react-redux'
 import { AddCircleOutline } from '@mui/icons-material';
 import { createUser } from '../actions/users';
+import NewToken from './NewToken';
 
-function NewUser() {
+function NewUser({ allTokens }) {
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
 
@@ -29,6 +30,8 @@ function NewUser() {
         dispatch(createUser({ name, username, email, password, role }));
         handleClose();
     }
+
+    const tokens = allTokens.filter(token => !token.principal);
 
     return (
         <div className="userListNew">
@@ -66,6 +69,21 @@ function NewUser() {
                             <Form.Label>Insert Password</Form.Label>
                             <Form.Control type="password" placeholder="Enter password" />
                         </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicToken">
+                            <Form.Label>Select Token</Form.Label>
+                            <div className="mb-3 d-flex flex-row">
+                                <Form.Select aria-label="Token select" className='flex-fill p-2' size="sm" value={tokens[0]?.id} onChange={(e) => console.log(e.target.value)}>
+                                    {tokens.map((token) => (
+                                        <option key={token.id} value={token.id}>{token.id}</option>
+                                    ))}
+                                </Form.Select>
+                                {/* Button to add token */}
+                                <NewToken />
+                            </div>
+                        </Form.Group>
+
+
 
                         <Form.Group className="mb-3" controlId="formBasicType">
                             <Form.Label>Select Type</Form.Label>
